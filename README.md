@@ -1,4 +1,4 @@
-# Surmise - Subject to change!!
+# Surmize
 Summarization and NLP application  
   
   
