@@ -7,7 +7,7 @@ class Form extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state.text)
-        fetch("/", {
+        fetch("/api", {
             method: 'post',
             headers: {
                 "Content-type": 'application/json'
