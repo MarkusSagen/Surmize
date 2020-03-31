@@ -7,7 +7,7 @@ from ast import literal_eval
 from cdqa.pipeline import QAPipeline
 
 # TODO: Change this to the path where articles are stored on the server
-directory = os.getcwd()
+directory = os.getcwd() + "/data/pdf"
 
 """
 Class for running Q&A on documents
