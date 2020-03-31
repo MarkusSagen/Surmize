@@ -40,7 +40,3 @@ class QA:
         context = prediction[2]
 
         return (answer, context)
-
-qa = QA()
-answerTuple = qa.question("What the hell?")
-print(answerTuple[0])
