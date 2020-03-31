@@ -13,7 +13,7 @@ Class for running Q&A on documents
 
 Example use:
 qa = QA()
-answerTuple = qa.question("[-The question-]")
+answerTuple = qa.question("?????")
 """
 class QA:
     def __init__(self):
