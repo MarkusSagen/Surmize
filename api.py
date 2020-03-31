@@ -7,9 +7,12 @@ import pandas as pd
 
 from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
+from model import QA
 
 app = Flask(__name__)
 CORS(app)
+
+model = QA()
 
 dataset_path = os.environ["dataset_path"]
 reader_path = os.environ["reader_path"]
@@ -19,6 +22,16 @@ df = filter_paragraphs(df)
 
 cdqa_pipeline = QAPipeline(reader=reader_path)
 cdqa_pipeline.fit_retriever(df=df)
+
+# What we send from the form
+@app.route("/", methods=["POST"])
+def test():
+    question = request.json["text"]
+    (answer, context) = model.question(question)
+    return jsonify(
+        answer=answer,
+        context=context
+    )
 
 
 @app.route("/api", methods=["GET"])
