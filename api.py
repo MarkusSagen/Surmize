@@ -35,6 +35,11 @@ def test():
  """
 
 
+@app.route("/", methods=["GET"])
+def lol():
+    return "HEJ"
+
+
 @app.route("/api", methods=["GET", "POST"])
 def api():
 
