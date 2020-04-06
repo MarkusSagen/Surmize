@@ -132,8 +132,11 @@
  data/
  *.json
 
+# Editors
+.vscode/
 
-
+# OS specific
+.DS_Store
 
 
 
