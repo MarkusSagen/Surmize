@@ -1,5 +1,5 @@
-Flask==1.1.1
-flask_cors==3.0.8
+python-multipart==0.0.5
+wget==3.2
 joblib==0.13.2
 pandas==0.25.0
 prettytable==0.7.2
@@ -9,4 +9,8 @@ tika==1.19
 torch==1.2.0
 markdown==3.1.1
 tqdm==4.32.2
-wget==3.2
+click>=7.0
+future>=0.15.2
+jinja2>=2.7
+fastapi==0.53.2
+uvicorn==0.11.3 
