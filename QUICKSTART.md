@@ -14,29 +14,15 @@ git clone https://github.com/MarkusSagen/Surmize/tree/cdQA
 sudo chmod +x start.sh
 source ./start.sh
 ```
-4. (OPTIONAL) Verify that the dataset_path and path for the trained model are configures correctly before deploying model to a REST API:
+4. Start up the FastAPI APP
 ```bash
-echo "$dataset_path"
-echo "$reader_path"
-echo "$FLASK_ENV"
-echo "$FLASK_APP"
+uvicorn api:app --reload --port 5000
 ```
-or run
-```bash
-export dataset_path=path-to-dataset.csv
-export reader_path=path-to-reader-model
 
-export FLASK_ENV=development
-export FLASK_APP=api.py
-```
-5. Start up the Flask APP
-```bash
-flask run
-```
+5. Go to localhost:5000/docs for interaction with the API
 
 6. Open another terminal. Make a request to the API, but using for instance [HTTPPie](https://httpie.org/):
 ```bash
 http localhost:5000/api query=='your question here'
 ```
-
 

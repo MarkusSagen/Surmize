@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Button from './Button'
+
+
 class Form extends Component {
     state = {
         text: ""
@@ -16,7 +18,6 @@ class Form extends Component {
         }).then(resp => resp.json()).then(data => {
             console.log(data);
         })
-
     }
     handleChange = (e) => {
         this.setState({ text: e.target.value })

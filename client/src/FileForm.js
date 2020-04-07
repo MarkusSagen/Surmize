@@ -11,14 +11,14 @@ class FileForm extends Component {
         let file = this.state.fileToBeSent;
         const formData = new FormData();
         formData.append("file", file);
-        fetch("/uploadfile", {
+        fetch("/upload_train", {
             method: 'post',
             body: formData
         }).then(resp => resp.json()).then(data => {
             console.log(data);
         })
 
-        formData.append("file", file);
+
     }
     fileChange = (e) => {
         this.setState({ fileToBeSent: e.target.files[0] });
