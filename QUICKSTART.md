@@ -11,18 +11,17 @@ git clone https://github.com/MarkusSagen/Surmize/tree/cdQA
 2. Make sure [Java OpenJDK](https://openjdk.java.net/install/) is installed.
 3. Run the setup script:
 ```bash
-sudo chmod +x start.sh
-source ./start.sh
+source start.sh
 ```
 4. Start up the FastAPI APP
 ```bash
-  uvicorn api:app --reload --port 5000
+uvicorn api:app --reload --port 5000
 ```
 
-5. Go to localhost:5000/docs for interaction with the API
-
-6. Open another terminal. Make a request to the API, but using for instance [HTTPPie](https://httpie.org/):
+5. Go to the folder client/ and run in another terminal:
 ```bash
-http localhost:5000/api query=='your question here'
+npm install && npm start
 ```
+
+6. Go to http://localhost:3000 for the clien side of the application
 

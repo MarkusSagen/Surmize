@@ -16,10 +16,7 @@ Summarization and NLP application
   
   
 ### Usage 
-```{bash}
-
-```  
-
+[Instructions on how to try it out on your local machine](QUICKSTART.md)
 
 
 #### Contributers  
