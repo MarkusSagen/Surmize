@@ -8,16 +8,8 @@ class Form extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state.text)
-        fetch("/api", {
-            method: 'post',
-            headers: {
-                "Content-type": 'application/json'
-            },
-            body: JSON.stringify(this.state)
-        }).then(resp => resp.json()).then(data => {
-            console.log(data);
-        })
+        this.props.sendQuestion(this.state);
+
     }
     handleChange = (e) => {
         this.setState({ text: e.target.value })
@@ -27,7 +19,7 @@ class Form extends Component {
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="exampleTextarea">Message Here</label>
-                    <textarea onChange={this.handleChange} className="form-control" id="exampleTextarea" rows="10"></textarea>
+                    <textarea onChange={this.handleChange} className="form-control" id="exampleTextarea" rows="10" defaultValue={this.props.answer}></textarea>
                 </div>
                 <Button type="submit" classN={this.props.classN} text={this.props.text} />
             </form>
