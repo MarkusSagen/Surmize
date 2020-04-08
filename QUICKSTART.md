@@ -16,7 +16,7 @@ source ./start.sh
 ```
 4. Start up the FastAPI APP
 ```bash
-uvicorn api:app --reload --port 5000
+  uvicorn api:app --reload --port 5000
 ```
 
 5. Go to localhost:5000/docs for interaction with the API

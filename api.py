@@ -205,17 +205,20 @@ async def create_upload_file(file: UploadFile = File(...)):
 
 
 @app.post("/upload_train")
-async def save_uploaded_file_tmp(file: UploadFile = File(...)):
+async def save_uploaded_file_tmp(request: Request, file: UploadFile = File(...),):
     """
     Uploads temporary file which is loadied in to the cdQA model as the data
 
     TODO: Add example
     """
+    query = await request.form()
+    tmp = query['tmp']
     TMP_FOLDER = 'tmp'
     file_object = file.file
     TMP_FOLDER = open(os.path.join(TMP_FOLDER, file.filename), 'wb+')
     shutil.copyfileobj(file_object, TMP_FOLDER)
     TMP_FOLDER.close()
     qa.load_data(f'tmp/{file.filename}')
-    os.remove(f'tmp/{file.filename}')
+    if (tmp == 'true'):
+        os.remove(f'tmp/{file.filename}')
     return {"msg": "file read"}

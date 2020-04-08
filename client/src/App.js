@@ -2,16 +2,16 @@ import React from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import Navbar from './Navbar'
-import Form from './Form'
-import FileForm from './FileForm'
+//import Form from './Form'
+//import FileForm from './FileForm'
+import FormHandler from './FormHandler'
 
 function App() {
+
   return (
     <div>
       <Navbar />
-      <Form classN="btn btn-primary" text="Submit Here" />
-      <h1>You can also upload Files</h1>
-      <FileForm />
+      <FormHandler />
     </div>
   );
 }
