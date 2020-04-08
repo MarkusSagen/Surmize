@@ -19,9 +19,10 @@ sudo pip install -r requirements.txt --user
 
 # Install the weights
 # Download the datasets, BNP news data
-python download_utils.py
+python3 download_utils.py
 echo "Downloaded weights and data files..."
-
+mkdir data/tmp
+mkdir data/upload
 
 echo "Done"
 
