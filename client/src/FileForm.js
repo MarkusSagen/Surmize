@@ -5,7 +5,7 @@ import Button from './Button'
 class FileForm extends Component {
     state = {
         fileToBeSent: '',
-        isTemp: false
+        isTemp: true
     }
     handleSubmit = (e) => {
         e.preventDefault();
