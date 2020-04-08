@@ -213,7 +213,7 @@ async def save_uploaded_file_tmp(request: Request, file: UploadFile = File(...),
     """
     query = await request.form()
     tmp = query['tmp']
-    TMP_FOLDER = 'tmp'
+    TMP_FOLDER = 'data/tmp'
     file_object = file.file
     TMP_FOLDER = open(os.path.join(TMP_FOLDER, file.filename), 'wb+')
     shutil.copyfileobj(file_object, TMP_FOLDER)
