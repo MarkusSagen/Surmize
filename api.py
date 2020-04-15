@@ -20,7 +20,7 @@ from typing import Callable, List
 from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
-import summarization.bertabs.run_summarization as summarizer
+#import summarization.bertabs.run_summarization as summarizer
 
 
 

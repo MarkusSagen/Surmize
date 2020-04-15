@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Dialoge from './Dialogue'
+//import Dialogue from './Dialogue'
 import QuestionForm from './QuestionForm'
 import Sidebar from './Sidebar'
 import Summary from './Summary'
@@ -17,7 +17,7 @@ class FileManager extends Component {
                     <div className="col-md-9">
                         <Summary />
                         <QuestionForm />
-                        <Dialoge />
+                        
                     </div>
                 </div>
             </div>

@@ -4,6 +4,16 @@ class Dialogue extends Component {
     state = {
         dialogue: []
     }
+    newAnswer = (question, answer) => {
+        this.setState({
+            "dialogue": this.dialogue.append(
+                {
+                    "question": question,
+                    "answer": answer
+                }
+            )
+        })
+    }
     render() {
         return (
             <div>
