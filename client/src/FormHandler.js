@@ -6,7 +6,8 @@ class FormHandler extends Component {
 
     state = {
         isFetching: false,
-        answer: ''
+        answer: '',
+        summarization: ''
     }
     handleQuestion = (text) => {
         this.changeState()
@@ -33,7 +34,10 @@ class FormHandler extends Component {
             method: 'post',
             body: file
         }).then(resp => resp.json()).then(data => {
-            this.changeState()
+            this.setState({
+                isFetching: false,
+                summarization: data.sum
+            })
             console.log(data);
         })
 
@@ -45,6 +49,9 @@ class FormHandler extends Component {
     render() {
         const fetching = this.state.isFetching
         const comps = <div>
+            <p>
+                {this.state.summarization}
+            </p>
             <Form classN="btn btn-primary" answer={this.state.answer} text="Submit Here" sendQuestion={this.handleQuestion} />
             <h1>You can also upload Files</h1>
             <FileForm sendFile={this.handleFileUpload} />
@@ -52,6 +59,7 @@ class FormHandler extends Component {
         const res = (!fetching ? comps : <h1>fetching</h1>)
         return (
             <div>
+
                 {res}
 
             </div>

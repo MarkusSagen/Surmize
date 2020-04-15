@@ -1,0 +1,24 @@
+.add-file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.add-file button {
+    border-radius: 50%;
+}
+
+.remove-files {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.list-group li {
+    display: flex;
+    justify-content: space-between;
+}
+.files {
+    height: 100%;
+    position: sticky;
+    top:0;
+}
+

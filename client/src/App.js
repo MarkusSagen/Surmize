@@ -4,14 +4,15 @@ import './App.css';
 import Navbar from './Navbar'
 //import Form from './Form'
 //import FileForm from './FileForm'
-import FormHandler from './FormHandler'
-
+//import FormHandler from './FormHandler'
+//import Sidebar from './Sidebar'
+import FileManager from './FileManager'
 function App() {
 
   return (
     <div>
       <Navbar />
-      <FormHandler />
+      <FileManager />
     </div>
   );
 }

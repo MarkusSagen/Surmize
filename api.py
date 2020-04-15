@@ -1,32 +1,36 @@
 __authors__ = "Markus Sagen, Sebastian Rollino, Nils Hedberg, Alexander Bergkvist"
-
-
-from fastapi import FastAPI, File, Query, Form, UploadFile, Request, HTTPException
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
+import sys
+sys.path.append(
+    "/Users/FamiliaRoSub/Desktop/Kandidat/Surmize/summarization/bertabs")
 import uvicorn
-
-# For defining typeChecking and defining your own type checking
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi import FastAPI, File, Query, Form, UploadFile, Request, HTTPException
 from pydantic import Required, BaseModel
 from enum import Enum
 import json
-
-# For processing datalist and pdfs
 from ast import literal_eval
 import pandas as pd
 import numpy as np  # RM
-
-# For uploading files
 import os
 import shutil
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Callable, List
-
-# The NLP QA model
 from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
+import summarization.bertabs.run_summarization as summarizer
+
+
+
+# For defining typeChecking and defining your own type checking
+
+# For processing datalist and pdfs
+
+# For uploading files
+
+# The NLP QA model
 
 
 # model = QA()
@@ -214,11 +218,25 @@ async def save_uploaded_file_tmp(request: Request, file: UploadFile = File(...),
     query = await request.form()
     tmp = query['tmp']
     TMP_FOLDER = 'data/tmp'
+    STORY_FOLDER = "data/stories"
+    SUM_FOLDER = "summarization/bertabs/Summaries"
     file_object = file.file
     TMP_FOLDER = open(os.path.join(TMP_FOLDER, file.filename), 'wb+')
+    #STORY_FOLDER = open(os.path.join(STORY_FOLDER, file.filename), 'wb+')
     shutil.copyfileobj(file_object, TMP_FOLDER)
+    shutil.copy(f'./data/tmp/{file.filename}','./data/stories')
     TMP_FOLDER.close()
-    qa.load_data(f'tmp/{file.filename}')
-    if (tmp == 'true'):
-        os.remove(f'tmp/{file.filename}')
-    return {"msg": "file read"}
+    #STORY_FOLDER.close()
+    qa.load_data(f'data/tmp/{file.filename}')
+    summarizer.main("data/tmp", SUM_FOLDER, 5, 0.95, 80, 200)
+    arr = file.filename.split('.')
+    fname = arr[0]+'_summary.'+arr[1]
+    f = open(f'{SUM_FOLDER}/{fname}', 'r')
+    if f.mode == 'r':
+        contents = f.read()
+        f.close()
+        if (tmp == 'true'):
+            os.remove(f'data/tmp/{file.filename}')
+        return {"msg": "file read",
+                "sum": f'{contents}'
+               }
