@@ -11,8 +11,8 @@ from cdqa.pipeline import QAPipeline
 
 
 trained_weights = './models/bert_qa.joblib'
-pdf_directory = "./data/pdf"
-csv_file = "./data/bnpp_newsroom_v1.1/bnpp_newsroom-v1.1.csv"
+pdf_directory = "./data/examples/pdf"
+csv_file = "./data/examples/bnpp_newsroom_v1.1/bnpp_newsroom-v1.1.csv"
 csv_filename = "bnpp_newsroom-v1.1.csv"
 
 class QA:
