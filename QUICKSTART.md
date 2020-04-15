@@ -1,28 +1,23 @@
 # Quick Installation Steps
 These instructions are related to how to get the server up an runnning and the NLP model configured
 
-  Step 4 is optional
-
 
 1. clone this repo:
 ```bash
-git clone https://github.com/MarkusSagen/Surmize/tree/cdQA
+git clone https://github.com/MarkusSagen/Surmize.git
 ```
 2. Make sure [Java OpenJDK](https://openjdk.java.net/install/) is installed.
 3. Run the setup script:
 ```bash
-sudo chmod +x start.sh
-source ./start.sh
+source start.sh
 ```
-4. Start up the FastAPI APP
+4. Start up the FastAPI APP by running in a terminal
 ```bash
-  uvicorn api:app --reload --port 5000
+uvicorn api:app --reload --port 5000
 ```
-
-5. Go to localhost:5000/docs for interaction with the API
-
-6. Open another terminal. Make a request to the API, but using for instance [HTTPPie](https://httpie.org/):
+1. Open another terminal and navigate to the folder Surmize/client/ and run:
 ```bash
-http localhost:5000/api query=='your question here'
+npm install && npm start
 ```
+6. Go to the address [http://localhost:3000](http://localhost:3000) in a browser
 

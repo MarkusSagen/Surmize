@@ -7,22 +7,17 @@
 #     Run the module                          #
 #                                             #
 ###############################################
-
-# Update Anaconda
-#conda update -n base -c defaults conda
-#conda create --name venv python=3.7
-#conda activate venv
-
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
 # Create and activate virtual enviroment
 # sudo pip install -e .
-sudo pip install -r requirements.txt --user
+sudo pip install -r requirements.txt --user && echo "${green}Installed dependencies${reset}" || echo "${red}Failed to install dependencies${reset}" 
 
 # Install the weights
 # Download the datasets, BNP news data
-python download_utils.py
-echo "Downloaded weights and data files..."
-
-
-echo "Done"
+mkdir data/uploaded data/pendind data/examples && echo "${green}Successfully created data folders${reset}" 
+python3 download_utils.py && echo "${green}Downloaded weights and data${reset}" || echo "${red}Failed to download required weights and data${reset}" 
+echo "Done!"
 
 

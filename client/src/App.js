@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import Navbar from './Navbar'
@@ -6,14 +6,38 @@ import Navbar from './Navbar'
 //import FileForm from './FileForm'
 import FormHandler from './FormHandler'
 
-function App() {
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {isAuthed: false, user: null}
+  };
 
-  return (
-    <div>
-      <Navbar />
-      <FormHandler />
-    </div>
-  );
+  componentDidMount() {
+    //this.changeState()
+    fetch("/token", {
+        method: 'get',
+        headers: {
+            "Content-type": 'application/json'
+        }
+    }).then(resp => resp.json()).then(data => {
+        this.setState({
+          isAuthed: true, 
+          user: data["token"]
+        })
+
+    })
+  }
+
+  render(){
+    return (
+      <div>
+        <Navbar />
+        <FormHandler 
+          isAuthed={this.state.isAuthed} 
+          user={this.state.user} />
+      </div>
+    );
+  }
 }
 
 export default App;
