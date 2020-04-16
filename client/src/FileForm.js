@@ -7,17 +7,60 @@ class FileForm extends Component {
         fileToBeSent: '',
         isTemp: true
     }
+    getFileExtention = (file) => {
+        let s = String(file.name).split(".")
+        let fileExtention = s[s.length-1]
+        return fileExtention
+    }
+    checkAllowedFiles = (file) => {
+        let allowedTypes = ["txt", "csv", "pdf", "story"];
+        let hasPassed = true;
+        let err = '';
+        console.log(file)
+        if (file === "") { 
+            hasPassed = false;
+            err = "Please select a valid file to upload\n";
+        }
+        else if (allowedTypes.every(type => this.getFileExtention(file) !== type)) {
+            hasPassed = false;
+            err = 'Only the fileformats .txt, .csv and .pdf are allowed\n';
+        } 
+        // TODO: Make better more like react
+        if (err !== '') {
+            console.error(err)
+        }
+        return hasPassed
+    } 
+    MBToBits = (data) => { return data*(1000*1024); }
+    checkAllowedSize = (file) => {
+        let MAX_SIZE_MB = 10; // Can be change to another value
+        var sum = 0;
+        var hasPassed = true;
+        var err = '';
+        
+        sum += file.size
+        if (sum > this.MBToBits(MAX_SIZE_MB)) {
+            hasPassed = false;
+            err = 'Files are exeding combined limit of '+MAX_SIZE_MB+'MB \n';
+            // TODO: Give better alert messages - More in React way
+            console.error(err);
+        }
+        return hasPassed
+    }
+
+
+
     handleSubmit = (e) => {
         e.preventDefault();
         let file = this.state.fileToBeSent;
         const formData = new FormData();
-        formData.append("file", file);
-        const tmp = this.state.isTemp;
-        formData.append("tmp", tmp)
-        this.props.sendFile('upload_train', formData)
 
-
-
+        if (this.checkAllowedFiles(file) && this.checkAllowedSize(file)){
+            formData.append("file", file);
+            const tmp = this.state.isTemp;
+            formData.append("tmp", tmp)
+            this.props.sendFile('upload_train', formData)
+        }
     }
     fileChange = (e) => {
         this.setState({ fileToBeSent: e.target.files[0] });
