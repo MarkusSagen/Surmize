@@ -28,7 +28,7 @@ class FileManager extends Component {
         })
 
     }
-    handleQuestion = (text) => {
+    handleQuestion = (text, fn) => {
         this.setState({
             handleQuestion: true
         })
@@ -48,6 +48,7 @@ class FileManager extends Component {
                     this.setState({
                         handlingQuestion: false,
                     })
+                    fn(text, data.answer)
                 })
         }
     }
@@ -62,7 +63,7 @@ class FileManager extends Component {
                 },
                 body: JSON.stringify(file)
             }).then(resp => resp.json()).then(data => {
-                this.setState({ summary: [f[0], data.content] });
+                this.setState({ summary: [f[0], data.sum] });
             })
     }
 

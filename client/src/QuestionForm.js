@@ -4,7 +4,8 @@ class QuestionForm extends Component {
     state = {
         question: "",
         dialogue: [],
-        fetching: false
+        fetching: false,
+        text: ""
     }
     fetching = () => {
         this.setState({
@@ -21,7 +22,9 @@ class QuestionForm extends Component {
     }
     sendQuestion = (e) => {
         e.preventDefault();
-        this.props.sendQuestion(this.state.text);
+        this.props.sendQuestion(this.state.text, this.newAnswer);
+
+
         /*  this.fetching()
 
         // Deep copy question string for safety
@@ -58,7 +61,7 @@ class QuestionForm extends Component {
             const questionBox = <form onSubmit={this.sendQuestion} action="" className="my-3">
                 <div className="form-group">
                     <label htmlFor="question">Question</label>
-                    <input onChange={this.handleChange} type="text" value={this.state.text} className="form-control" id="question" aria-describedby="questionHelp"
+                    <input onChange={this.handleChange} type="text" className="form-control" id="question" aria-describedby="questionHelp"
                         placeholder="Enter question" />
                     <small id="questionHelp" className="form-text text-muted">Write your question here, please try to be
                     as
@@ -67,12 +70,13 @@ class QuestionForm extends Component {
                 <button className="btn-success p-2">Send question</button>
             </form>
             const answers = []
-            for (var i = 0; i < this.state.dialogue.length; i++) {
+            const dialogue = this.state.dialogue.reverse()
+            for (var i = 0; i < dialogue.length; i++) {
                 answers.push(
                     <div className="list-group my-3">
                         <span className="list-group-item list-group-item-action flex-column align-items-start active">
                             <div className="d-flex w-100 justify-content-between">
-                                <h5 className="mb-1">Question: {this.state.dialogue[i].question}</h5>
+                                <h5 className="mb-1">Question: {dialogue[i].question}</h5>
                                 <small>3 days ago</small>
                             </div>
                         </span>
@@ -80,7 +84,7 @@ class QuestionForm extends Component {
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">Answer:</h5>
                             </div>
-                            <p className="mb-1">{this.state.dialogue[i].answer}</p>
+                            <p className="mb-1">{dialogue[i].answer}</p>
                         </span>
                     </div>
                 )

@@ -1,7 +1,7 @@
 __authors__ = "Markus Sagen, Sebastian Rollino, Nils Hedberg, Alexander Bergkvist"
 import sys
 sys.path.append(
-    "/home/alex/Desktop/IT/Surmize/summarization/bertabs")
+    "/Users/FamiliaRoSub/Desktop/Kandidat/Surmize/summarization/bertabs")
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -203,35 +203,9 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     # Please note that data/uploaded/{user}/summary and data/uploaded/{user}/text are created above, (line 181-183)
     # this must be done before this section is run!
 
-    USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
-    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
-    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
-    COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
-
-    os.makedirs(TMP_SPLIT_DATA_FOLDER)
-    os.makedirs(TMP_SPLIT_SUMMARY)
-
-
-    #clean_directories([TMP_SPLIT_DATA_FOLDER,TMP_SPLIT_SUMMARY]) #No longer necessary if we remove all folders?
-    files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
-
-    #Run summarizer
-    summarizer.main(TMP_SPLIT_DATA_FOLDER, TMP_SPLIT_SUMMARY, 8, 0.75, 50, 200)
-
-    sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files)
-
-    #Gather and send back summaries
-    summaries = []
-    for name in name_of_files:
-        with open(COMPLETE_SUMMARY + name.split(".")[0] + "_summary.txt", 'r') as f:
-            if f.mode == 'r':
-                summaries.append(f.read())
-
-    shutil.rmtree(f'data/pending/{user}')
     ##################################################
 
-    return {"msg": "file successfully read", "files": [f.filename for f in file],
-            "sum": ("#"*60).join(summaries)}
+    return {"msg": "file successfully read", "files": [f.filename for f in file]}
 
 
 @app.get("/token")
@@ -261,12 +235,29 @@ async def send_files(request:Request):
 async def show_file(request:Request):
     data= await request.json()
     user = data['user']
-    f= data['file']
-    f = open(f'data/uploaded/{user}/text/{f[0]}', 'r')
-    if f.mode == 'r':
-        contents = f.read()
-        f.close()
-        print(contents)
-        return {"content":contents}
-    return {"msg":"HMMM"}
+    USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
+    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
+    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
+    COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
+
+    os.makedirs(TMP_SPLIT_DATA_FOLDER)
+    os.makedirs(TMP_SPLIT_SUMMARY)
+    files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
+
+    #Run summarizer
+    summarizer.main(TMP_SPLIT_DATA_FOLDER, TMP_SPLIT_SUMMARY, 8, 0.75, 50, 200)
+
+    sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files)
+
+    #Gather and send back summaries
+    summaries = []
+    for name in name_of_files:
+        with open(COMPLETE_SUMMARY + name.split(".")[0] + "_summary.txt", 'r') as f:
+            if f.mode == 'r':
+                summaries.append(f.read())
+
+    shutil.rmtree(f'data/pending/{user}')
+
+    return {"sum": ("#"*60).join(summaries)}
+    
 
