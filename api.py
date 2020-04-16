@@ -32,8 +32,10 @@ import summarization.bertabs.run_summarization as summarizer
 
 # The NLP QA model
 
+# Set user id
+from uuid import UUID, uuid4
+import base64
 
-# model = QA()
 
 """ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx', 'csv'}
@@ -119,7 +121,7 @@ async def ask_question(request: Request):
     """
     query = await request.json()
     question = query["text"]
-    print(question)
+    user = request.headers["authorization"]
     return await QA_predict_to_json(question=question)
 
 
@@ -153,90 +155,45 @@ async def ask_question_directly(question: str):
     --------
     >>> curl -X POST "http://localhost:5000/api?question=What%20is%20Paribas%20Partners%20earnings%3F" -H  "accept: application/json"
     """
-
     return await QA_predict_to_json(question=question)
 
 
-# TODO: Add interaction with React / client-side
-# TODO: Add so users can set folder for pdfs
-@app.post("/upload_temp")
-async def save_upload_file_tmp(upload_file: UploadFile = File(...)):
-    """
-    Uploads temporary file which is loadied in to the cdQA model as the data
-
-    TODO: Add example
-    """
-    try:
-        suffix = Path(upload_file.filename).suffix
-        with NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            shutil.copyfileobj(upload_file.file, tmp)
-            tmp_path = Path(tmp.name)
-    finally:
-        upload_file.file.close()
-
-    qa.load_data(tmp_path)
-
-    return tmp_path
 
 
-# TODO: Add to pass files similar to "save_upload_file_tmp" for storage
-# TODO: Add so users can set folder for pdfs
-""" @app.post("/upload_persistant")
-def save_upload_file(upload_file: UploadFile = File(...), destination: Path = "data/"):
-
-    Uploads files to persistant storage location
-
-    TODO: Add examples
-    TODO: Only uploads one file now, needs aditional logic
-
-    try:
-        with destination.open("wb") as buffer:
-            shutil.copyfileobj(upload_file.file, buffer)
-    finally:
-        upload_file.file.close()
- """
-
-
-@app.post("/uploadfile")
-async def create_upload_file(file: UploadFile = File(...)):
-    UPLOAD_FOLDER = 'uploads'
-    file_object = file.file
-    # create empty file to copy the file_object to
-    UPLOAD_FOLDER = open(os.path.join(UPLOAD_FOLDER, file.filename), 'wb+')
-    shutil.copyfileobj(file_object, UPLOAD_FOLDER)
-    UPLOAD_FOLDER.close()
-    return {"msg": "File uploaded"}
-
-
+# TODO: Allow saving multiple files on storage, works sometimes, so probably wrong way right now
+# TODO: Add examples of how to use this function
 @app.post("/upload_train")
-async def save_uploaded_file_tmp(request: Request, file: UploadFile = File(...),):
+async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     """
     Uploads temporary file which is loadied in to the cdQA model as the data
 
     TODO: Add example
     """
-    query = await request.form()
-    tmp = query['tmp']
-    TMP_FOLDER = 'data/tmp'
-    STORY_FOLDER = "data/stories"
-    SUM_FOLDER = "summarization/bertabs/Summaries"
-    file_object = file.file
-    TMP_FOLDER = open(os.path.join(TMP_FOLDER, file.filename), 'wb+')
-    #STORY_FOLDER = open(os.path.join(STORY_FOLDER, file.filename), 'wb+')
-    shutil.copyfileobj(file_object, TMP_FOLDER)
-    shutil.copy(f'./data/tmp/{file.filename}','./data/stories')
-    TMP_FOLDER.close()
-    #STORY_FOLDER.close()
-    qa.load_data(f'data/tmp/{file.filename}')
-    summarizer.main("data/tmp", SUM_FOLDER, 5, 0.95, 80, 200)
-    arr = file.filename.split('.')
-    fname = arr[0]+'_summary.'+arr[1]
-    f = open(f'{SUM_FOLDER}/{fname}', 'r')
-    if f.mode == 'r':
-        contents = f.read()
-        f.close()
-        if (tmp == 'true'):
-            os.remove(f'data/tmp/{file.filename}')
-        return {"msg": "file read",
-                "sum": f'{contents}'
-               }
+    #query = await request.form()
+    user = request.headers["authorization"]
+    upload_folder = f'data/uploaded/{user}'
+
+    # Create folder to upload to
+    if not os.path.exists(upload_folder) and user != 'null':
+        os.makedirs(upload_folder)
+
+    for f in file:
+        file_object = f.file
+        file_name = f.filename
+        UPLOAD_FOLDER = open(os.path.join(upload_folder, file_name), 'wb+')
+        shutil.copyfileobj(file_object, UPLOAD_FOLDER)
+        UPLOAD_FOLDER.close()
+        file_path = f"{upload_folder}/{file_name}" 
+        qa.load_data(filepath=file_path, filename=file_name, path=upload_folder)
+        print(upload_folder)
+
+    return {"msg": "file successfully read", "files": [f.filename for f in file]}
+
+
+@app.get("/token")
+def get_token(request: Request):
+    token = str(uuid4())
+    # URL and Filename Safe Base64 Encoding
+    urlSafeEncodedBytes = base64.urlsafe_b64encode(token.encode("utf-8"))
+    safeToken = str(urlSafeEncodedBytes, "utf-8")
+    return {"token": safeToken}

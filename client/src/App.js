@@ -1,20 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import Navbar from './Navbar'
 //import Form from './Form'
 //import FileForm from './FileForm'
-//import FormHandler from './FormHandler'
-//import Sidebar from './Sidebar'
-import FileManager from './FileManager'
-function App() {
+import FormHandler from './FormHandler'
 
-  return (
-    <div>
-      <Navbar />
-      <FileManager />
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+    this.state = { isAuthed: false, user: null }
+  };
+
+  componentDidMount() {
+    //this.changeState()
+    fetch("/token", {
+      method: 'get',
+      headers: {
+        "Content-type": 'application/json'
+      }
+    }).then(resp => resp.json()).then(data => {
+      this.setState({
+        isAuthed: true,
+        user: data["token"]
+      })
+
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <FormHandler
+          isAuthed={this.state.isAuthed}
+          user={this.state.user} />
+      </div>
+    );
+  }
 }
 
 export default App;

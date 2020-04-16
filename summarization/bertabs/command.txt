@@ -1,0 +1,1 @@
+python3 run_summarization.py --documents_dir /home/alex/Desktop/IT/Kand/transformers/examples/summarization/bertabs/Stories/ --summaries_output_dir /home/alex/Desktop/IT/Kand/transformers/examples/summarization/bertabs/Summaries/ --no_cuda false --batch_size 1 --min_length 100 --beam_size 5 --alpha 0.95 --block_trigram true --compute_rouge true
