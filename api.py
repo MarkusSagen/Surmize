@@ -21,9 +21,7 @@ from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
 import summarization.bertabs.run_summarization as summarizer
-import ntpath
 import glob
-
 
 
 # For defining typeChecking and defining your own type checking
@@ -123,9 +121,13 @@ async def ask_question(request: Request):
     Example:
     >>> curl -X POST http://localhost:5000/api -d '{"text": "Hello World"}' -H "Accept: application/json" -H "Content-type: application/json"
     """
+    print("IM HERE")
     query = await request.json()
     question = query["text"]
-    user = request.headers["authorization"]
+    print(question)
+    
+    # Add support for authorization in QA frontend
+    #user = request.headers["authorization"]
     return await QA_predict_to_json(question=question)
 
 

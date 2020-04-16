@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Dialoge from './Dialogue'
+//import Dialogue from './Dialogue'
 import QuestionForm from './QuestionForm'
 import Sidebar from './Sidebar'
 import Summary from './Summary'
@@ -32,6 +32,7 @@ class FileManager extends Component {
         this.setState({
             handleQuestion: true
         })
+        const t = { text: text }
         if (this.props.isAuthed) {
             fetch("/api", {
                 method: 'post',
@@ -39,7 +40,7 @@ class FileManager extends Component {
                     "Content-type": 'application/json',
                     "Authorization": this.props.user
                 },
-                body: JSON.stringify(text)
+                body: JSON.stringify(t)
             })
                 .then(resp => resp.json())
                 .then(data => {
@@ -74,8 +75,7 @@ class FileManager extends Component {
                     </div>
                     <div className="col-md-9">
                         <Summary summary={this.state.summary} />
-                        <QuestionForm sendquestion={this.handleQuestion} />
-                        <Dialoge />
+                        <QuestionForm sendQuestion={this.handleQuestion} />
                     </div>
                 </div>
             </div>
