@@ -1,7 +1,7 @@
 __authors__ = "Markus Sagen, Sebastian Rollino, Nils Hedberg, Alexander Bergkvist"
 import sys
 sys.path.append(
-    "/Users/FamiliaRoSub/Desktop/Kandidat/Surmize/summarization/bertabs")
+    "/home/alex/Desktop/IT/Surmize/summarization/bertabs")
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -21,8 +21,9 @@ from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
 import summarization.bertabs.run_summarization as summarizer
-import ntpath
-import glob
+from summarization.bertabs.Utility.clean_directories import clean_directories
+from summarization.bertabs.Utility.sum_joiner import sum_joiner
+from summarization.bertabs.Utility.text_splitter import text_splitter
 
 
 
@@ -74,9 +75,7 @@ app.add_middleware(
 
 upload_folder = "data/"
 
-def path_leaf(path):
-    head, tail = ntpath.split(path)
-    return tail or ntpath.basename(head)
+
 # Empty request exception
 class EmptyException(Exception):
     def __init__(self, query: str):
@@ -173,13 +172,15 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
 
     TODO: Add example
     """
-    #query = await request.form()
+    query = await request.form()
     user = request.headers["authorization"]
-    upload_folder = f'data/uploaded/{user}/text'
+    upload_folder = f'data/uploaded/{user}/text/'
+    summary_folder = f'data/uploaded/{user}/summary/'
 
     # Create folder to upload to
     if not os.path.exists(upload_folder) and user != 'null':
         os.makedirs(upload_folder)
+        os.makedirs(summary_folder)
 
     for f in file:
         file_object = f.file
@@ -187,11 +188,44 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         UPLOAD_FOLDER = open(os.path.join(upload_folder, file_name), 'wb+')
         shutil.copyfileobj(file_object, UPLOAD_FOLDER)
         UPLOAD_FOLDER.close()
-        file_path = f"{upload_folder}/{file_name}" 
+        file_path = f"{upload_folder}/{file_name}"
         qa.load_data(filepath=file_path, filename=file_name, path=upload_folder)
         print(upload_folder)
 
-    return {"msg": "file successfully read", "files": [f.filename for f in file]}
+
+    ################################################## Summariser
+    # Please note that data/uploaded/{user}/summary and data/uploaded/{user}/text are created above, (line 181-183)
+    # this must be done before this section is run!
+
+    USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
+    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
+    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
+    COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
+
+    os.makedirs(TMP_SPLIT_DATA_FOLDER)
+    os.makedirs(TMP_SPLIT_SUMMARY)
+
+
+    #clean_directories([TMP_SPLIT_DATA_FOLDER,TMP_SPLIT_SUMMARY]) #No longer necessary if we remove all folders?
+    files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
+
+    #Run summarizer
+    summarizer.main(TMP_SPLIT_DATA_FOLDER, TMP_SPLIT_SUMMARY, 8, 0.75, 50, 200)
+
+    sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files)
+
+    #Gather and send back summaries
+    summaries = []
+    for name in name_of_files:
+        with open(COMPLETE_SUMMARY + name.split(".")[0] + "_summary.txt", 'r') as f:
+            if f.mode == 'r':
+                summaries.append(f.read())
+
+    shutil.rmtree(f'data/pending/{user}')
+    ##################################################
+
+    return {"msg": "file successfully read", "files": [f.filename for f in file],
+            "sum": ("#"*60).join(summaries)}
 
 
 @app.get("/token")
@@ -202,29 +236,7 @@ def get_token(request: Request):
     safeToken = str(urlSafeEncodedBytes, "utf-8")
     return {"token": safeToken}
 
-@app.post("/getfiles")
-async def send_files(request:Request):
-    data = await request.json()
-    user = data['user']
-    files = glob.glob(f'data/uploaded/{user}/text/*.txt')
-    uploaded_files= []
-    for f in files:
-        path= f.split("/")
-        f= path[len(path) -1]
-        uploaded_files.append(f)
-    print(uploaded_files)
-    
-    return {"files":uploaded_files}
 
-@app.post("/show_file")
-async def show_file(request:Request):
-    data= await request.json()
-    user = data['user']
-    f= data['file']
-    f = open(f'data/uploaded/{user}/text/{f[0]}', 'r')
-    if f.mode == 'r':
-        contents = f.read()
-        f.close()
-        print(contents)
-        return {"content":contents}
-    return {"msg":"HMMM"}
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
