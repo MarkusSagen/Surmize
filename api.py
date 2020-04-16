@@ -21,9 +21,11 @@ from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
 import summarization.bertabs.run_summarization as summarizer
+
 from summarization.bertabs.Utility.clean_directories import clean_directories
 from summarization.bertabs.Utility.sum_joiner import sum_joiner
 from summarization.bertabs.Utility.text_splitter import text_splitter
+import glob
 
 
 
@@ -122,9 +124,13 @@ async def ask_question(request: Request):
     Example:
     >>> curl -X POST http://localhost:5000/api -d '{"text": "Hello World"}' -H "Accept: application/json" -H "Content-type: application/json"
     """
+    print("IM HERE")
     query = await request.json()
     question = query["text"]
-    user = request.headers["authorization"]
+    print(question)
+    
+    # Add support for authorization in QA frontend
+    #user = request.headers["authorization"]
     return await QA_predict_to_json(question=question)
 
 
@@ -237,6 +243,30 @@ def get_token(request: Request):
     return {"token": safeToken}
 
 
-#########################################################################################################
-#########################################################################################################
-#########################################################################################################
+@app.post("/getfiles")
+async def send_files(request:Request):
+    data = await request.json()
+    user = data['user']
+    files = glob.glob(f'data/uploaded/{user}/text/*.txt')
+    uploaded_files= []
+    for f in files:
+        path= f.split("/")
+        f= path[len(path) -1]
+        uploaded_files.append(f)
+    print(uploaded_files)
+    
+    return {"files":uploaded_files}
+
+@app.post("/show_file")
+async def show_file(request:Request):
+    data= await request.json()
+    user = data['user']
+    f= data['file']
+    f = open(f'data/uploaded/{user}/text/{f[0]}', 'r')
+    if f.mode == 'r':
+        contents = f.read()
+        f.close()
+        print(contents)
+        return {"content":contents}
+    return {"msg":"HMMM"}
+
