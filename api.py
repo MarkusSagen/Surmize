@@ -21,6 +21,8 @@ from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
 import summarization.bertabs.run_summarization as summarizer
+import ntpath
+import glob
 
 
 
@@ -72,7 +74,9 @@ app.add_middleware(
 
 upload_folder = "data/"
 
-
+def path_leaf(path):
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
 # Empty request exception
 class EmptyException(Exception):
     def __init__(self, query: str):
@@ -171,7 +175,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     """
     #query = await request.form()
     user = request.headers["authorization"]
-    upload_folder = f'data/uploaded/{user}'
+    upload_folder = f'data/uploaded/{user}/text'
 
     # Create folder to upload to
     if not os.path.exists(upload_folder) and user != 'null':
@@ -197,3 +201,30 @@ def get_token(request: Request):
     urlSafeEncodedBytes = base64.urlsafe_b64encode(token.encode("utf-8"))
     safeToken = str(urlSafeEncodedBytes, "utf-8")
     return {"token": safeToken}
+
+@app.post("/getfiles")
+async def send_files(request:Request):
+    data = await request.json()
+    user = data['user']
+    files = glob.glob(f'data/uploaded/{user}/text/*.txt')
+    uploaded_files= []
+    for f in files:
+        path= f.split("/")
+        f= path[len(path) -1]
+        uploaded_files.append(f)
+    print(uploaded_files)
+    
+    return {"files":uploaded_files}
+
+@app.post("/show_file")
+async def show_file(request:Request):
+    data= await request.json()
+    user = data['user']
+    f= data['file']
+    f = open(f'data/uploaded/{user}/text/{f[0]}', 'r')
+    if f.mode == 'r':
+        contents = f.read()
+        f.close()
+        print(contents)
+        return {"content":contents}
+    return {"msg":"HMMM"}

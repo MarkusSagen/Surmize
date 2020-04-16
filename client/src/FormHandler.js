@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Form from './Form'
+//import Form from './Form'
 import FileForm from './FileForm'
 
 
@@ -35,7 +35,6 @@ class FormHandler extends Component {
     }
     handleFileUpload = (url, file) => {
         this.changeState()
-        console.log("user: ", this.props.user)
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -46,6 +45,7 @@ class FormHandler extends Component {
             }).then(resp => resp.json()).then(data => {
                 this.changeState()
                 console.log(data);
+                this.props.history.push(`/files/${this.props.user}`);
             })
         }
     }

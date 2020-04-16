@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class Dialogue extends Component {
     state = {
-        dialogue: []
+        dialogue: this.props.dialoge
     }
     render() {
         return (
