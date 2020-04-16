@@ -121,7 +121,8 @@ async def ask_question(request: Request):
     """
     query = await request.json()
     question = query["query"]
-    #user = request.headers["authorization"]
+    # Add support for authorization in QA frontend
+    user = request.headers["authorization"]
     return await QA_predict_to_json(question=question)
 
 
