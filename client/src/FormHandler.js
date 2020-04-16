@@ -2,45 +2,52 @@ import React, { Component } from 'react'
 import Form from './Form'
 import FileForm from './FileForm'
 
-class FormHandler extends Component {
 
-    state = {
-        isFetching: false,
-        answer: '',
-        summarization: ''
+
+class FormHandler extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            isFetching: false,
+            answer: ''
+        }
     }
     handleQuestion = (text) => {
         this.changeState()
-        fetch("/api", {
-            method: 'post',
-            headers: {
-                "Content-type": 'application/json'
-            },
-            body: JSON.stringify(text)
-        }).then(resp => resp.json()).then(data => {
-
-            console.log(data);
-            this.setState({
-                isFetching: false,
-                answer: data.answer
+        if (this.props.isAuthed) {
+            fetch("/api", {
+                method: 'post',
+                headers: {
+                    "Content-type": 'application/json', 
+                    "Authorization": this.props.user
+                },
+                body: JSON.stringify(text)
             })
-
-        })
-
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                this.setState({
+                    isFetching: false,
+                    answer: data.answer
+                })
+            })
+        }
     }
     handleFileUpload = (url, file) => {
         this.changeState()
-        fetch(`/${url}`, {
-            method: 'post',
-            body: file
-        }).then(resp => resp.json()).then(data => {
-            this.setState({
-                isFetching: false,
-                summarization: data.sum
+        console.log("user: ", this.props.user)
+        if (this.props.isAuthed) {
+            fetch(`/${url}`, {
+                method: 'post',
+                headers: {
+                    "Authorization": this.props.user
+                },
+                body: file
+            }).then(resp => resp.json()).then(data => {
+                this.changeState()
+                console.log(data);
             })
-            console.log(data);
-        })
-
+        }
     }
     changeState = () => {
         this.setState({ isFetching: !this.state.isFetching })

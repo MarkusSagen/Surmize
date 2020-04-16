@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import Navbar from './Navbar'
@@ -7,14 +7,38 @@ import Navbar from './Navbar'
 //import FormHandler from './FormHandler'
 //import Sidebar from './Sidebar'
 import FileManager from './FileManager'
-function App() {
+import FormHandler from './FormHandler'
 
-  return (
-    <div>
-      <Navbar />
-      <FileManager />
-    </div>
-  );
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {isAuthed: false, user: null}
+  };
+
+  componentDidMount() {
+    //this.changeState()
+    fetch("/token", {
+        method: 'get',
+        headers: {
+            "Content-type": 'application/json'
+        }
+    }).then(resp => resp.json()).then(data => {
+        this.setState({
+          isAuthed: true, 
+          user: data["token"]
+        })
+
+    })
+  }
+
+  render(){
+    return (
+      <div>
+        <Navbar />
+        <FileManager />
+      </div>
+    );
+  }
 }
 
 export default App;
