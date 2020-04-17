@@ -1,0 +1,18 @@
+
+
+****** ROUGE SCORES ******
+
+** ROUGE 1
+F1        >> 0.136
+Precision >> 0.139
+Recall    >> 0.133
+
+** ROUGE 2
+F1        >> 0.083
+Precision >> 0.083
+Recall    >> 0.083
+
+** ROUGE L
+F1        >> 0.153
+Precision >> 0.156
+Recall    >> 0.150
