@@ -6,7 +6,7 @@ import Navbar from './Navbar'
 //import FileForm from './FileForm'
 import FormHandler from './FormHandler'
 import FileManager from './FileManager';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 
 class App extends Component {
@@ -14,23 +14,15 @@ class App extends Component {
     super();
     this.state = { isAuthed: false, user: null }
   };
-  setupOnUnloadListener = () => {
-    let user = this.state.user;
-    window.addEventListener('unload', function (event) {
-      //console.log(this.state);
-
-      fetch("/remove", {
-        method: 'delete',
-        headers: {
-          "Content-type": 'application/json',
-          "Authorization": user
-        },
-        body: { "delete": "yes" }
-      })
-        .then(resp => resp.json());
-
-
-      console.log('I am the 3rd one.');
+  setupOnUnloadListener = (user) => {
+    const u = { user: user }
+    console.log("OUTSIDE")
+    window.addEventListener('unload', function (e) {
+      let headers = {
+        type: 'application/json'
+      };
+      let blob = new Blob([JSON.stringify(u)], headers);
+      navigator.sendBeacon('/remove', blob);
     });
   };
 
@@ -52,7 +44,8 @@ class App extends Component {
             user: data["token"]
           })
           console.log(this.state.user);
-          this.setupOnUnloadListener();
+          this.setupOnUnloadListener(this.state.user);
+
         })
     }
   }

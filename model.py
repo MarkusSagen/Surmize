@@ -36,7 +36,7 @@ class QA:
         second element is the sentence/context where the answer was found
         """
         answer, title, context, score = self.cdqa_pipeline.predict(question)
-        return answer, context
+        return  answer, context
         
 
     # TODO: Read more files
@@ -99,3 +99,5 @@ class QA:
             shutil.copyfile(self.filepath, filepath_txt)
             os.remove(self.filepath)
             self.filepath = filepath_txt
+    
+    

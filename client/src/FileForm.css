@@ -1,0 +1,31 @@
+.inputFile {
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+}
+
+.inputFile + label {
+    width:100%;
+    height: 200px;
+    border: 1px red solid;
+    border-radius: 5px;
+    display:flex ;
+    justify-content: center;
+    align-items: center;
+}
+.inputFile + label:hover {
+    cursor: pointer;
+}
+label span {
+    border: solid 1px red;
+    padding:5px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: red;
+}
+label span:hover {
+    cursor: pointer;
+}
