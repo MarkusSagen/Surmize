@@ -12,7 +12,8 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 # Create and activate virtual enviroment
 # sudo pip install -e .
-sudo pip install -r requirements.txt --user && echo "${green}Installed dependencies${reset}" || echo "${red}Failed to install dependencies${reset}" 
+sudo pip3 install -r requirements.txt --user && echo "${green}Installed dependencies${reset}" || echo "${red}Failed to install dependencies${reset}" 
+python3 -m spacy download en_core_web_sm --user && echo "${green}Downloaded SpaCy english word tokens${reset}" || echo "${red}Failed to download SpaCy english word tokens${reset}" 
 
 # Install the weights
 # Download the datasets, BNP news data
