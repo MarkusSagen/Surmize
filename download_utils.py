@@ -17,7 +17,8 @@ nltk.download('punkt')
 download_bnpp_data(dir='./data/examples/bnpp_newsroom_v1.1/')
 
 # Download the model weights
-download_model(model='bert-squad_1.1', dir='./models')
+#download_model(model='bert-squad_1.1', dir='./models')
+download_model(model='distilbert-squad_1.1', dir='./models')
 
 def download_pdf():
     """
