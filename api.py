@@ -1,32 +1,33 @@
 __authors__ = "Markus Sagen, Sebastian Rollino, Nils Hedberg, Alexander Bergkvist"
-import sys
-sys.path.append(
-    "/Users/FamiliaRoSub/Desktop/Kandidat/Surmize/summarization/bertabs")
+import os, sys
+import shutil
+import pandas as pd
+from pathlib import Path
+import glob
+import threading    
+
+sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs'))
+sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs', 'Utility'))
+
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, File, Query, Form, UploadFile, Request, HTTPException
 from pydantic import Required, BaseModel
+from typing import Callable, List
 from enum import Enum
 import json
+
 from ast import literal_eval
-import pandas as pd
-import numpy as np  # RM
-import os
-import shutil
-from pathlib import Path
 from tempfile import NamedTemporaryFile
-from typing import Callable, List
 from cdqa.utils.filters import filter_paragraphs
 from cdqa.pipeline import QAPipeline
 from model import QA
-import summarization.bertabs.run_summarization as summarizer
 
+import summarization.bertabs.run_summarization as summarizer
 from summarization.bertabs.Utility.clean_directories import clean_directories
 from summarization.bertabs.Utility.sum_joiner import sum_joiner
 from summarization.bertabs.Utility.text_splitter import text_splitter
-import glob
-import threading    
 
 
 
