@@ -338,18 +338,18 @@ async def remove_file(request:Request):
 async def test_sum(request:Request):
     user= request.headers['Authorization']
     USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
-    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
-    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
+    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"  # rm 
+    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"    # rm
     COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
 
     os.makedirs(TMP_SPLIT_DATA_FOLDER)
     os.makedirs(TMP_SPLIT_SUMMARY)
-    files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
+    #files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
 
     #Run summarizer
-    await summarizer.main(TMP_SPLIT_DATA_FOLDER, TMP_SPLIT_SUMMARY, 8, 0.75, 50, 200)
+    await summarizer.main(USER_DATA_FOLDER, COMPLETE_SUMMARY, 8, 0.75, 50, 200)
 
-    sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files)
+    #sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files)
     
     return {"hej":"hej"}
     
