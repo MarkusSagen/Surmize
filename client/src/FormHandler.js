@@ -9,7 +9,7 @@ class FormHandler extends Component {
         super(props)
         this.state = {
             isFetching: false,
-            answer: ''
+            files: []
         }
     }
     handleQuestion = (text) => {
@@ -34,7 +34,6 @@ class FormHandler extends Component {
         }
     }
     handleFileUpload = (url, file) => {
-        this.changeState()
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -43,7 +42,7 @@ class FormHandler extends Component {
                 },
                 body: file
             }).then(resp => resp.json()).then(data => {
-                this.changeState()
+
                 console.log(data);
                 this.props.history.push(`/files/${this.props.user}`);
             })
@@ -52,16 +51,23 @@ class FormHandler extends Component {
     changeState = () => {
         this.setState({ isFetching: !this.state.isFetching })
     }
+    putFile = (f) => {
+        const arr = [];
+        for (let i = 0; i < f.length; i++) {
+            arr.push(f[i].name)
+        }
+        this.setState({ files: arr });
+    }
 
     render() {
         const fetching = this.state.isFetching
+        const files = this.state.files.map(f => {
+            return (<li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
+                {f}
+            </li>)
+        });
         const comps = <div>
-            <p>
-                {this.state.summarization}
-            </p>
-            {/*  <Form classN="btn btn-primary" answer={this.state.answer} text="Submit Here" sendQuestion={this.handleQuestion} /> */}
-            <h1>Upload Files Here</h1>
-            <FileForm sendFile={this.handleFileUpload} />
+            <FileForm files={files} putFile={this.putFile} sendFile={this.handleFileUpload} />
         </div>;
         const res = (!fetching ? comps : <h1>fetching</h1>)
         return (

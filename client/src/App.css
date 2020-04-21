@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+.list-files {
+  border:solid 1px red;
+  background-color: transparent;
+}
