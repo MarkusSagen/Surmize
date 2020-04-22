@@ -90,7 +90,7 @@ class EmptyException(Exception):
 # Return QA prediction from model
 def summ(ff1,ff2,ff3,ff4,ff5, user):
     summarizer.main(ff1, ff2, 8, 0.75, 50, 200)
-    sum_joiner(ff2,ff3,ff4, ff5)
+    #sum_joiner(ff2,ff3,ff4, ff5)
     shutil.rmtree(f'data/pending/{user}')
     
 
