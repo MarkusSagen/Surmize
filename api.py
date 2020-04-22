@@ -88,7 +88,7 @@ class EmptyException(Exception):
 
 
 # Return QA prediction from model
-def summ(ff1,ff2,ff3,ff4,ff5, user):
+def summ(ff1, ff2, user):
     summarizer.main(ff1, ff2, 8, 0.75, 50, 200)
     #sum_joiner(ff2,ff3,ff4, ff5)
     shutil.rmtree(f'data/pending/{user}')
@@ -257,8 +257,8 @@ async def send_files(request:Request):
     os.makedirs(TMP_SPLIT_DATA_FOLDER)
     os.makedirs(TMP_SPLIT_SUMMARY)
 
-    files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30)
-    x = threading.Thread(target=summ, args=(TMP_SPLIT_DATA_FOLDER,TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes,name_of_files,user,))
+    #files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30)
+    x = threading.Thread(target=summ, args=(USER_DATA_FOLDER, COMPLETE_SUMMARY, user))
     x.start()
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
     uploaded_files= []
@@ -334,22 +334,4 @@ async def remove_file(request:Request):
             pass
     return {"msg":f"DELETED {f}"}
 
-@app.get("/sum")
-async def test_sum(request:Request):
-    user= request.headers['Authorization']
-    USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
-    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"  # rm 
-    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"    # rm
-    COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
 
-    os.makedirs(TMP_SPLIT_DATA_FOLDER)
-    os.makedirs(TMP_SPLIT_SUMMARY)
-    #files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
-
-    #Run summarizer
-    await summarizer.main(USER_DATA_FOLDER, COMPLETE_SUMMARY, 8, 0.75, 50, 200)
-
-    #sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files)
-    
-    return {"hej":"hej"}
-    
