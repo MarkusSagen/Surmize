@@ -18,7 +18,7 @@ python3 -m spacy download en_core_web_sm --user && echo "${green}Downloaded SpaC
 #Install textrank (extractive textsummarizer) Wordembeddings
 
 cd summarization/textrank
-wget http://nlp.stanford.edu/data/glove.6B.zip echo && echo "${green}Downloaded textrank word embeddings${reset}" || echo "${red}Failed to downloaded textrank word embeddings${reset}"
+wget http://nlp.stanford.edu/data/glove.6B.zip && echo "${green}Downloaded textrank word embeddings${reset}" || echo "${red}Failed to downloaded textrank word embeddings${reset}"
 unzip glove*.zip
 rm glove.6B.zip
 rm rm glove.6B.200d.txt glove.6B.300d.txt glove.6B.50d.txt
