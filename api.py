@@ -4,7 +4,7 @@ import shutil
 import pandas as pd
 from pathlib import Path
 import glob
-import threading    
+import threading
 
 sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs'))
 sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs', 'Utility'))
@@ -28,6 +28,7 @@ import summarization.bertabs.run_summarization as summarizer
 from summarization.bertabs.Utility.clean_directories import clean_directories
 from summarization.bertabs.Utility.sum_joiner import sum_joiner
 from summarization.bertabs.Utility.text_splitter import text_splitter
+from summarization.textrank.text_rank_summarize import text_rank_summarize
 
 
 
@@ -88,11 +89,17 @@ class EmptyException(Exception):
 
 
 # Return QA prediction from model
-def summ(ff1, ff2, user):
-    summarizer.main(ff1, ff2, 8, 0.75, 50, 200)
+def summ(ff1, ff2, user, mode):
+    if mode == "abs":
+        summarizer.main(ff1, ff2, 8, 0.75, 50, 200)
     #sum_joiner(ff2,ff3,ff4, ff5)
+    elif mode == "ext":
+        text_rank_summarize(ff1,ff2)
+    else:
+        assert False
+
     shutil.rmtree(f'data/pending/{user}')
-    
+
 
 
 
@@ -131,7 +138,7 @@ async def lol():
 async def remove_dir(request:Request):
     q= await request.json()
     user= q["user"]
-    
+
     if user:
         try:
             shutil.rmtree(f'data/uploaded/{user}')
@@ -148,13 +155,13 @@ async def ask_question(request: Request):
     Example:
     >>> curl -X POST http://localhost:5000/api -d '{"text": "Hello World"}' -H "Accept: application/json" -H "Content-type: application/json"
     """
-    
+
     query = await request.json()
     question = query["text"]
     obj= await show_file(request)
     err=obj["err"]
     answer=await QA_predict_to_json(question=question)
-    
+
     if(err==200):
         return {"sum":obj["sum"],"answer":answer["answer"]}
     # Add support for authorization in QA frontend
@@ -215,7 +222,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     if not os.path.exists(upload_folder) and user != 'null':
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
-    
+
     for f in file:
         file_object = f.file
         file_name = f.filename
@@ -223,8 +230,8 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         shutil.copyfileobj(file_object, UPLOAD_FOLDER)
         UPLOAD_FOLDER.close()
         file_path = f"{upload_folder}/{file_name}"
-        qa.load_data(filepath=file_path, filename=file_name, path=upload_folder)        
-        
+        qa.load_data(filepath=file_path, filename=file_name, path=upload_folder)
+
 
 
 
@@ -258,7 +265,8 @@ async def send_files(request:Request):
     os.makedirs(TMP_SPLIT_SUMMARY)
 
     #files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30)
-    x = threading.Thread(target=summ, args=(USER_DATA_FOLDER, COMPLETE_SUMMARY, user))
+    mode = "ext"
+    x = threading.Thread(target=summ, args=(USER_DATA_FOLDER, COMPLETE_SUMMARY, user, mode))
     x.start()
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
     uploaded_files= []
@@ -266,9 +274,9 @@ async def send_files(request:Request):
         path= f.split("/")
         f= path[len(path) -1]
         uploaded_files.append(f)
-    
-    
-    return {"files":uploaded_files} 
+
+
+    return {"files":uploaded_files}
 
 @app.post("/show_file")
 async def show_file(request:Request):
@@ -294,15 +302,15 @@ async def show_file(request:Request):
         with open(COMPLETE_SUMMARY + name.split(".")[0] + "_summary.txt", 'r') as f:
             if f.mode == 'r':
                 summaries.append(f.read())
-    
+
     shutil.rmtree(f'data/pending/{user}') """
     f= data["file"]
     file_path = f"data/uploaded/{user}/text/{f}"
     file_name=f
     f= f.split(".")
-    qa.load_data(filepath=file_path, filename=file_name, path=f"data/uploaded/{user}/text/")  
+    qa.load_data(filepath=file_path, filename=file_name, path=f"data/uploaded/{user}/text/")
     try:
-        
+
         f= open(f'data/uploaded/{user}/summary/{f[0]}_summary.txt',"r")
         if f.mode == 'r':
             contents= f.read()
@@ -325,7 +333,7 @@ async def remove_file(request:Request):
           for fi in files:
               os.remove(fi)
         except:
-            pass  
+            pass
     else:
         os.remove(f'data/uploaded/{user}/text/{f}')
         try:
@@ -333,5 +341,3 @@ async def remove_file(request:Request):
         except:
             pass
     return {"msg":f"DELETED {f}"}
-
-
