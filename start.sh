@@ -16,12 +16,13 @@ sudo pip3 install -r requirements.txt --user && echo "${green}Installed dependen
 python3 -m spacy download en_core_web_sm --user && echo "${green}Downloaded SpaCy english word tokens${reset}" || echo "${red}Failed to download SpaCy english word tokens${reset}"
 
 #Install textrank (extractive textsummarizer) Wordembeddings
-echo "${green}Downloaded SpaCy english word tokens${reset}" || echo "${red}Failed to download SpaCy english word tokens${reset}"
-cd summarization
-wget http://nlp.stanford.edu/data/glove.6B.zip
-unzip glove*.zip
 
-cd ..
+cd summarization/textrank
+wget http://nlp.stanford.edu/data/glove.6B.zip echo && echo "${green}Downloaded textrank word embeddings${reset}" || echo "${red}Failed to downloaded textrank word embeddings${reset}"
+unzip glove*.zip
+rm glove.6B.zip
+rm rm glove.6B.200d.txt glove.6B.300d.txt glove.6B.50d.txt
+cd ../..
 
 # Install the weights
 # Download the datasets, BNP news data
