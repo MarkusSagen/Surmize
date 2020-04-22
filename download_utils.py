@@ -12,6 +12,7 @@ from cdqa.utils.download import download_model, download_bnpp_data
 # for summarizer
 import nltk
 nltk.download('punkt')
+nltk.download('stopwords')
 
 # Download the BNP dataset
 download_bnpp_data(dir='./data/examples/bnpp_newsroom_v1.1/')
