@@ -82,7 +82,7 @@ def text_rank_summarize(DATA_PATH,SUM_PATH):
         ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
         summary = ""
         # Extract top 10 sentences as the summary
-        top_x_sentences = int(length_sentences * 0.1)
+        top_x_sentences = int(length_sentences * 0.2)
         for i in range(top_x_sentences):
           summary += ranked_sentences[i][1]
 
