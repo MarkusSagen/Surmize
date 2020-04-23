@@ -6,7 +6,7 @@ import Navbar from './Navbar'
 //import FileForm from './FileForm'
 import FormHandler from './FormHandler'
 import FileManager from './FileManager';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 
 class App extends Component {

@@ -4,6 +4,7 @@ import QuestionForm from './QuestionForm'
 import Sidebar from './Sidebar'
 import Summary from './Summary'
 import './FileManager.css'
+import FileForm from './FileForm'
 
 class FileManager extends Component {
 
@@ -13,8 +14,8 @@ class FileManager extends Component {
         summary: [],
         handlingQuestion: false,
         dialogue: [],
-        hasSummary: false,
-        file: ""
+        file: "",
+        uploadMore: false
     }
     componentDidMount() {
         console.log("MOUNT")
@@ -42,6 +43,7 @@ class FileManager extends Component {
                 }
             }, 1500)
         })
+
 
         /* .then(resp => resp.json()).then(data => {
             console.log(data);
@@ -107,7 +109,7 @@ class FileManager extends Component {
             }).then(resp => resp.json()).then(data => {
                 console.log(data.err, typeof (data.err));
                 if (data.err !== 200) {
-                    this.setState({ summary: [f, "Your File is being summarized..."], isFetching: false, file: f })
+                    this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
                 } else {
                     this.setState({ summary: [f, data.sum], isFetching: false, file: f });
                 }
@@ -128,7 +130,8 @@ class FileManager extends Component {
         }).then(resp => resp.json()).then(data => {
             const files = this.state.files;
             files.delete(f);
-            this.setState({ files: files, isFetching: false });
+            const summary = (files.size === 0 ? ["No Files Left", "Upload New Ones?"] : ["File Deleted", "Choose A New One!"])
+            this.setState({ files: files, isFetching: false, summary: summary, file: "" });
         })
     }
     removeAll = () => {
@@ -142,10 +145,38 @@ class FileManager extends Component {
             body: JSON.stringify(file)
         }).then(resp => resp.json()).then(data => {
             setTimeout(() => {
-                this.setState({ files: new Set(), isFetching: false });
+                this.setState({ files: new Set(), isFetching: false, summary: ["No Files Left", "Upload New Ones?"], file: "" });
             }, 1000)
 
         })
+    }
+    moreFiles = () => {
+        this.setState({ uploadMore: !this.state.uploadMore })
+    }
+
+    handleFileUpload = (url, file) => {
+        this.setState({ isFetching: true, uploadMore: false })
+        if (this.props.isAuthed) {
+            fetch(`/${url}`, {
+                method: 'post',
+                headers: {
+                    "Authorization": this.props.user
+                },
+                body: file
+            }).then(resp => resp.json()).then(data => {
+                setTimeout(() => {
+                    const set = this.state.files;
+                    for (let i = 0; i < data.files.length; i++) {
+                        set.add(data.files[i])
+                    }
+                    this.setState({ files: set, isFetching: false });
+                    this.showFile(this.state.file)
+                }, 1000)
+
+
+            })
+
+        }
     }
 
     render() {
@@ -159,13 +190,20 @@ class FileManager extends Component {
         );
         const page = (<div className="row my-5">
             <div className="col-md-3 files">
-                <Sidebar removeAll={this.removeAll} deleteFile={this.deleteFile} showFile={this.showFile} files={this.state.files} />
+                <Sidebar moreFiles={this.moreFiles} file={this.state.file} removeAll={this.removeAll} deleteFile={this.deleteFile} showFile={this.showFile} files={this.state.files} />
             </div>
             <div className="col-md-9">
+                {!this.state.uploadMore ? "" : <div className="card border-primary mb-3">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} className="card-header"><h3>Upload More Files</h3> <span><i onClick={this.moreFiles} className="far fa-window-close fa-2x"></i></span></div>
+                    <div className="card-body">
+                        <FileForm minimal sendFile={this.handleFileUpload} />
+                    </div>
+                </div>
+                }
                 <Summary summary={this.state.summary} />
                 <QuestionForm fetching={this.state.handlingQuestion} sendQuestion={this.handleQuestion} />
             </div>
-        </div>);
+        </div >);
         const comps = (!fetching ? page : spinner)
         return (
             <div className="container">
