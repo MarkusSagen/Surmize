@@ -165,3 +165,35 @@
 	66% { opacity: 1; }
 	100% { opacity: 0.25; }
 }
+.not-selected{
+  opacity: 0.9
+}
+
+.selected-file {
+	font-size: 1.1rem;
+	background-color: #ccffcc
+}
+
+i {
+	cursor: pointer;
+}
+.text-files:hover {
+	font-size: 1.1rem;
+	cursor: pointer;
+}
+.remove-file:hover {
+	color:red;
+}
+.remove-files:hover{
+	opacity: 0.8;
+}
+
+.add-file button:hover {
+	opacity: 0.8;
+}
+.form-group + button:hover {
+	opacity: 0.8;
+}
+.fa-window-close:hover{
+	color:red;
+}

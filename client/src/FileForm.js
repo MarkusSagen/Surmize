@@ -5,8 +5,9 @@ import './FileForm.css'
 
 class FileForm extends Component {
     state = {
-        fileToBeSent: '',
-        isTemp: true
+        fileToBeSent: [],
+        isExperimental: false,
+        files: []
     }
     getFileExtention = (file) => {
         let s = String(file.name).split(".")
@@ -67,41 +68,50 @@ class FileForm extends Component {
             for (let i = 0; i < files.length; i++) {
                 formData.append("file", files[i]);
             }
-            /* formData.append("file", file);
-            const tmp = this.state.isTemp;
-            formData.append("tmp", tmp) */
-            this.props.sendFile('upload_train', formData)
+            this.props.sendFile('upload_train', formData, this.state.isExperimental)
         }
     }
     fileChange = (e) => {
         const file = e.target.files;
         this.setState({ fileToBeSent: file });
-        this.props.putFile(file);
+        if (this.props.putFile) {
+            this.props.putFile(file);
+        } else {
+            const arr = [];
+            for (let i = 0; i < file.length; i++) {
+                arr.push(file[i].name)
+            }
+            this.setState({ files: arr })
+        }
     }
     handleCheck = (e) => {
-        this.setState({ isTemp: !this.state.isTemp }
+        this.setState({ isExperimental: !this.state.isExperimental }
         )
     }
     render() {
+        const files = this.state.files.map(f => {
+            return (<li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
+                {f}
+            </li>)
+        });
         return (
             <div className="container text-center">
-                <h1>Upload Files Here</h1>
+                {this.props.minimal ? "" : <h1>Upload Files Here</h1>}
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group text-center">
-
                         <input onChange={this.fileChange} type="file" multiple className="form-control-file inputFile" id="fileInput" aria-describedby="fileHelp" />
                         <label htmlFor="fileInput"><span>Choose File</span></label>
                         <ul className="list-group">
-                            {this.props.files}
+                            {this.props.files ? this.props.files : files}
                         </ul>
                         <small id="fileHelp" className="form-text text-muted">Supported file types, pdf, doc, docx....</small>
                     </div>
-                    <div className="form-check">
+                    {this.props.minimal ? "" : <div className="form-check">
                         <label className="form-check-label">
-                            <input className="form-check-input" onChange={this.handleCheck} type="checkbox" value="" checked={this.state.isTemp} />
-                            Temporary File
+                            <input className="form-check-input" onChange={this.handleCheck} type="checkbox" value="" checked={this.state.isExperimental} />
+                            Use Experimental Summarizer
                     </label>
-                    </div>
+                    </div>}
 
                     <Button type="submit" classN="btn btn-outline-primary" text="Upload File" />
                 </form>

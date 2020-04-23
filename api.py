@@ -257,15 +257,17 @@ def get_token(request: Request):
 async def send_files(request:Request):
     data = await request.json()
     user = data['user']
+    mode= data["mode"]
     USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
     TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
     TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
     COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
     os.makedirs(TMP_SPLIT_DATA_FOLDER)
     os.makedirs(TMP_SPLIT_SUMMARY)
-
-    #files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30)
-    mode = "ext"
+    if mode:
+        mode = "abs"
+    else:
+        mode = "ext"
     x = threading.Thread(target=summ, args=(USER_DATA_FOLDER, COMPLETE_SUMMARY, user, mode))
     x.start()
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
@@ -307,11 +309,11 @@ async def show_file(request:Request):
     f= data["file"]
     file_path = f"data/uploaded/{user}/text/{f}"
     file_name=f
-    f= f.split(".")
+    f_name, f_extention= os.path.splitext(str(f))
     qa.load_data(filepath=file_path, filename=file_name, path=f"data/uploaded/{user}/text/")
     try:
 
-        f= open(f'data/uploaded/{user}/summary/{f[0]}_summary.txt',"r")
+        f= open(f'data/uploaded/{user}/summary/{f_name}_summary.txt',"r")
         if f.mode == 'r':
             contents= f.read()
             return {"sum":contents, "err":200}

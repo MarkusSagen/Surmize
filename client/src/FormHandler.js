@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 //import Form from './Form'
 import FileForm from './FileForm'
+import "./FileForm.css"
 
 
 
@@ -33,7 +34,8 @@ class FormHandler extends Component {
                 })
         }
     }
-    handleFileUpload = (url, file) => {
+    handleFileUpload = (url, file, mode) => {
+        this.setState({ isFetching: true })
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -42,10 +44,14 @@ class FormHandler extends Component {
                 },
                 body: file
             }).then(resp => resp.json()).then(data => {
-
                 console.log(data);
-                this.props.history.push(`/files/${this.props.user}`);
+                this.changeState();
+                this.props.history.push({
+                    pathname: `/files/${this.props.user}`,
+                    state: { mode: mode },
+                });
             })
+
         }
     }
     changeState = () => {
@@ -60,7 +66,14 @@ class FormHandler extends Component {
     }
 
     render() {
-        const fetching = this.state.isFetching
+        const fetching = this.state.isFetching;
+        const spinner = (
+            <div className="colSpinner">
+                <div className="sp sp-wave">
+                </div>
+            </div>
+
+        );
         const files = this.state.files.map(f => {
             return (<li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
                 {f}
@@ -69,7 +82,7 @@ class FormHandler extends Component {
         const comps = <div>
             <FileForm files={files} putFile={this.putFile} sendFile={this.handleFileUpload} />
         </div>;
-        const res = (!fetching ? comps : <h1>fetching</h1>)
+        const res = (!fetching ? comps : spinner)
         return (
             <div>
 
