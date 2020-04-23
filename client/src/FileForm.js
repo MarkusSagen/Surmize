@@ -6,7 +6,7 @@ import './FileForm.css'
 class FileForm extends Component {
     state = {
         fileToBeSent: [],
-        isTemp: true,
+        isExperimental: false,
         files: []
     }
     getFileExtention = (file) => {
@@ -68,10 +68,7 @@ class FileForm extends Component {
             for (let i = 0; i < files.length; i++) {
                 formData.append("file", files[i]);
             }
-            /* formData.append("file", file);
-            const tmp = this.state.isTemp;
-            formData.append("tmp", tmp) */
-            this.props.sendFile('upload_train', formData)
+            this.props.sendFile('upload_train', formData, this.state.isExperimental)
         }
     }
     fileChange = (e) => {
@@ -112,7 +109,7 @@ class FileForm extends Component {
                     {this.props.minimal ? "" : <div className="form-check">
                         <label className="form-check-label">
                             <input className="form-check-input" onChange={this.handleCheck} type="checkbox" value="" checked={this.state.isTemp} />
-                            Temporary File
+                            Use Experimental Summarizer
                     </label>
                     </div>}
 

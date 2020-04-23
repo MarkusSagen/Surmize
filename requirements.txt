@@ -13,4 +13,7 @@ click>=7.0
 future>=0.15.2
 jinja2>=2.7
 fastapi==0.53.2
-uvicorn==0.11.3 
+uvicorn==0.11.3
+nltk==3.4.5
+spacy==2.2.4
+networkx==2.4

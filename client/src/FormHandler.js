@@ -34,7 +34,7 @@ class FormHandler extends Component {
                 })
         }
     }
-    handleFileUpload = (url, file) => {
+    handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true })
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
@@ -48,6 +48,7 @@ class FormHandler extends Component {
                 this.changeState();
                 this.props.history.push({
                     pathname: `/files/${this.props.user}`,
+                    state: { mode: mode },
                 });
             })
 

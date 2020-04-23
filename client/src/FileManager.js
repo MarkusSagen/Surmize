@@ -19,7 +19,7 @@ class FileManager extends Component {
     }
     componentDidMount() {
         console.log("MOUNT")
-        const user = { user: this.props.user };
+        const user = { user: this.props.user, mode: this.props.location.state.mode };
         fetch("/getfiles", {
             method: "post",
             headers: {
