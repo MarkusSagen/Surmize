@@ -264,9 +264,9 @@ async def send_files(request:Request):
     COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
     os.makedirs(TMP_SPLIT_DATA_FOLDER)
     os.makedirs(TMP_SPLIT_SUMMARY)
-    if mode == "true":
+    if mode:
         mode = "abs"
-    else: 
+    else:
         mode = "ext"
     x = threading.Thread(target=summ, args=(USER_DATA_FOLDER, COMPLETE_SUMMARY, user, mode))
     x.start()
@@ -310,9 +310,9 @@ async def show_file(request:Request):
     file_path = f"data/uploaded/{user}/text/{f}"
     file_name=f
     f_name, f_extention= os.path.splitext(str(f))
-    qa.load_data(filepath=file_path, filename=file_name, path=f"data/uploaded/{user}/text/")  
+    qa.load_data(filepath=file_path, filename=file_name, path=f"data/uploaded/{user}/text/")
     try:
-        
+
         f= open(f'data/uploaded/{user}/summary/{f_name}_summary.txt',"r")
         if f.mode == 'r':
             contents= f.read()

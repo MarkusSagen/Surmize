@@ -24,7 +24,7 @@ class Sidebar extends Component {
                 return (<li key={f} className="list-group-item selected-file"><span className="text-files " onClick={() => { this.readFile(f) }}>{f}</span>  <span><i
                     onClick={() => this.deleteFile(f)} className="fas remove-file fa-trash-alt"></i></span></li>)
             }
-            return (<li key={f} className="list-group-item text-files"><span onClick={() => { this.readFile(f) }}>{f}</span>  <span><i
+            return (<li key={f} className="list-group-item text-files not-selected"><span onClick={() => { this.readFile(f) }}>{f}</span>  <span><i
                 onClick={() => this.deleteFile(f)} className="fas remove-file fa-trash-alt"></i></span></li>)
         })
         return (

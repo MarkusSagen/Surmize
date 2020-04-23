@@ -165,10 +165,13 @@
 	66% { opacity: 1; }
 	100% { opacity: 0.25; }
 }
+.not-selected{
+  opacity: 0.9
+}
 
 .selected-file {
 	font-size: 1.1rem;
-	text-decoration: underline;
+	background-color: #ccffcc
 }
 
 i {

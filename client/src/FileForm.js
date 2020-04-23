@@ -85,7 +85,7 @@ class FileForm extends Component {
         }
     }
     handleCheck = (e) => {
-        this.setState({ isTemp: !this.state.isTemp }
+        this.setState({ isExperimental: !this.state.isExperimental }
         )
     }
     render() {
@@ -108,7 +108,7 @@ class FileForm extends Component {
                     </div>
                     {this.props.minimal ? "" : <div className="form-check">
                         <label className="form-check-label">
-                            <input className="form-check-input" onChange={this.handleCheck} type="checkbox" value="" checked={this.state.isTemp} />
+                            <input className="form-check-input" onChange={this.handleCheck} type="checkbox" value="" checked={this.state.isExperimental} />
                             Use Experimental Summarizer
                     </label>
                     </div>}
