@@ -28,7 +28,9 @@ import summarization.bertabs.run_summarization as summarizer
 from summarization.bertabs.Utility.clean_directories import clean_directories
 from summarization.bertabs.Utility.sum_joiner import sum_joiner
 from summarization.bertabs.Utility.text_splitter import text_splitter
-from summarization.textrank.text_rank_summarize import text_rank_summarize, word_embeddings
+from summarization.bertabs.Utility.insert_newlines import insert_newlines
+from summarization.textrank.text_rank_summarize import text_rank_summarize,word_embeddings
+
 
 from uuid import UUID, uuid4
 import base64
@@ -73,12 +75,14 @@ class EmptyException(Exception):
 
 
 # Return QA prediction from model
+
 def summarize(upload_folder, summary_path, user, sus_method):
     """
     Summarize TXT file and store summary in new summaries path
     """
     if sus_method == "abs":
-        summarizer.main(rDir=upload_folder, sDir=summary_path, \
+        temp_new_line_folder = insert_newlines(upload_folder,user)
+        summarizer.main(rDir=temp_new_line_folder, sDir=summary_path, \
                         beam=8, alpha=0.75, minl=50, maxl=200)
     elif sus_method == "ext":
         text_rank_summarize(upload_path=upload_folder, \
@@ -188,17 +192,23 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
 @app.post("/getfiles")
 async def send_files(request:Request):
 
+
     query = await request.json()
     user = query['user']
+    sus_method = data["mode"]
     upload_folder = f'data/uploaded/{user}/text'
     summaries_folder = f"data/uploaded/{user}/summary"
     
-    # TODO: Change to dynamic choise later
-    sus_method = "ext"
+    if sus_method:
+        sus_method = "abs"
+    else:
+        sus_method = "ext"
+    
     thread = threading.Thread(name="Summarizer Model", \
                     target=summarize, \
                     args=(upload_folder, summaries_folder, user, sus_method))
     thread.start()
+
 
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
     uploaded_files= []
