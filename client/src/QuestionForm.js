@@ -48,12 +48,12 @@ class QuestionForm extends Component {
                     </span>
                 </div>
             )
-            }
+        }
         if (this.props.fetching) {
             questionBox = <div className="col3Balls">
 
                 <div className="sp3Balls sp-3balls"></div>
- 
+
             </div>;
         } else {
             questionBox =
