@@ -28,36 +28,20 @@ import summarization.bertabs.run_summarization as summarizer
 from summarization.bertabs.Utility.clean_directories import clean_directories
 from summarization.bertabs.Utility.sum_joiner import sum_joiner
 from summarization.bertabs.Utility.text_splitter import text_splitter
-from summarization.textrank.text_rank_summarize import text_rank_summarize
+from summarization.textrank.text_rank_summarize import text_rank_summarize, word_embeddings
 
-
-
-# For defining typeChecking and defining your own type checking
-
-# For processing datalist and pdfs
-
-# For uploading files
-
-# The NLP QA model
-
-# Set user id
 from uuid import UUID, uuid4
 import base64
 
 
-""" UPLOAD_FOLDER = 'uploads'
+""" 
+UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx', 'csv'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS """
-
+"""
 
 # Model
 qa = QA()
-
+word_emb = word_embeddings()
 
 # API
 app = FastAPI(
@@ -89,19 +73,28 @@ class EmptyException(Exception):
 
 
 # Return QA prediction from model
-def summ(ff1, ff2, user, mode):
-    if mode == "abs":
-        summarizer.main(ff1, ff2, 8, 0.75, 50, 200)
-    #sum_joiner(ff2,ff3,ff4, ff5)
-    elif mode == "ext":
-        text_rank_summarize(ff1,ff2)
+def summarize(upload_folder, summary_path, user, sus_method):
+    """
+    Summarize TXT file and store summary in new summaries path
+    """
+    if sus_method == "abs":
+        summarizer.main(rDir=upload_folder, sDir=summary_path, \
+                        beam=8, alpha=0.75, minl=50, maxl=200)
+    elif sus_method == "ext":
+        text_rank_summarize(upload_path=upload_folder, \
+                            summary_path=summary_path, \
+                            word_embeddings=word_emb) 
     else:
         assert False
 
-    shutil.rmtree(f'data/pending/{user}')
 
-
-
+# Define asyncronous error handling
+@app.exception_handler(EmptyException)
+async def empty_exception_handler(request: Request, e: EmptyException):
+    return JSONResponse(
+        status_code = 418,
+        content = { "message": f"The sent request {e.query} can not be {e.name}" }
+    )
 
 
 async def QA_predict_to_json(question: str) -> json:
@@ -112,136 +105,12 @@ async def QA_predict_to_json(question: str) -> json:
         raise EmptyException(question)
 
     answer, context, = qa.predict(question)
-    return {
-        "answer":   answer,
-        "context":  context
-    }
-
-
-# Define asyncronous error handling
-@app.exception_handler(EmptyException)
-async def empty_exception_handler(request: Request, e: EmptyException):
-    return JSONResponse(
-        status_code=418,
-        content={"message": f"The sent request {e.query} can not be {e.name}"}
-    )
-
-
+    return { "answer": answer, "context": context }
 
 
 @app.get("/")
 async def lol():
     return {"msg": "Hello World!"}
-
-
-@app.post("/remove")
-async def remove_dir(request:Request):
-    q= await request.json()
-    user= q["user"]
-
-    if user:
-        try:
-            shutil.rmtree(f'data/uploaded/{user}')
-        except:
-            pass
-    return{"msg": "removed"}
-
-
-# Test model from text field
-# TODO: Add headers for authentication and for internal compnents 'JWT' instead
-@app.post("/api")
-async def ask_question(request: Request):
-    """
-    Example:
-    >>> curl -X POST http://localhost:5000/api -d '{"text": "Hello World"}' -H "Accept: application/json" -H "Content-type: application/json"
-    """
-
-    query = await request.json()
-    question = query["text"]
-    obj= await show_file(request)
-    err=obj["err"]
-    answer=await QA_predict_to_json(question=question)
-
-    if(err==200):
-        return {"sum":obj["sum"],"answer":answer["answer"]}
-    # Add support for authorization in QA frontend
-    #user = request.headers["authorization"]
-    return answer
-
-
-@app.get("/api")
-async def ask_question_directly(question: str):
-    """
-    Returns most likely answer to the question, given the
-    context of the document/(s)
-
-    Parameters
-    ----------
-    **question**: str
-        A question to find the most likely answer to.
-        The QA model computes a score of (WHAT IST THE SCORE?) TODO:
-
-    **n_estimators**: int or None (default None)
-        The number of predictions to return. The standard, None returns only one best prediction
-
-    **retriver_score_weight**: float (default: 0.35)
-        The weight if the retriver score used in the prediction
-
-    **return_all_preds**: boolean (default: False)
-        If the API should return all predictions made by the QA reader or not
-
-    Returns
-    -------
-    prediction as a tuple, if return_all_preds is False
-    List of dictionaries with all predicted answers from QA reader, if return_all_preds is True
-
-    Example
-    --------
-    >>> curl -X POST "http://localhost:5000/api?question=What%20is%20Paribas%20Partners%20earnings%3F" -H  "accept: application/json"
-    """
-    return await QA_predict_to_json(question=question)
-
-
-
-
-# TODO: Allow saving multiple files on storage, works sometimes, so probably wrong way right now
-# TODO: Add examples of how to use this function
-@app.post("/upload_train")
-async def upload_file(request: Request, file: List[UploadFile] = File(...)):
-    """
-    Uploads temporary file which is loadied in to the cdQA model as the data
-
-    TODO: Add example
-    """
-    query = await request.form()
-    user = request.headers["authorization"]
-    upload_folder = f'data/uploaded/{user}/text/'
-    summary_folder = f'data/uploaded/{user}/summary/'
-
-    # Create folder to upload to
-    if not os.path.exists(upload_folder) and user != 'null':
-        os.makedirs(upload_folder)
-        os.makedirs(summary_folder)
-
-    for f in file:
-        file_object = f.file
-        file_name = f.filename
-        UPLOAD_FOLDER = open(os.path.join(upload_folder, file_name), 'wb+')
-        shutil.copyfileobj(file_object, UPLOAD_FOLDER)
-        UPLOAD_FOLDER.close()
-        file_path = f"{upload_folder}/{file_name}"
-        qa.load_data(filepath=file_path, filename=file_name, path=upload_folder)
-
-
-
-
-    ################################################## Summariser
-    # Please note that data/uploaded/{user}/summary and data/uploaded/{user}/text are created above, (line 181-183)
-    # this must be done before this section is run!
-
-    ##################################################
-
-    return {"msg": "file successfully read", "files": [f.filename for f in file]}
 
 
 @app.get("/token")
@@ -250,94 +119,134 @@ def get_token(request: Request):
     # URL and Filename Safe Base64 Encoding
     urlSafeEncodedBytes = base64.urlsafe_b64encode(token.encode("utf-8"))
     safeToken = str(urlSafeEncodedBytes, "utf-8")
+    
     return {"token": safeToken}
+
+
+@app.post("/remove")
+async def remove_dir(request:Request):
+    query = await request.json()
+    user = query["user"]
+
+    try:
+        shutil.rmtree(f'data/uploaded/{user}')
+    except:
+        pass
+    return{"msg": "removed"}
+
+
+@app.post("/question")
+async def ask_question(request: Request):
+    """
+    Example:
+    >>> curl -X POST http://localhost:5000/question -d '{"text": "Hello World"}' -H "Accept: application/json" -H "Content-type: application/json"
+    """
+    query = await request.json()
+    question = query["text"]
+    obj = await show_file(request)
+    status_code = obj["status_code"]
+    answer = await QA_predict_to_json(question=question)
+
+    if (status_code == 200):
+        return { "sum": obj["sum"], "answer": answer["answer"] }
+    return answer
+
+
+# TODO: Allow saving multiple files on storage, works sometimes, so probably wrong way right now
+# TODO: Add examples of how to use this function
+@app.post("/files")
+async def upload_file(request: Request, file: List[UploadFile] = File(...)):
+    """
+    Uploads temporary file which is loadied in to the cdQA model as the data
+    """
+    query = await request.form()
+    user = request.headers["authorization"]
+    csv_folder      = f'data/uploaded/{user}/csv'
+    upload_folder   = f'data/uploaded/{user}/text'
+    summary_folder  = f'data/uploaded/{user}/summary'
+
+    # Create folder to upload to
+    if not os.path.exists(upload_folder) and user != 'null':
+        os.makedirs(csv_folder)
+        os.makedirs(upload_folder)
+        os.makedirs(summary_folder)
+
+
+    for f in file:
+        file_object = f.file
+        file_name = f.filename
+        file_path = f"{upload_folder}/{file_name}"
+        FOLDER_OBJ = open(os.path.join(upload_folder, file_name), 'wb+')
+        shutil.copyfileobj(file_object, FOLDER_OBJ)
+        FOLDER_OBJ.close()
+        qa.convert_data(filepath=file_path)
+
+    return { "msg": "file successfully read",
+            "files": [f.filename for f in file]}
 
 
 @app.post("/getfiles")
 async def send_files(request:Request):
-    data = await request.json()
-    user = data['user']
-    USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
-    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
-    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
-    COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
-    os.makedirs(TMP_SPLIT_DATA_FOLDER)
-    os.makedirs(TMP_SPLIT_SUMMARY)
-
-    #files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30)
-    mode = "ext"
-    x = threading.Thread(target=summ, args=(USER_DATA_FOLDER, COMPLETE_SUMMARY, user, mode))
-    x.start()
+    query = await request.json()
+    user = query['user']
+    upload_folder = f'data/uploaded/{user}/text'
+    summaries_folder = f"data/uploaded/{user}/summary"
+    
+    # TODO: Change to dynamic choise later
+    sus_method = "ext"
+    thread = threading.Thread(name="Summarizer Model", \
+                    target=summarize, \
+                    args=(upload_folder, summaries_folder, user, sus_method))
+    thread.start()
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
     uploaded_files= []
     for f in files:
-        path= f.split("/")
-        f= path[len(path) -1]
-        uploaded_files.append(f)
+        uploaded_files.append(os.path.basename(f))
+    return { "files": uploaded_files }
 
 
-    return {"files":uploaded_files}
-
-@app.post("/show_file")
+@app.post("/showfile")
 async def show_file(request:Request):
-    data= await request.json()
-    user = data['user']
-    """ USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
-    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
-    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
-    COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
-
-    os.makedirs(TMP_SPLIT_DATA_FOLDER)
-    os.makedirs(TMP_SPLIT_SUMMARY)
-    files_and_sizes, name_of_files = text_splitter(USER_DATA_FOLDER, TMP_SPLIT_DATA_FOLDER, 30) #TODO SE TILL ATT BARA DOM NYA SKJUTSAS HIT! Nu tas allt som ligger i uploaded (potentiellt gamla uppladdningar) med!
-
-    #Run summarizer
-    summarizer.main(TMP_SPLIT_DATA_FOLDER, TMP_SPLIT_SUMMARY, 8, 0.75, 50, 200)
-
-    sum_joiner(TMP_SPLIT_SUMMARY,COMPLETE_SUMMARY,files_and_sizes, name_of_files) """
-
-    #Gather and send back summaries
-    """ summaries = []
-    for name in name_of_files:
-        with open(COMPLETE_SUMMARY + name.split(".")[0] + "_summary.txt", 'r') as f:
-            if f.mode == 'r':
-                summaries.append(f.read())
-
-    shutil.rmtree(f'data/pending/{user}') """
-    f= data["file"]
-    file_path = f"data/uploaded/{user}/text/{f}"
-    file_name=f
-    f= f.split(".")
-    qa.load_data(filepath=file_path, filename=file_name, path=f"data/uploaded/{user}/text/")
+    query = await request.json()
+    user = query['user']    
+    filename = query["file"]
+    name, _ = os.path.splitext(str(filename))
+    filepath_csv        = f"data/uploaded/{user}/csv/{name}.csv"
+    filepath_summary    = f'data/uploaded/{user}/summary/{name}_summary.txt'
+    qa.load_data(filepath=filepath_csv)
+    
     try:
-
-        f= open(f'data/uploaded/{user}/summary/{f[0]}_summary.txt',"r")
-        if f.mode == 'r':
-            contents= f.read()
-            return {"sum":contents, "err":200}
+        f = open(filepath_summary, "r")
+        content = f.read()
+        status_code = 200
     except:
-        return {"sum":"", "err":500}
+        content = ""
+        status_code = 500
+    return { "sum": content, "status_code": status_code }
 
-@app.delete("/delete_file")
+
+@app.delete("/files")
 async def remove_file(request:Request):
-    query= await request.json()
-    user= query['user']
-    f= query['file']
-    a= query['all']
-    if a:
-        files = glob.glob(f'data/uploaded/{user}/text/*')
-        for fi in files:
-            os.remove(fi)
-        try:
-          files = glob.glob(f'data/uploaded/{user}/summary/*')
-          for fi in files:
-              os.remove(fi)
-        except:
-            pass
+    query = await request.json()
+    user = query['user']
+    file_to_delete = query['file']
+    csv_folder      = f'data/uploaded/{user}/csv' 
+    upload_folder   = f'data/uploaded/{user}/text'
+    summary_folder  = f'data/uploaded/{user}/summary'
+
+    if query['all']:
+        shutil.rmtree(csv_folder, ignore_errors=True)
+        shutil.rmtree(upload_folder, ignore_errors=True)
+        shutil.rmtree(summary_folder, ignore_errors=True)
+        os.makedirs(csv_folder)
+        os.makedirs(upload_folder)
+        os.makedirs(summary_folder)
     else:
-        os.remove(f'data/uploaded/{user}/text/{f}')
+        os.remove(f'data/uploaded/{user}/text/{file_to_delete}')
+        os.remove(f'data/uploaded/{user}/csv/{file_to_delete}')
         try:
-            os.remove(f'data/uploaded/{user}/summary/{f}')
+            os.remove(f'data/uploaded/{user}/summary/{file_to_delete}')
         except:
             pass
-    return {"msg":f"DELETED {f}"}
+
+    return {"msg": f"DELETED {file_to_delete}"}

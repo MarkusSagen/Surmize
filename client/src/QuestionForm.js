@@ -27,14 +27,15 @@ class QuestionForm extends Component {
     }
     render() {
         let questionBox = <h1>Hello</h1>
-        const answers = []
+        //const answers = 
         const dialogue = this.state.dialogue.reverse()
-        for (var i = 0; i < dialogue.length; i++) {
-            answers.push(
+        //for (var i = 0; i < dialogue.length; i++) {
+        var answers = dialogue.map((v, i) => 
+            <div key={i.toString()}>               
                 <div className="list-group my-3">
                     <span className="list-group-item list-group-item-action flex-column align-items-start active">
                         <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-1">Question: {dialogue[i].question}</h5>
+                            <h5 className="mb-1">Question: {v.question}</h5>
                             <small>3 days ago</small>
                         </div>
                     </span>
@@ -42,14 +43,15 @@ class QuestionForm extends Component {
                         <div className="d-flex w-100 justify-content-between">
                             <h5 className="mb-1">Answer:</h5>
                         </div>
-                        <p className="mb-1">{dialogue[i].answer}</p>
+                        <p className="mb-1">{v.answer}</p>
                     </span>
                 </div>
-            )
-        }
+            </div>
 
+        //}
+        )
         if (this.props.fetching) {
-            questionBox = <div class="col3Balls">
+            questionBox = <div className="col3Balls">
                 <div class="sp3Balls sp-3balls"></div>
             </div>;
         } else {
