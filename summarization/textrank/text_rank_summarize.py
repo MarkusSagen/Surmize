@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import networkx as nx
-from tqdm.auto import tqdm, trange
+from tqdm.auto import tqdm
 import timeit
 #nltk.download('punkt') # one time execution
 #nltk.download('stopwords') Comment out after first time!
@@ -54,7 +54,7 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
 
         # similarity matrix
         sim_mat = np.zeros([len_sentence, len_sentence])
-        for i in trange(len_sentence):
+        for i in range(len_sentence):
             for j in range(len_sentence):
                 if i != j:
                     sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(1,100), sentence_vectors[j].reshape(1,100))[0,0]
@@ -72,8 +72,7 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
             f.write(summary)
 
     end = timeit.default_timer()
-    print("Done with Extensive Summarization")
-    print("Took: {} seconds".format(end-start))
+    print("Extensive summarization Took: {} seconds".format(end-start))
 
 
 def word_embeddings(embedding_path='summarization/textrank/glove.6B.100d.txt'):
