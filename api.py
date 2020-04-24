@@ -28,6 +28,7 @@ import summarization.bertabs.run_summarization as summarizer
 from summarization.bertabs.Utility.clean_directories import clean_directories
 from summarization.bertabs.Utility.sum_joiner import sum_joiner
 from summarization.bertabs.Utility.text_splitter import text_splitter
+from summarization.bertabs.Utility.insert_newlines import insert_newlines
 from summarization.textrank.text_rank_summarize import text_rank_summarize
 
 
@@ -91,8 +92,8 @@ class EmptyException(Exception):
 # Return QA prediction from model
 def summ(ff1, ff2, user, mode):
     if mode == "abs":
-        summarizer.main(ff1, ff2, 8, 0.75, 50, 200)
-    #sum_joiner(ff2,ff3,ff4, ff5)
+        ff1_w_nl = insert_newlines(ff1,user)
+        summarizer.main(ff1_w_nl, ff2, 8, 0.75, 50, 200)
     elif mode == "ext":
         text_rank_summarize(ff1,ff2)
     else:
@@ -259,11 +260,11 @@ async def send_files(request:Request):
     user = data['user']
     mode= data["mode"]
     USER_DATA_FOLDER = "data/uploaded/" + user + "/text/"
-    TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
-    TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/"
+    #TMP_SPLIT_DATA_FOLDER = "data/pending/" + user + "/stories_split/"
+    #TMP_SPLIT_SUMMARY = "data/pending/" + user + "/summaries_split/" If this is removed, also remove import to split and join functions
     COMPLETE_SUMMARY = "data/uploaded/" + user + "/summary/"
-    os.makedirs(TMP_SPLIT_DATA_FOLDER)
-    os.makedirs(TMP_SPLIT_SUMMARY)
+    #os.makedirs(TMP_SPLIT_DATA_FOLDER)
+    #os.makedirs(TMP_SPLIT_SUMMARY)
     if mode:
         mode = "abs"
     else:
