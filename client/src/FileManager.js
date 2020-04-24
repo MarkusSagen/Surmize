@@ -90,8 +90,6 @@ class FileManager extends Component {
                 },
                 body: JSON.stringify(file)
             }).then(resp => resp.json()).then(data => {
-
-                console.log(data.status_code, typeof (data.status_code));
                 if (data.status_code !== 200) {
                     this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
 

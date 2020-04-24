@@ -17,8 +17,7 @@ class Sidebar extends Component {
         for (let i = 0; i < this.props.files.size; i++) {
             filesArr.push(itr.next().value[0]);
         }
-
-        console.log("FILES", filesArr);
+        
         const files = filesArr.map(f => {
             if (f === this.props.file) {
                 return (<li key={f} className="list-group-item selected-file"><span className="text-files " onClick={() => { this.readFile(f) }}>{f}</span>  <span><i

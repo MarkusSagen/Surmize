@@ -43,8 +43,9 @@ class QA:
         """
         filename = os.path.basename(filepath)
         name, extension = os.path.splitext(str(filename)) 
-        path, _ = filepath.split(f"/{filename}")
-        filepath_txt = f"{path}/{name}.txt"
+        root, _ = filepath.split(f"/text/{filename}")
+        filepath_txt = f"{root}/text/{name}.txt"
+        filepath_csv = f"{root}/csv/{name}.csv"
 
         if extension == ".csv":
             # csv needs to have "title" and "paragraphs" features
@@ -63,7 +64,7 @@ class QA:
 
 
         elif extension == ".pdf":
-            tmp_dir = f"{path}/tmp"
+            tmp_dir = f"{root}/tmp"
             tmp_filepath = f"{tmp_dir}/{filename}"
 
             if not os.path.exists(tmp_dir):
@@ -78,23 +79,15 @@ class QA:
                 for line in df.loc[0]["paragraphs"]:
                     file.write("\n" + line)
 
-        
-        root, _ = filepath.split(f"/text") 
-        filepath_csv = f"{root}/csv/{name}.csv"
-        print(filepath)
-        print(filename)
-        print(name)
-
-        self.name = name
-        self.root = root
         df.to_csv(f"{filepath_csv}", index=False)
         
+
 
 
     def convert_and_load(self, filepath=None, filename=None):
         self.convert_data(filepath)
         self.load_data(filepath)
-        
+
 
     # TODO: Read more files
     def load_data(self, filepath=None):
