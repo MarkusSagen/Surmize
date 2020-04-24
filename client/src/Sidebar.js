@@ -13,11 +13,11 @@ class Sidebar extends Component {
     }
     render() {
         const itr = this.props.files.entries();
-        console.log(itr);
         let filesArr = [];
         for (let i = 0; i < this.props.files.size; i++) {
             filesArr.push(itr.next().value[0]);
         }
+
         console.log("FILES", filesArr);
         const files = filesArr.map(f => {
             if (f === this.props.file) {

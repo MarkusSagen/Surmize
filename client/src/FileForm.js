@@ -61,14 +61,15 @@ class FileForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         let files = e.target[0].files;
-        console.log(files)
         const formData = new FormData();
 
         if (this.checkAllowedFiles(files) && this.checkAllowedSize(files)) {
             for (let i = 0; i < files.length; i++) {
                 formData.append("file", files[i]);
             }
-            this.props.sendFile('upload_train', formData, this.state.isExperimental)
+
+            this.props.sendFile('files', formData, this.state.isExperimental)
+
         }
     }
     fileChange = (e) => {

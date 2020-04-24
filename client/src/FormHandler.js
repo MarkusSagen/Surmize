@@ -16,7 +16,7 @@ class FormHandler extends Component {
     handleQuestion = (text) => {
         this.changeState()
         if (this.props.isAuthed) {
-            fetch("/api", {
+            fetch("/question", {
                 method: 'post',
                 headers: {
                     "Content-type": 'application/json',
@@ -26,7 +26,6 @@ class FormHandler extends Component {
             })
                 .then(resp => resp.json())
                 .then(data => {
-                    console.log(data);
                     this.setState({
                         isFetching: false,
                         answer: data.answer
@@ -44,6 +43,7 @@ class FormHandler extends Component {
                 },
                 body: file
             }).then(resp => resp.json()).then(data => {
+
                 console.log(data);
                 this.changeState();
                 this.props.history.push({
@@ -81,13 +81,12 @@ class FormHandler extends Component {
         });
         const comps = <div>
             <FileForm files={files} putFile={this.putFile} sendFile={this.handleFileUpload} />
+
         </div>;
         const res = (!fetching ? comps : spinner)
         return (
             <div>
-
                 {res}
-
             </div>
 
         )
