@@ -187,6 +187,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
 
 @app.post("/getfiles")
 async def send_files(request:Request):
+
     query = await request.json()
     user = query['user']
     upload_folder = f'data/uploaded/{user}/text'
@@ -198,6 +199,7 @@ async def send_files(request:Request):
                     target=summarize, \
                     args=(upload_folder, summaries_folder, user, sus_method))
     thread.start()
+
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
     uploaded_files= []
     for f in files:
@@ -207,6 +209,7 @@ async def send_files(request:Request):
 
 @app.post("/showfile")
 async def show_file(request:Request):
+
     query = await request.json()
     user = query['user']    
     filename = query["file"]

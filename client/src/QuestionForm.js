@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import uuid from 'react-uuid'
 
 class QuestionForm extends Component {
     state = {
@@ -29,10 +30,10 @@ class QuestionForm extends Component {
         let questionBox = <h1>Hello</h1>
         //const answers = 
         const dialogue = this.state.dialogue.reverse()
-        //for (var i = 0; i < dialogue.length; i++) {
-        var answers = dialogue.map((v, i) => 
-            <div key={i.toString()}>               
-                <div className="list-group my-3">
+
+        for (var i = 0; i < dialogue.length; i++) {
+            answers.push(
+                <div key={uuid()} className="list-group my-3">
                     <span className="list-group-item list-group-item-action flex-column align-items-start active">
                         <div className="d-flex w-100 justify-content-between">
                             <h5 className="mb-1">Question: {v.question}</h5>
@@ -52,23 +53,35 @@ class QuestionForm extends Component {
         )
         if (this.props.fetching) {
             questionBox = <div className="col3Balls">
-                <div class="sp3Balls sp-3balls"></div>
+
+                <div className="sp3Balls sp-3balls"></div>
+ 
             </div>;
         } else {
-            questionBox = <form onSubmit={this.sendQuestion} action="" className="my-3">
-                <div className="form-group">
-                    <label htmlFor="question">Question</label>
-                    <input onChange={this.handleChange} type="text" className="form-control" id="question" aria-describedby="questionHelp"
-                        placeholder="Enter question" />
-                    <small id="questionHelp" className="form-text text-muted">Write your question here, please try to be
-                    as
+            questionBox =
+                <div>  <h3>Ask Your Questions Here</h3>
+                    <form onSubmit={this.sendQuestion} action="" className="my-3">
+                        <div className="form-group">
+                            <label htmlFor="question">Question</label>
+                            <input onChange={this.handleChange} type="text" className="form-control" id="question" aria-describedby="questionHelp"
+                                placeholder="Enter question" />
+                            <small id="questionHelp" className="form-text text-muted">Write your question here, please try to be
+                            as
                     specific as possible for better and faster answers.</small>
+                        </div>
+                        <button className="btn-success p-2">Send question</button>
+                    </form>
                 </div>
-                <button className="btn-success p-2">Send question</button>
-            </form>
 
         }
-        return [questionBox, answers]
+        return (
+            <div>
+                {questionBox}
+                <div>
+                    {answers}
+                </div>
+            </div>
+        )
     }
 }
 
