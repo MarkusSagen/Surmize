@@ -17,9 +17,10 @@ class FileManager extends Component {
         file: "",
         uploadMore: false
     }
+
     componentDidMount() {
-        console.log("MOUNT")
         const user = { user: this.props.user, mode: this.props.location.state.mode };
+
         fetch("/getfiles", {
             method: "post",
             headers: {
@@ -44,33 +45,15 @@ class FileManager extends Component {
             }, 1500)
         })
 
-
-        /* .then(resp => resp.json()).then(data => {
-            console.log(data);
-            setTimeout(() => {
-                if (data.files[0] === undefined) {
-                    this.setState({ isFetching: false });
-                } else {
-                    const set = this.state.files;
-                    for (let i = 0; i < data.files.length; i++) {
-                        set.add(data.files[i])
-                    }
-                    this.setState({ files: set, isFetching: false });
-                }
-
-            }, 1500)
-        }) */
-
-
-
     }
+
     handleQuestion = (text, fn) => {
         this.setState({
             handlingQuestion: true
         })
         const t = { text: text, file: this.state.file, user: this.props.user }
         if (this.props.isAuthed) {
-            fetch("/api", {
+            fetch("/question", {
                 method: 'post',
                 headers: {
                     "Content-type": 'application/json',
@@ -99,7 +82,7 @@ class FileManager extends Component {
     showFile = (f) => {
         const file = { file: f, user: this.props.user };
         this.setState({ isFetching: true })
-        fetch("/show_file",
+        fetch("/showfile",
             {
                 method: "post",
                 headers: {
@@ -107,21 +90,22 @@ class FileManager extends Component {
                 },
                 body: JSON.stringify(file)
             }).then(resp => resp.json()).then(data => {
-                console.log(data.err, typeof (data.err));
-                if (data.err !== 200) {
+
+                console.log(data.status_code, typeof (data.status_code));
+                if (data.status_code !== 200) {
                     this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
+
                 } else {
                     this.setState({ summary: [f, data.sum], isFetching: false, file: f });
                 }
-
-
-
             })
     }
+    
+    // Delete one file
     deleteFile = (f) => {
         const file = { file: f, all: false, user: this.props.user };
         this.setState({ isFetching: true });
-        fetch("/delete_file", {
+        fetch("/files", {
             method: "delete",
             headers: {
                 'Content-Type': "application/json"
@@ -134,10 +118,12 @@ class FileManager extends Component {
             this.setState({ files: files, isFetching: false, summary: summary, file: "" });
         })
     }
+
+    // Delete all files
     removeAll = () => {
         const file = { file: null, all: true, user: this.props.user };
         this.setState({ isFetching: true });
-        fetch("/delete_file", {
+        fetch("/files", {
             method: "delete",
             headers: {
                 'Content-Type': "application/json"
@@ -209,12 +195,6 @@ class FileManager extends Component {
             <div className="container">
                 {comps}
             </div>
-
-
-
-
-            /*  
-            </div> */
         )
     }
 }

@@ -28,7 +28,7 @@ cd ../..
 # Download the datasets, BNP news data
 mkdir data
 cd data
-mkdir uploaded pending examples && echo "${green}Successfully created data folders${reset}"
+mkdir uploaded examples && echo "${green}Successfully created data folders${reset}"
 cd ..
 python3 download_utils.py && echo "${green}Downloaded weights and data${reset}" || echo "${red}Failed to download required weights and data${reset}"
 echo "Done!"

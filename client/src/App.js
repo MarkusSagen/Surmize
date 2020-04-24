@@ -14,14 +14,14 @@ class App extends Component {
     super();
     this.state = { isAuthed: false, user: null }
   };
+
   setupOnUnloadListener = (user) => {
-    const u = { user: user }
-    console.log("OUTSIDE")
+    const usr = { user: user }
     window.addEventListener('unload', function (e) {
       let headers = {
         type: 'application/json'
       };
-      let blob = new Blob([JSON.stringify(u)], headers);
+      let blob = new Blob([JSON.stringify(usr)], headers);
       navigator.sendBeacon('/remove', blob);
     });
   };
@@ -43,7 +43,7 @@ class App extends Component {
             isAuthed: true,
             user: data["token"]
           })
-          console.log(this.state.user);
+          console.log(`%cUser: %c${this.state.user}`, "color: orange", "color: lightgray");
           this.setupOnUnloadListener(this.state.user);
 
         })
