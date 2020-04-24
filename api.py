@@ -36,7 +36,7 @@ from uuid import UUID, uuid4
 import base64
 
 
-""" 
+"""
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx', 'csv'}
 """
@@ -87,7 +87,7 @@ def summarize(upload_folder, summary_path, user, sus_method):
     elif sus_method == "ext":
         text_rank_summarize(upload_path=upload_folder, \
                             summary_path=summary_path, \
-                            word_embeddings=word_emb) 
+                            word_embeddings=word_emb)
     else:
         assert False
 
@@ -123,7 +123,7 @@ def get_token(request: Request):
     # URL and Filename Safe Base64 Encoding
     urlSafeEncodedBytes = base64.urlsafe_b64encode(token.encode("utf-8"))
     safeToken = str(urlSafeEncodedBytes, "utf-8")
-    
+
     return {"token": safeToken}
 
 
@@ -195,15 +195,15 @@ async def send_files(request:Request):
 
     query = await request.json()
     user = query['user']
-    sus_method = data["mode"]
+    sus_method = query["mode"]
     upload_folder = f'data/uploaded/{user}/text'
     summaries_folder = f"data/uploaded/{user}/summary"
-    
+
     if sus_method:
         sus_method = "abs"
     else:
         sus_method = "ext"
-    
+
     thread = threading.Thread(name="Summarizer Model", \
                     target=summarize, \
                     args=(upload_folder, summaries_folder, user, sus_method))
@@ -221,13 +221,13 @@ async def send_files(request:Request):
 async def show_file(request:Request):
 
     query = await request.json()
-    user = query['user']    
+    user = query['user']
     filename = query["file"]
     name, _ = os.path.splitext(str(filename))
     filepath_csv        = f"data/uploaded/{user}/csv/{name}.csv"
     filepath_summary    = f'data/uploaded/{user}/summary/{name}_summary.txt'
     qa.load_data(filepath=filepath_csv)
-    
+
     try:
         f = open(filepath_summary, "r")
         content = f.read()
@@ -243,7 +243,7 @@ async def remove_file(request:Request):
     query = await request.json()
     user = query['user']
     file_to_delete = query['file']
-    csv_folder      = f'data/uploaded/{user}/csv' 
+    csv_folder      = f'data/uploaded/{user}/csv'
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
 
