@@ -64,7 +64,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-upload_folder = "data/"
 
 
 # Empty request exception
@@ -81,7 +80,7 @@ def summarize(upload_folder, summary_path, user, sus_method):
     Summarize TXT file and store summary in new summaries path
     """
     if sus_method == "abs":
-        temp_new_line_folder = insert_newlines(upload_folder,user)
+        temp_new_line_folder = insert_newlines(upload_folder, user)
         summarizer.main(rDir=temp_new_line_folder, sDir=summary_path, \
                         beam=8, alpha=0.75, minl=50, maxl=200)
     elif sus_method == "ext":
@@ -134,6 +133,7 @@ async def remove_dir(request:Request):
 
     try:
         shutil.rmtree(f'data/uploaded/{user}')
+        shutil.rmtree(f'data/pending/{user}')
     except:
         pass
     return{"msg": "removed"}
@@ -175,7 +175,6 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
 
-
     for f in file:
         file_object = f.file
         file_name = f.filename
@@ -191,15 +190,14 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
 
 @app.post("/getfiles")
 async def send_files(request:Request):
-
-
     query = await request.json()
     user = query['user']
-    sus_method = query["mode"]
+    isabstractive = query["mode"]
     upload_folder = f'data/uploaded/{user}/text'
     summaries_folder = f"data/uploaded/{user}/summary"
 
-    if sus_method:
+    global sus_method 
+    if isabstractive:
         sus_method = "abs"
     else:
         sus_method = "ext"
@@ -209,9 +207,8 @@ async def send_files(request:Request):
                     args=(upload_folder, summaries_folder, user, sus_method))
     thread.start()
 
-
     files = glob.glob(f'data/uploaded/{user}/text/*.txt')
-    uploaded_files= []
+    uploaded_files = []
     for f in files:
         uploaded_files.append(os.path.basename(f))
     return { "files": uploaded_files }
@@ -219,22 +216,31 @@ async def send_files(request:Request):
 
 @app.post("/showfile")
 async def show_file(request:Request):
-
     query = await request.json()
     user = query['user']
     filename = query["file"]
+    content = ""
+    
+    if filename == "":
+        return {"sum": content, "status_code": 418} # Empty filename error
+    
     name, _ = os.path.splitext(str(filename))
     filepath_csv        = f"data/uploaded/{user}/csv/{name}.csv"
     filepath_summary    = f'data/uploaded/{user}/summary/{name}_summary.txt'
-    qa.load_data(filepath=filepath_csv)
+    
+    if os.path.exists(filepath_csv):
+        qa.load_data(filepath=filepath_csv)
+    else:
+        filepath_txt    = f"data/uploaded/{user}/text/{name}.txt" 
+        qa.convert_and_load(filepath=filepath_txt)
 
     try:
         f = open(filepath_summary, "r")
         content = f.read()
         status_code = 200
-    except:
-        content = ""
+    except IOError:
         status_code = 500
+
     return { "sum": content, "status_code": status_code }
 
 
@@ -246,7 +252,7 @@ async def remove_file(request:Request):
     csv_folder      = f'data/uploaded/{user}/csv'
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
-
+    
     if query['all']:
         shutil.rmtree(csv_folder, ignore_errors=True)
         shutil.rmtree(upload_folder, ignore_errors=True)

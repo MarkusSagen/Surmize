@@ -61,10 +61,12 @@ class App extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path={`/files/:id`} render={(rp) => <FileManager {...rp} isAuthed={this.state.isAuthed}
-            user={this.state.user} />} />
-          <Route exact path="/" render={(rp) => <FormHandler {...rp} isAuthed={this.state.isAuthed}
-            user={this.state.user} />} />
+          <Route exact path={`/files/:id`} render={(rp) => 
+            <FileManager {...rp} isAuthed={this.state.isAuthed}
+                                  user={this.state.user} />} />
+          <Route exact path="/" render={(rp) => 
+            <FormHandler {...rp} isAuthed={this.state.isAuthed}
+                                  user={this.state.user} />} />
         </Switch>
       </div>
     );
