@@ -27,35 +27,32 @@ class QuestionForm extends Component {
         })
     }
     render() {
-        let questionBox = <h1>Hello</h1>
-        //const answers = 
-        const dialogue = this.state.dialogue.reverse()
-
-        for (var i = 0; i < dialogue.length; i++) {
-            answers.push(
-                <div key={uuid()} className="list-group my-3">
-                    <span className="list-group-item list-group-item-action flex-column align-items-start active">
-                        <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-1">Question: {v.question}</h5>
-                            <small>3 days ago</small>
-                        </div>
-                    </span>
-                    <span className="list-group-item list-group-item-action flex-column align-items-start">
-                        <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-1">Answer:</h5>
-                        </div>
-                        <p className="mb-1">{v.answer}</p>
-                    </span>
-                </div>
-            </div>
-
-        //}
-        )
+            let questionBox = <h1>Hello</h1>
+            const answers = []
+            const dialogue = this.state.dialogue.reverse()
+            for (var i = 0; i < dialogue.length; i++) {
+                answers.push(
+                    <div key={uuid()} className="list-group my-3">
+                        <span className="list-group-item list-group-item-action flex-column align-items-start active">
+                            <div className="d-flex w-100 justify-content-between">
+                                <h5 className="mb-1">Question: {dialogue[i].question}</h5>
+                                <small>3 days ago</small>
+                            </div>
+                        </span>
+                        <span className="list-group-item list-group-item-action flex-column align-items-start">
+                            <div className="d-flex w-100 justify-content-between">
+                                <h5 className="mb-1">Answer:</h5>
+                            </div>
+                            <p className="mb-1">{dialogue[i].answer}</p>
+                        </span>
+                    </div>
+                )
+            }
         if (this.props.fetching) {
             questionBox = <div className="col3Balls">
 
                 <div className="sp3Balls sp-3balls"></div>
- 
+
             </div>;
         } else {
             questionBox =
