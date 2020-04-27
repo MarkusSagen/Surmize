@@ -79,14 +79,15 @@ class QA:
                 for line in df.loc[0]["paragraphs"]:
                     file.write("\n" + line)
 
-        df.to_csv(f"{filepath_csv}", index=False)
+        #df.to_csv(f"{filepath_csv}", index=False)
+        self.cdqa_pipeline.fit_retriever(df=df)
         
 
 
 
     def convert_and_load(self, filepath=None, filename=None):
         self.convert_data(filepath)
-        self.load_data(filepath)
+        #self.load_data(filepath)
 
 
     # TODO: Read more files

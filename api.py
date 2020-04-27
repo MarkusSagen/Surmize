@@ -165,13 +165,13 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     """
     query = await request.form()
     user = request.headers["authorization"]
-    csv_folder      = f'data/uploaded/{user}/csv'
+    #csv_folder      = f'data/uploaded/{user}/csv'
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
 
     # Create folder to upload to
     if not os.path.exists(upload_folder) and user != 'null':
-        os.makedirs(csv_folder)
+        #os.makedirs(csv_folder)
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
 
@@ -225,14 +225,14 @@ async def show_file(request:Request):
         return {"sum": content, "status_code": 418} # Empty filename error
     
     name, _ = os.path.splitext(str(filename))
-    filepath_csv        = f"data/uploaded/{user}/csv/{name}.csv"
+    #filepath_csv        = f"data/uploaded/{user}/csv/{name}.csv"
     filepath_summary    = f'data/uploaded/{user}/summary/{name}_summary.txt'
     
-    if os.path.exists(filepath_csv):
+    """ if os.path.exists(filepath_csv):
         qa.load_data(filepath=filepath_csv)
-    else:
-        filepath_txt    = f"data/uploaded/{user}/text/{name}.txt" 
-        qa.convert_and_load(filepath=filepath_txt)
+    else: """
+    filepath_txt    = f"data/uploaded/{user}/text/{name}.txt" 
+    qa.convert_and_load(filepath=filepath_txt)
 
     try:
         f = open(filepath_summary, "r")
@@ -249,20 +249,20 @@ async def remove_file(request:Request):
     query = await request.json()
     user = query['user']
     file_to_delete = query['file']
-    csv_folder      = f'data/uploaded/{user}/csv'
+    #csv_folder      = f'data/uploaded/{user}/csv'
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
     
     if query['all']:
-        shutil.rmtree(csv_folder, ignore_errors=True)
+        #shutil.rmtree(csv_folder, ignore_errors=True)
         shutil.rmtree(upload_folder, ignore_errors=True)
         shutil.rmtree(summary_folder, ignore_errors=True)
-        os.makedirs(csv_folder)
+        #os.makedirs(csv_folder)
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
     else:
         os.remove(f'data/uploaded/{user}/text/{file_to_delete}')
-        os.remove(f'data/uploaded/{user}/csv/{file_to_delete}')
+        #os.remove(f'data/uploaded/{user}/csv/{file_to_delete}')
         try:
             os.remove(f'data/uploaded/{user}/summary/{file_to_delete}')
         except:
