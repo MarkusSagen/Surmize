@@ -35,6 +35,7 @@ class FormHandler extends Component {
     }
     handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true })
+        file.append("new", false)
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -65,6 +66,7 @@ class FormHandler extends Component {
         this.setState({ files: arr });
     }
 
+
     render() {
         const fetching = this.state.isFetching;
         const spinner = (
@@ -74,13 +76,13 @@ class FormHandler extends Component {
             </div>
 
         );
-        const files = this.state.files.map(f => {
+        /* const files = this.state.files.map(f => {
             return (<li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
                 {f}
             </li>)
-        });
+        }); */
         const comps = <div>
-            <FileForm files={files} putFile={this.putFile} sendFile={this.handleFileUpload} />
+            <FileForm putFile={this.putFile} sendFile={this.handleFileUpload} />
 
         </div>;
         const res = (!fetching ? comps : spinner)

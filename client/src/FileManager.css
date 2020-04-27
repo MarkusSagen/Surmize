@@ -171,7 +171,7 @@
 
 .selected-file {
 	font-size: 1.1rem;
-	background-color: #ccffcc
+	background-color: #ccffcc;
 }
 
 i {
@@ -197,3 +197,4 @@ i {
 .fa-window-close:hover{
 	color:red;
 }
+/* .selected:hover{cursor:not-allowed} */
