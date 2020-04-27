@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # for cdQA
 import os
@@ -14,12 +15,7 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 
-# Download the BNP dataset
-download_bnpp_data(dir='./data/examples/bnpp_newsroom_v1.1/')
 
-# Download the model weights
-#download_model(model='bert-squad_1.1', dir='./models')
-download_model(model='distilbert-squad_1.1', dir='./models')
 
 def download_pdf():
     """
@@ -43,5 +39,12 @@ def download_pdf():
     print("Finished downloading")
 
 
-# Download pdf files
-download_pdf()
+# Check if directories contain files
+if __name__ == "__main__":
+    if not os.listdir('./data/examples/pdf'):
+        download_pdf()
+    if not os.listdir('./data/examples/bnpp_newsroom_v1.1'):
+        download_bnpp_data(dir='./data/examples/bnpp_newsroom_v1.1')
+    if not os.listdir('./models'):
+        # Download the model weights
+        download_model(model='distilbert-squad_1.1', dir='./models')

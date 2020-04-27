@@ -72,7 +72,7 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
             f.write(summary)
 
     end = timeit.default_timer()
-    print("Extensive summarization Took: {} seconds".format(end-start))
+    print("Extractive summarization Took: {} seconds".format(end-start))
 
 
 def word_embeddings(embedding_path='summarization/textrank/glove.6B.100d.txt'):
