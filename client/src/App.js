@@ -6,7 +6,7 @@ import Navbar from './Navbar'
 //import FileForm from './FileForm'
 import FormHandler from './FormHandler'
 import FileManager from './FileManager';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 
 class App extends Component {
@@ -16,13 +16,17 @@ class App extends Component {
   };
 
   setupOnUnloadListener = (user) => {
-    const usr = { user: user }
+    const usr = { user: user };
+    this.props.history.push("/");
+    this.props.history.index = 0;
+
     window.addEventListener('unload', function (e) {
       let headers = {
         type: 'application/json'
       };
       let blob = new Blob([JSON.stringify(usr)], headers);
       navigator.sendBeacon('/remove', blob);
+
     });
   };
 
@@ -61,19 +65,19 @@ class App extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path={`/files/:id`} render={(rp) => 
+          <Route exact path={`/files/:id`} render={(rp) =>
             <FileManager {...rp} isAuthed={this.state.isAuthed}
-                                  user={this.state.user} />} />
-          <Route exact path="/" render={(rp) => 
+              user={this.state.user} />} />
+          <Route exact path="/" render={(rp) =>
             <FormHandler {...rp} isAuthed={this.state.isAuthed}
-                                  user={this.state.user} />} />
+              user={this.state.user} />} />
         </Switch>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
 
 /*  <div className="App">
       <header className="App-header">

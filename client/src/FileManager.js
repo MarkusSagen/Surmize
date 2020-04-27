@@ -15,7 +15,8 @@ class FileManager extends Component {
         handlingQuestion: false,
         dialogue: [],
         file: "",
-        uploadMore: false
+        uploadMore: false,
+        fetchingSameFile: false
     }
 
     componentDidMount() {
@@ -28,77 +29,113 @@ class FileManager extends Component {
             },
             body: JSON.stringify(user)
         }).then(resp => resp.json()).then(data => {
-            const file = data.files[0]
-            setTimeout(() => {
+            if (data) {
+                const file = data.files[0]
+                setTimeout(() => {
 
-                if (file === undefined) {
-                    this.setState({ isFetching: false });
-                } else {
+                    if (file === undefined) {
+                        this.setState({ isFetching: false });
+                    } else {
 
-                    const set = this.state.files;
-                    for (let i = 0; i < data.files.length; i++) {
-                        set.add(data.files[i])
+                        const set = this.state.files;
+                        for (let i = 0; i < data.files.length; i++) {
+                            set.add(data.files[i])
+                        }
+                        this.setState({ files: set, isFetching: false });
+                        this.showFile(file);
                     }
-                    this.setState({ files: set, isFetching: false });
-                    this.showFile(file);
-                }
-            }, 1500)
+                }, 1500)
+            } else {
+                this.setState({ isFetching: false })
+
+            }
+
         })
+
 
     }
 
     handleQuestion = (text, fn) => {
-        this.setState({
-            handlingQuestion: true
-        })
-        const t = { text: text, file: this.state.file, user: this.props.user }
-        if (this.props.isAuthed) {
-            fetch("/question", {
-                method: 'post',
-                headers: {
-                    "Content-type": 'application/json',
-                    "Authorization": this.props.user
-                },
-                body: JSON.stringify(t)
+        if (text.trim() !== '') {
+            this.setState({
+                handlingQuestion: true
             })
-                .then(resp => resp.json())
-                .then(data => {
-                    if (data.sum) {
-                        this.setState({
-                            handlingQuestion: false,
-                            summary: [this.state.file, data.sum]
-                        })
-                    } else {
-                        this.setState({
-                            handlingQuestion: false
-                        })
-                    }
 
-                    fn(text, data.answer)
+            const t = { text: text, file: this.state.file, user: this.props.user }
+            if (this.props.isAuthed) {
+                fetch("/question", {
+                    method: 'post',
+                    headers: {
+                        "Content-type": 'application/json',
+                        "Authorization": this.props.user
+                    },
+                    body: JSON.stringify(t)
                 })
+                    .then(resp => resp.json())
+                    .then(data => {
+                        if (data.sum) {
+                            this.setState({
+                                handlingQuestion: false,
+                                summary: [this.state.file, data.sum]
+                            })
+                        } else {
+                            this.setState({
+                                handlingQuestion: false
+                            })
+                        }
+
+                        fn(text, data.answer)
+                    })
+            }
         }
     }
 
     showFile = (f) => {
         const file = { file: f, user: this.props.user };
-        this.setState({ isFetching: true })
-        fetch("/showfile",
-            {
-                method: "post",
-                headers: {
-                    'Content-Type': "application/json"
-                },
-                body: JSON.stringify(file)
-            }).then(resp => resp.json()).then(data => {
-                if (data.status_code !== 200) {
-                    this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
+        if (f === this.state.file) {
+            this.setState({ fetchingSameFile: true })
+            fetch("/showfile",
+                {
+                    method: "post",
+                    headers: {
+                        'Content-Type': "application/json"
+                    },
+                    body: JSON.stringify(file)
+                }).then(resp => resp.json()).then(data => {
+                    setTimeout(() => {
+                        if (data.status_code !== 200) {
+                            this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], fetchingSameFile: false })
 
-                } else {
-                    this.setState({ summary: [f, data.sum], isFetching: false, file: f });
-                }
-            })
+                        } else {
+                            this.setState({ summary: [f, data.sum], fetchingSameFile: false });
+                        }
+                    }, 1200);
+
+                })
+        } else {
+
+            this.setState({ isFetching: true })
+            fetch("/showfile",
+                {
+                    method: "post",
+                    headers: {
+                        'Content-Type': "application/json"
+                    },
+                    body: JSON.stringify(file)
+                }).then(resp => resp.json()).then(data => {
+                    setTimeout(() => {
+                        if (data.status_code !== 200) {
+                            this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
+
+                        } else {
+                            this.setState({ summary: [f, data.sum], isFetching: false, file: f });
+                        }
+                    }, 1200);
+
+                })
+        }
     }
-    
+
     // Delete one file
     deleteFile = (f) => {
         const file = { file: f, all: false, user: this.props.user };
@@ -138,8 +175,10 @@ class FileManager extends Component {
         this.setState({ uploadMore: !this.state.uploadMore })
     }
 
-    handleFileUpload = (url, file) => {
+    handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true, uploadMore: false })
+        file.append("new", true);
+        file.append("mode", mode);
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -180,11 +219,11 @@ class FileManager extends Component {
                 {!this.state.uploadMore ? "" : <div className="card border-primary mb-3">
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} className="card-header"><h3>Upload More Files</h3> <span><i onClick={this.moreFiles} className="far fa-window-close fa-2x"></i></span></div>
                     <div className="card-body">
-                        <FileForm minimal sendFile={this.handleFileUpload} />
+                        <FileForm minimal exFiles={this.state.files} sendFile={this.handleFileUpload} />
                     </div>
                 </div>
                 }
-                <Summary summary={this.state.summary} />
+                {this.state.fetchingSameFile ? spinner : <Summary summary={this.state.summary} />}
                 <QuestionForm fetching={this.state.handlingQuestion} sendQuestion={this.handleQuestion} />
             </div>
         </div >);

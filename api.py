@@ -75,7 +75,7 @@ class EmptyException(Exception):
 
 # Return QA prediction from model
 
-def summarize(upload_folder, summary_path, user, sus_method):
+def summarize(upload_folder, summary_path, user, sus_method,isnew):
     """
     Summarize TXT file and store summary in new summaries path
     """
@@ -83,12 +83,16 @@ def summarize(upload_folder, summary_path, user, sus_method):
         temp_new_line_folder = insert_newlines(upload_folder, user)
         summarizer.main(rDir=temp_new_line_folder, sDir=summary_path, \
                         beam=8, alpha=0.75, minl=50, maxl=200)
+        shutil.rmtree(f"data/pending/{user}") 
     elif sus_method == "ext":
         text_rank_summarize(upload_path=upload_folder, \
                             summary_path=summary_path, \
                             word_embeddings=word_emb)
     else:
         assert False
+    if (isnew):
+        shutil.rmtree(f"data/uploaded/{user}/tmp")
+       
 
 
 # Define asyncronous error handling
@@ -168,12 +172,15 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     #csv_folder      = f'data/uploaded/{user}/csv'
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
-
+    new_tmp_folder= f'data/uploaded/{user}/tmp'
+    new = query["new"]
+    
     # Create folder to upload to
     if not os.path.exists(upload_folder) and user != 'null':
         #os.makedirs(csv_folder)
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
+        
 
     for f in file:
         file_object = f.file
@@ -181,8 +188,30 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         file_path = f"{upload_folder}/{file_name}"
         FOLDER_OBJ = open(os.path.join(upload_folder, file_name), 'wb+')
         shutil.copyfileobj(file_object, FOLDER_OBJ)
+        
         FOLDER_OBJ.close()
         qa.convert_data(filepath=file_path)
+    
+    
+    if new=="true":
+        os.makedirs(new_tmp_folder)
+        for f in file:
+            file_object = f.file
+            file_name = f.filename
+            file_path_src=f"{upload_folder}/{file_name}"
+            file_path_dst = f"{new_tmp_folder}/{file_name}"
+            shutil.copy(file_path_src,file_path_dst)
+    
+        isabstractive= query["mode"]
+        sus_method = "" 
+        if isabstractive=="true":
+           sus_method = "abs"
+        else:
+           sus_method = "ext"
+        thread = threading.Thread(name="Summarizer Model", \
+                    target=summarize, \
+                    args=(new_tmp_folder, summary_folder, user, sus_method,True))
+        thread.start()
 
     return { "msg": "file successfully read",
             "files": [f.filename for f in file]}
@@ -192,26 +221,28 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
 async def send_files(request:Request):
     query = await request.json()
     user = query['user']
-    isabstractive = query["mode"]
-    upload_folder = f'data/uploaded/{user}/text'
-    summaries_folder = f"data/uploaded/{user}/summary"
+    if(user):
+        isabstractive = query["mode"]
+        upload_folder = f'data/uploaded/{user}/text'
+        summaries_folder = f"data/uploaded/{user}/summary"
+    
+        sus_method = ""
+        if isabstractive:
+            sus_method = "abs"
+        else:
+            sus_method = "ext"
 
-    global sus_method 
-    if isabstractive:
-        sus_method = "abs"
-    else:
-        sus_method = "ext"
-
-    thread = threading.Thread(name="Summarizer Model", \
+        thread = threading.Thread(name="Summarizer Model", \
                     target=summarize, \
-                    args=(upload_folder, summaries_folder, user, sus_method))
-    thread.start()
+                    args=(upload_folder, summaries_folder, user, sus_method,False))
+        thread.start()
 
-    files = glob.glob(f'data/uploaded/{user}/text/*.txt')
-    uploaded_files = []
-    for f in files:
-        uploaded_files.append(os.path.basename(f))
-    return { "files": uploaded_files }
+        files = glob.glob(f'data/uploaded/{user}/text/*.txt')
+        uploaded_files = []
+        for f in files:
+            uploaded_files.append(os.path.basename(f))
+        return { "files": uploaded_files }
+    return
 
 
 @app.post("/showfile")

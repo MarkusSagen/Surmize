@@ -14,6 +14,9 @@ class QuestionForm extends Component {
         const text = this.state.text;
         this.setState({ text: "" })
         this.props.sendQuestion(text, this.newAnswer);
+
+
+
     }
     newAnswer = (question, answer) => {
         var newArray = this.state.dialogue
@@ -62,7 +65,7 @@ class QuestionForm extends Component {
                         <div className="form-group">
                             <label htmlFor="question">Question</label>
                             <input onChange={this.handleChange} type="text" className="form-control" id="question" aria-describedby="questionHelp"
-                                placeholder="Enter question" />
+                                placeholder="Enter question" required />
                             <small id="questionHelp" className="form-text text-muted">Write your question here, please try to be
                             as
                     specific as possible for better and faster answers.</small>
