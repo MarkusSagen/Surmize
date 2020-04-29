@@ -16,12 +16,13 @@ class FileManager extends Component {
         dialogue: [],
         file: "",
         uploadMore: false,
-        fetchingSameFile: false
+        fetchingSameFile: false,
+
     }
 
     componentDidMount() {
         const user = { user: this.props.user, mode: this.props.location.state.mode };
-
+        const { client } = this.props;
         fetch("/getfiles", {
             method: "post",
             headers: {
@@ -52,6 +53,15 @@ class FileManager extends Component {
 
         })
 
+        client.onmessage = (e => {
+            const data = e.data;
+            console.log("IN SOCKET")
+            const sum = JSON.parse(data).sum;
+            const file = JSON.parse(data).file
+            if (this.state.summary[0] !== this.state.file && sum !== "" && this.state.file === file) {
+                this.setState({ summary: [this.state.file, sum] });
+            }
+        })
 
     }
 
@@ -102,6 +112,8 @@ class FileManager extends Component {
                     },
                     body: JSON.stringify(file)
                 }).then(resp => resp.json()).then(data => {
+
+
                     setTimeout(() => {
                         if (data.status_code !== 200) {
                             this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], fetchingSameFile: false })
@@ -125,7 +137,16 @@ class FileManager extends Component {
                 }).then(resp => resp.json()).then(data => {
                     setTimeout(() => {
                         if (data.status_code !== 200) {
-                            this.setState({ summary: [f, "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
+                            this.setState({ summary: ["Not Ready Yet", "Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions"], isFetching: false, file: f })
+
+                            const { client } = this.props;
+                            if (this.state.summary[0] !== this.state.file) {
+                                const interval = setInterval(() => {
+                                    if (this.state.summary[0] === this.state.file) clearInterval(interval)
+                                    client.send(JSON.stringify(file))
+                                }, 7000);
+                            }
+
 
                         } else {
                             this.setState({ summary: [f, data.sum], isFetching: false, file: f });
@@ -134,6 +155,8 @@ class FileManager extends Component {
 
                 })
         }
+
+
     }
 
     // Delete one file
@@ -148,9 +171,22 @@ class FileManager extends Component {
             body: JSON.stringify(file)
         }).then(resp => resp.json()).then(data => {
             const files = this.state.files;
+            let arr = [...files];
+            const index = arr.indexOf(f);
             files.delete(f);
-            const summary = (files.size === 0 ? ["No Files Left", "Upload New Ones?"] : ["File Deleted", "Choose A New One!"])
-            this.setState({ files: files, isFetching: false, summary: summary, file: "" });
+            arr = [...files];
+            if (files.size === 0) {
+                const summary = ["No Files Left", "Upload New Ones?"];
+                this.setState({ files: files, isFetching: false, summary: summary, file: "" });
+            } else {
+                if (index === 0) {
+                    this.setState({ isFetching: false, files: files }, this.showFile(arr[index]));
+                } else {
+                    this.setState({ isFetching: false, files: files }, this.showFile(arr[index - 1]))
+                }
+            }
+
+
         })
     }
 
@@ -189,11 +225,19 @@ class FileManager extends Component {
             }).then(resp => resp.json()).then(data => {
                 setTimeout(() => {
                     const set = this.state.files;
+                    const wasEmpty = (set.size === 0);
                     for (let i = 0; i < data.files.length; i++) {
                         set.add(data.files[i])
                     }
                     this.setState({ files: set, isFetching: false });
-                    this.showFile(this.state.file)
+                    if (wasEmpty) {
+                        console.log("in empty", [...set][0])
+                        this.showFile([...set][0]);
+                    } else {
+                        console.log("NOT EMPTY SHOW SAME FILE", this.state.file);
+                        this.showFile(this.state.file)
+                    }
+
                 }, 1000)
 
 

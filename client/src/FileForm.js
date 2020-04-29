@@ -94,12 +94,15 @@ class FileForm extends Component {
         } else {
             const set = this.props.exFiles;
             const arr = [];
-            const filesArr = [];
+            const filesArr = this.state.fileToBeSent;
             for (let i = 0; i < file.length; i++) {
                 if (!set.has(file[i].name)) {
                     filesArr.push(file[i]);
-                    arr.push(file[i].name)
+
                 }
+            }
+            for (let i = 0; i < filesArr.length; i++) {
+                arr.push(filesArr[i].name);
             }
             this.setState({ files: arr, fileToBeSent: filesArr });
         }

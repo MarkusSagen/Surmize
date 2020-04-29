@@ -12,7 +12,7 @@ sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs', 'Utility'))
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from fastapi import FastAPI, File, Query, Form, UploadFile, Request, HTTPException
+from fastapi import FastAPI, File, Query, Form, UploadFile, Request, HTTPException,WebSocket
 from pydantic import Required, BaseModel
 from typing import Callable, List
 from enum import Enum
@@ -92,6 +92,7 @@ def summarize(upload_folder, summary_path, user, sus_method,isnew):
         assert False
     if (isnew):
         shutil.rmtree(f"data/uploaded/{user}/tmp")
+   
        
 
 
@@ -198,8 +199,10 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         for f in file:
             file_object = f.file
             file_name = f.filename
-            file_path_src=f"{upload_folder}/{file_name}"
-            file_path_dst = f"{new_tmp_folder}/{file_name}"
+            # Get only TXT version of file uploaded for summary
+            name, _ = os.path.splitext(str(file_name)) 
+            file_path_src=f"{upload_folder}/{name}.txt"
+            file_path_dst = f"{new_tmp_folder}/{name}.txt"
             shutil.copy(file_path_src,file_path_dst)
     
         isabstractive= query["mode"]
@@ -283,7 +286,7 @@ async def remove_file(request:Request):
     #csv_folder      = f'data/uploaded/{user}/csv'
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
-    
+    name, _ = os.path.splitext(str(file_to_delete))
     if query['all']:
         #shutil.rmtree(csv_folder, ignore_errors=True)
         shutil.rmtree(upload_folder, ignore_errors=True)
@@ -293,6 +296,7 @@ async def remove_file(request:Request):
         os.makedirs(summary_folder)
     else:
         os.remove(f'data/uploaded/{user}/text/{file_to_delete}')
+        os.remove(f'data/uploaded/{user}/summary/{name}_summary.txt')
         #os.remove(f'data/uploaded/{user}/csv/{file_to_delete}')
         try:
             os.remove(f'data/uploaded/{user}/summary/{file_to_delete}')
@@ -300,3 +304,37 @@ async def remove_file(request:Request):
             pass
 
     return {"msg": f"DELETED {file_to_delete}"}
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            data = await websocket.receive_text()
+            data= json.loads(data)
+            user = data['user']
+            filename = data["file"]
+            content = ""
+            name, _ = os.path.splitext(str(filename))
+    
+            filepath_summary    = f'data/uploaded/{user}/summary/{name}_summary.txt'
+    
+            """ if os.path.exists(filepath_csv):
+            qa.load_data(filepath=filepath_csv)
+            else: """
+            filepath_txt    = f"data/uploaded/{user}/text/{name}.txt" 
+            qa.convert_and_load(filepath=filepath_txt)
+
+            try:
+                f = open(filepath_summary, "r")
+                content = f.read()
+                status_code = 200
+            except IOError:
+                status_code = 500
+
+            data = { "file":filename, "sum": content, "status_code": status_code }
+
+
+            await websocket.send_text(json.dumps(data))
+    finally:
+        await websocket.close()    
