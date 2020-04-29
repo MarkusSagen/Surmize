@@ -12,14 +12,13 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 class App extends Component {
   constructor() {
     super();
-    this.state = { isAuthed: false, user: null }
+    this.state = { isAuthed: false, user: null, client: {} }
   };
 
   setupOnUnloadListener = (user) => {
     const usr = { user: user };
     this.props.history.push("/");
     this.props.history.index = 0;
-
     window.addEventListener('unload', function (e) {
       let headers = {
         type: 'application/json'
@@ -58,6 +57,8 @@ class App extends Component {
 
   componentDidMount() {
     this.getToken();
+    this.setState({ client: new WebSocket("ws://localhost:5000/ws") })
+
   }
 
   render() {
@@ -66,10 +67,10 @@ class App extends Component {
         <Navbar />
         <Switch>
           <Route exact path={`/files/:id`} render={(rp) =>
-            <FileManager {...rp} isAuthed={this.state.isAuthed}
+            <FileManager client={this.state.client} {...rp} isAuthed={this.state.isAuthed}
               user={this.state.user} />} />
           <Route exact path="/" render={(rp) =>
-            <FormHandler {...rp} isAuthed={this.state.isAuthed}
+            <FormHandler  {...rp} isAuthed={this.state.isAuthed}
               user={this.state.user} />} />
         </Switch>
       </div>

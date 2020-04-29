@@ -36,6 +36,7 @@ class FormHandler extends Component {
     handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true })
         file.append("new", false)
+
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
