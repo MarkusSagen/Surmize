@@ -199,8 +199,10 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         for f in file:
             file_object = f.file
             file_name = f.filename
-            file_path_src=f"{upload_folder}/{file_name}"
-            file_path_dst = f"{new_tmp_folder}/{file_name}"
+            # Get only TXT version of file uploaded for summary
+            name, _ = os.path.splitext(str(file_name)) 
+            file_path_src=f"{upload_folder}/{name}.txt"
+            file_path_dst = f"{new_tmp_folder}/{name}.txt"
             shutil.copy(file_path_src,file_path_dst)
     
         isabstractive= query["mode"]
