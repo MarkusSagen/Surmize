@@ -11,6 +11,8 @@
 
  # Byte-compiled / optimized / DLL files
  __pycache__/
+ __pycache__/*
+ *.pyc 
  *.py[cod]
  *$py.class
 
@@ -255,3 +257,11 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+
+# Surmize specific
+data/
+models/
+summarization/textrank/glove.6B.100d.txt
+
