@@ -33,7 +33,7 @@ source start.sh
 ```bash
 uvicorn api:app --reload --port 5000
 ```
-1. Open another terminal and navigate to the folder Surmize/client/ and run:
+5. Open another terminal and navigate to the folder Surmize/client/ and run:
 ```bash
 npm install && npm start
 ```
