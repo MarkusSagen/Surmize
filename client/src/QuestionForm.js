@@ -23,11 +23,30 @@ class QuestionForm extends Component {
         newArray.push(
             {
                 "question": question,
-                "answer": answer
+                "answer": answer.answer,
+                "context": answer.context,
+                "score": answer.score
             })
         this.setState({
             dialogue: newArray
         })
+    }
+    certainty(score) {
+        console.log(score)
+        var reply = <h5 className="mb-1">Answer:</h5>
+        if (score < 2) {
+            reply = <h5 className="mb-1">I am not sure, but I guess the answer is:</h5>
+        }
+        else if (score < 5) {
+            reply = <h5 className="mb-1">I am fairly sure the answer is:</h5>
+        }
+        else if (score < 15) {
+            reply = <h5 className="mb-1">I think the answer is:</h5>
+        }
+        else {
+            reply = <h5 className="mb-1">The answer is:</h5>
+        }
+        return reply
     }
     render() {
         let questionBox = <h1>Hello</h1>
@@ -45,7 +64,7 @@ class QuestionForm extends Component {
                     </span>
                     <span className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-1">Answer:</h5>
+                            {this.certainty(dialogue[i].score)}
                         </div>
                         <p className="mb-1">{dialogue[i].answer}</p>
                     </span>

@@ -33,7 +33,7 @@ class QA:
         second element is the sentence/context where the answer was found
         """
         answer, title, context, score = self.cdqa_pipeline.predict(question)
-        return  answer, context
+        return  answer, context, score
         
 
     def convert_data(self, filepath):
