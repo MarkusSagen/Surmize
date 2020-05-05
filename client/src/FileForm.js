@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Button from './Button'
-import './FileForm.css'
+//import './FileForm.css'
 
 class FileForm extends Component {
     state = {

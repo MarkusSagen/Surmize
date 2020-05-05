@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 import Navbar from './Navbar'
 //import Form from './Form'
 //import FileForm from './FileForm'
@@ -63,7 +63,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <header>
         <Navbar />
         <Switch>
           <Route exact path={`/files/:id`} render={(rp) =>
@@ -73,7 +73,7 @@ class App extends Component {
             <FormHandler  {...rp} isAuthed={this.state.isAuthed}
               user={this.state.user} />} />
         </Switch>
-      </div>
+      </header>
     );
   }
 }

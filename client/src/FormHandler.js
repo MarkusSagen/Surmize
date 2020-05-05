@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 //import Form from './Form'
 import FileForm from './FileForm'
-import "./FileForm.css"
+//import "./FileForm.css"
 
 
 
