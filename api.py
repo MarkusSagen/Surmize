@@ -117,8 +117,8 @@ async def QA_predict_to_json(question: str) -> json:
     if question == "":
         raise EmptyException(question)
 
-    answer, context, = qa.predict(question)
-    return { "answer": answer, "context": context }
+    answer, context, score = qa.predict(question)
+    return { "answer": answer, "context": context, "score": score}
 
 
 @app.get("/")
@@ -160,9 +160,9 @@ async def ask_question(request: Request):
     obj = await show_file(request)
     status_code = obj["status_code"]
     answer = await QA_predict_to_json(question=question)
-
+    
     if (status_code == 200):
-        return { "sum": obj["sum"], "answer": answer["answer"] }
+        return { "sum": obj["sum"], "answer": answer }
     return answer
 
 
