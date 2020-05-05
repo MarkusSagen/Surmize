@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import uuid from 'react-uuid'
+import star from "./star.svg"
+import { ReactComponent as Save } from "./save.svg"
 
 class QuestionForm extends Component {
     state = {
         dialogue: [],
         text: ""
+    }
+    componentDidUpdate() {
+        this.scrollDown();
     }
     handleChange = (e) => {
         this.setState({ text: e.target.value })
@@ -14,9 +19,6 @@ class QuestionForm extends Component {
         const text = this.state.text;
         this.setState({ text: "" })
         this.props.sendQuestion(text, this.newAnswer);
-
-
-
     }
     newAnswer = (question, answer) => {
         var newArray = this.state.dialogue
@@ -31,25 +33,47 @@ class QuestionForm extends Component {
             dialogue: newArray
         })
     }
-    certainty(score) {
-        console.log(score)
-        var reply = <h5 className="mb-1">Answer:</h5>
+    scrollDown = () => {
+        const chat = document.getElementById("qa-main");
+        chat.scrollTop = chat.scrollHeight;
+    }
+    certainty = (score) => {
+        let reply = ""
         if (score < 2) {
-            reply = <h5 className="mb-1">I am not sure, but I guess the answer is:</h5>
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" /> </span></p>
         }
         else if (score < 5) {
-            reply = <h5 className="mb-1">I am fairly sure the answer is:</h5>
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></p>
         }
         else if (score < 15) {
-            reply = <h5 className="mb-1">I think the answer is:</h5>
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></p>
         }
         else {
-            reply = <h5 className="mb-1">The answer is:</h5>
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img src={star} alt="star" /> <img src={star} alt="star" /> </span></p>
         }
         return reply
     }
     render() {
-        let questionBox = <h1>Hello</h1>
+        const chat = [];
+        const { dialogue } = this.state
+        for (let i = 0; i < dialogue.length; i++) {
+            chat.push(
+                <div key={uuid()} className="qa-content">
+                    <div className="question">
+                        <p>Question</p>
+                        <p>{dialogue[i].question}</p>
+                    </div>
+                    <div className="answer">
+                        <p>Answer</p>
+                        <p>{dialogue[i].answer}</p>
+                        {this.certainty(dialogue[i].score)}
+
+                    </div>
+                </div>
+            )
+        }
+
+        /* let questionBox = <h1>Hello</h1>
         const answers = []
         const dialogue = this.state.dialogue.reverse()
 
@@ -93,12 +117,27 @@ class QuestionForm extends Component {
                     </form>
                 </div>
 
-        }
+        } */
         return (
-            <div>
-                {questionBox}
-                <div>
-                    {answers}
+            <div className="chat">
+                <div className="content-title">
+                    <h3>QA</h3>
+                </div>
+                <div className="content-subtitle">{this.props.file}</div>
+                <div id="qa-main" className="content-main">
+                    {chat}
+                </div>
+                <div className="content-detail">
+                    <form onSubmit={this.sendQuestion} >
+                        <div className="form-group">
+                            <textarea onChange={this.handleChange} placeholder="Write Question Here..." name="question-text" value={this.state.text} id="question-text"></textarea>
+                        </div>
+                        <button>Ask</button>
+                    </form>
+
+                    <div className="content-save">
+                        <Save />
+                    </div>
                 </div>
             </div>
         )

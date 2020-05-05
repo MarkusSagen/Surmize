@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import QuestionForm from './QuestionForm'
 import Sidebar from './Sidebar'
 import Summary from './Summary'
-import './FileManager.css'
+//import './FileManager.css'
 import FileForm from './FileForm'
 
 class FileManager extends Component {
@@ -62,6 +62,7 @@ class FileManager extends Component {
                 this.setState({ summary: [this.state.file, sum] });
             }
         })
+
 
     }
 
@@ -255,27 +256,15 @@ class FileManager extends Component {
             </div>
 
         );
-        const page = (<div className="row my-5">
-            <div className="col-md-3 files">
-                <Sidebar moreFiles={this.moreFiles} file={this.state.file} removeAll={this.removeAll} deleteFile={this.deleteFile} showFile={this.showFile} files={this.state.files} />
-            </div>
-            <div className="col-md-9">
-                {!this.state.uploadMore ? "" : <div className="card border-primary mb-3">
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} className="card-header"><h3>Upload More Files</h3> <span><i onClick={this.moreFiles} className="far fa-window-close fa-2x"></i></span></div>
-                    <div className="card-body">
-                        <FileForm minimal exFiles={this.state.files} sendFile={this.handleFileUpload} />
-                    </div>
-                </div>
-                }
-                {this.state.fetchingSameFile ? spinner : <Summary summary={this.state.summary} />}
-                <QuestionForm fetching={this.state.handlingQuestion} sendQuestion={this.handleQuestion} />
-            </div>
-        </div >);
+        const page = (<div className="main-content">
+            <Sidebar files={this.state.files} removeAll={this.removeAll} showFile={this.showFile} deleteFile={this.deleteFile} file={this.state.file} />
+            <Summary summary={this.state.summary} />
+            <QuestionForm sendQuestion={this.handleQuestion} isFetching={this.state.handlingQuestion} file={this.state.file} />
+        </div>);
         const comps = (!fetching ? page : spinner)
         return (
-            <div className="container">
-                {comps}
-            </div>
+            comps
+
         )
     }
 }

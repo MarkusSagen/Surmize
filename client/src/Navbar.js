@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-
+import { ReactComponent as Squid } from "./squid.svg"
 class Navbar extends Component {
 
     render() {
         return (
-            <div>
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <Link to="/" className="navbar-brand" href="#">Navbar</Link>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
-                        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div className="collapse navbar-collapse" id="navbarColor03">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item active">
-                                <Link to="/" className="nav-link" href="">Home <span className="sr-only">(current)</span></Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/" className="nav-link" href="">How it Works</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/" className="nav-link" href="">About</Link>
-                            </li>
-                        </ul>
+            <nav className="own-navbar">
+                <div className="own-container">
+                    <div className="own-nav-content">
+                        <div className="own-logo">
+                            <div className="own-text-logo">
+                                <h3>Surmize</h3>
+                                <hr />
+                                <p className="own-logo-subtitle">A close-domain QA</p>
+                            </div>
+                            <div className="logo-container">
+                                <Squid />
+                            </div>
+                        </div>
+                        <div className="nav-links">
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">How To Use It</a></li>
+                                <li><a href="#">About Us</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </nav>
-            </div>
+                </div>
+            </nav>
         );
     }
 }

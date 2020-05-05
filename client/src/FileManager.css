@@ -1,4 +1,4 @@
-.add-file {
+/* .add-file {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,7 +24,7 @@
 
 .upl-file {
     text-align: center;
-}
+} */
 
 .colSpinner{
 	padding: 10px;
@@ -164,8 +164,8 @@
 	33% { opacity: 0.25; }
 	66% { opacity: 1; }
 	100% { opacity: 0.25; }
-}
-.not-selected{
+
+/* .not-selected{
   opacity: 0.9
 }
 
@@ -196,5 +196,9 @@ i {
 }
 .fa-window-close:hover{
 	color:red;
-}
+} */
 /* .selected:hover{cursor:not-allowed} */
+
+
+
+/* Define Varaibles */
