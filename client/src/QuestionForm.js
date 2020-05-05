@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import uuid from 'react-uuid'
+import star from "./star.svg"
 
 class QuestionForm extends Component {
     state = {
@@ -23,7 +24,9 @@ class QuestionForm extends Component {
         newArray.push(
             {
                 "question": question,
-                "answer": answer
+                "answer": answer.answer,
+                "context": answer.context,
+                "score": answer.score
             })
         this.setState({
             dialogue: newArray
@@ -32,6 +35,22 @@ class QuestionForm extends Component {
     scrollDown = () => {
         const chat = document.getElementById("qa-main");
         chat.scrollTop = chat.scrollHeight;
+    }
+    certainty = (score) => {
+        let reply = ""
+        if (score < 2) {
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" /> </span></p>
+        }
+        else if (score < 5) {
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></p>
+        }
+        else if (score < 15) {
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></p>
+        }
+        else {
+            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img src={star} alt="star" /> <img src={star} alt="star" /> </span></p>
+        }
+        return reply
     }
     render() {
         const chat = [];
@@ -46,6 +65,8 @@ class QuestionForm extends Component {
                     <div className="answer">
                         <p>Answer</p>
                         <p>{dialogue[i].answer}</p>
+                        {this.certainty(dialogue[i].score)}
+
                     </div>
                 </div>
             )
@@ -66,7 +87,7 @@ class QuestionForm extends Component {
                     </span>
                     <span className="list-group-item list-group-item-action flex-column align-items-start">
                         <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-1">Answer:</h5>
+                            {this.certainty(dialogue[i].score)}
                         </div>
                         <p className="mb-1">{dialogue[i].answer}</p>
                     </span>

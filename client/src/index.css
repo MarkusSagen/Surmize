@@ -352,3 +352,6 @@ header {
     /* transition: fill 150ms ease-in-out; */
     /* transition-delay: 200ms; */
 }
+.inactive-score {
+  opacity: 0.5;
+}

@@ -5,6 +5,8 @@ import pandas as pd
 from pathlib import Path
 import glob
 import threading
+import timeit
+from codetiming import Timer
 
 sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs'))
 sys.path.append(os.path.join(sys.path[0],'summarization', 'bertabs', 'Utility'))
@@ -80,12 +82,14 @@ def summarize(upload_folder, summary_path, user, sus_method,isnew):
     Summarize TXT file and store summary in new summaries path
     """
     if sus_method == "abs":
-        temp_new_line_folder = insert_newlines(upload_folder, user)
-        summarizer.main(rDir=temp_new_line_folder, sDir=summary_path, \
+        with Timer(name="Abs. SUS", text="Abs Sus. took: {:0.2f} seconds"):
+            temp_new_line_folder = insert_newlines(upload_folder, user)
+            summarizer.main(rDir=temp_new_line_folder, sDir=summary_path, \
                         beam=8, alpha=0.75, minl=50, maxl=200)
-        shutil.rmtree(f"data/pending/{user}") 
+            shutil.rmtree(f"data/pending/{user}") 
     elif sus_method == "ext":
-        text_rank_summarize(upload_path=upload_folder, \
+        with Timer(name="Abs. SUS", text="Ext Sus. took: {:0.2f} seconds"):
+            text_rank_summarize(upload_path=upload_folder, \
                             summary_path=summary_path, \
                             word_embeddings=word_emb)
     else:
@@ -105,6 +109,7 @@ async def empty_exception_handler(request: Request, e: EmptyException):
     )
 
 
+@Timer(name="QA", text="QA. took: {:0.2f} seconds")
 async def QA_predict_to_json(question: str) -> json:
     """
     Returns the prediction and context to a question as json
@@ -112,8 +117,8 @@ async def QA_predict_to_json(question: str) -> json:
     if question == "":
         raise EmptyException(question)
 
-    answer, context, = qa.predict(question)
-    return { "answer": answer, "context": context }
+    answer, context, score = qa.predict(question)
+    return { "answer": answer, "context": context, "score": score}
 
 
 @app.get("/")
@@ -155,9 +160,9 @@ async def ask_question(request: Request):
     obj = await show_file(request)
     status_code = obj["status_code"]
     answer = await QA_predict_to_json(question=question)
-
+    
     if (status_code == 200):
-        return { "sum": obj["sum"], "answer": answer["answer"] }
+        return { "sum": obj["sum"], "answer": answer }
     return answer
 
 
@@ -199,8 +204,10 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         for f in file:
             file_object = f.file
             file_name = f.filename
-            file_path_src=f"{upload_folder}/{file_name}"
-            file_path_dst = f"{new_tmp_folder}/{file_name}"
+            # Get only TXT version of file uploaded for summary
+            name, _ = os.path.splitext(str(file_name)) 
+            file_path_src=f"{upload_folder}/{name}.txt"
+            file_path_dst = f"{new_tmp_folder}/{name}.txt"
             shutil.copy(file_path_src,file_path_dst)
     
         isabstractive= query["mode"]

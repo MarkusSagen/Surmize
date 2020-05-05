@@ -3,6 +3,7 @@ import argparse
 import logging
 import os
 import sys
+import platform
 from collections import namedtuple
 
 import torch
@@ -122,8 +123,9 @@ def save_summaries(summaries, path, original_document_name):
             name = bare_document_name + "_summary." + extension
         else:
             name = document_name + "_summary"
-
-        file_path = os.path.join(path, name)
+        if platform.system() == "Windows":
+            name = name.split("\\")[1]
+        file_path = os.path.join(path, name).replace("\\", "/")
         with open(file_path, "w") as output:
             output.write(summary)
 
@@ -262,7 +264,6 @@ def main(rDir, sDir, beam, alpha, minl, maxl):
                               documents_dir=rDir, max_length=maxl, min_length=minl, no_cuda=True, summaries_output_dir=sDir)
     args.device = torch.device(
         "cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
-
     evaluate(args)
 
 

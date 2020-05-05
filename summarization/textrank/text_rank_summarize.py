@@ -6,7 +6,7 @@ import nltk
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-       
+
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
@@ -19,8 +19,8 @@ import timeit
 
 def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_words=0.2):
     """
-    Return TextRank summary 
-    param: fraction_of_words 
+    Return TextRank summary
+    param: fraction_of_words
 
     >>> text_rank_summarize(upload_folder, summary_folder, 0.2)
     >>> Returns top 10 sentances of each file in "upload_folder"
@@ -28,7 +28,7 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
     start = timeit.default_timer()
     files = os.listdir(upload_path)
     stop_words = stopwords.words('english')
-    
+
 
     for file in tqdm(files):
         with open(f'{upload_path}/{file}') as f:
@@ -40,7 +40,7 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
         # remove stopwords from the sentences
         def remove_stopwords(sen):
             return " ".join([i for i in sen if i not in stop_words])
-        
+
         # Clean and remove stop words
         clean_sentences = [remove_stopwords(s.lower().split()) for s in pd.Series(sentences).str.replace("[^a-zA-Z]", " ")]
 
@@ -59,20 +59,23 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
                 if i != j:
                     sim_mat[i][j] = cosine_similarity(sentence_vectors[i].reshape(1,100), sentence_vectors[j].reshape(1,100))[0,0]
 
-        # Calculate PageRank scores from matrix        
+        # Calculate PageRank scores from matrix
         scores = nx.pagerank(nx.from_numpy_array(sim_mat))
         ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
 
         # Extract top 10 sentences as the summary
         top_x_sentences = int(len_sentence * fraction_of_words)
+        if top_x_sentences > 15:
+            top_x_sentences = 15
+
         summary = " ".join([ranked_sentences[i][1] for i in range(top_x_sentences)])
-        
-        filename, _ = os.path.splitext(str(file)) 
+
+        filename, _ = os.path.splitext(str(file))
         with open(f'{summary_path}/{filename}_summary.txt', "w") as f:
             f.write(summary)
 
     end = timeit.default_timer()
-    print("Extensive summarization Took: {} seconds".format(end-start))
+    print("Extractive summarization Took: {} seconds".format(end-start))
 
 
 def word_embeddings(embedding_path='summarization/textrank/glove.6B.100d.txt'):
