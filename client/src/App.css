@@ -26,7 +26,8 @@
 
 .App-link {
   color: #61dafb;
-} */
+} 
+*/
 
 /* @keyframes App-logo-spin {
   from {
@@ -41,9 +42,17 @@
   border:solid 1px red;
   background-color: transparent;
 } */
+
+
+
+
+
+
+
+/* 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Open+Sans&family=Roboto&family=Source+Sans+Pro&display=swap');
 :root {
-  /* colors */
+
   --white: #fff;
   --background-color: #fff;
   --dark-purple: #8E7DDA;
@@ -60,12 +69,12 @@
   --primary-blue: #577ECC;
   --red: #dc3c4b;
 
-  /* Text Colors */
+
   --text-white: #fff;
   --text-black: #000;
   --text-pink: #f0edff;
 
-  /* Margin and Paddings */
+
   --margin-smallest: 5px;
   --margin-small: 25px;
   --margin-medium: 40px;
@@ -110,10 +119,6 @@ header {
   justify-content: space-between;
   overflow: hidden;
   width: 100%;
- /*  padding: 15px;
-  padding-left: 20px;
-  padding-top: 50px;
-  height: var(--margin-large); */
 }
 .own-nav-content {
   display: flex;
@@ -190,8 +195,9 @@ header {
   opacity: 0.9;
   border-left: var(--dark-purple) 10px solid;
   margin-left: 2px;
-  padding-left: 9px; /* Make to 10px to make small indent on files */
+  padding-left: 9px; 
 }
+
 .upload {
   background-color: #bbb;
   height: 15%;
@@ -318,19 +324,6 @@ header {
   color: var(--dark-purple);
 }
 
-  /* .chat .content-detail form .form-group{
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: space-between;
-  } */
-/*    width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-*/
-
 .chat .content-detail form .form-group textarea {
   width: 250px;
   resize:none;
@@ -352,8 +345,6 @@ header {
   border-radius: var(--small-round-radius);
   font-size: 1em;
   width: 70px;
-  /* margin-left: 20px;
-  width: 70px; */
 }
 
 
@@ -374,6 +365,6 @@ header {
 
 .save-icon:hover > g {
     fill: var(--primary-blue);
-    /* transition: fill 150ms ease-in-out; */
-    /* transition-delay: 200ms; */
 }
+
+*/
