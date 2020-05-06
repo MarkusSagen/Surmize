@@ -186,7 +186,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         #os.makedirs(csv_folder)
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
-        os.makedirs(new_tmp_folder)
+        
         
 
     for f in file:
@@ -201,7 +201,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     
     
     if new=="true":
-        
+        os.makedirs(new_tmp_folder)
         for f in file:
             file_object = f.file
             file_name = f.filename
