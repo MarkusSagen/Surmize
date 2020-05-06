@@ -4,6 +4,10 @@ import { ReactComponent as TrashCan } from "./trashcan.svg";
 
 class Sidebar extends Component {
 
+    toggleForm = () => {
+        this.props.moreFiles();
+    }
+
     removeAll = () => {
         this.props.removeAll()
     }
@@ -22,11 +26,11 @@ class Sidebar extends Component {
 
         const files = filesArr.map(f => {
             if (f === this.props.file) {
-                return (<li key={f} className="selected-file"><span onClick={() => { this.readFile(f) }}>{f}</span>  
-                <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
+                return (<li key={f} className="selected-file"><span onClick={() => { this.readFile(f) }}>{f}</span>
+                    <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
             }
-            return (<li key={f}><span onClick={() => { this.readFile(f) }}>{f}</span>  
-                                <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
+            return (<li key={f}><span onClick={() => { this.readFile(f) }}>{f}</span>
+                <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
         })
         return (
             <div className="sidebar">
@@ -40,7 +44,7 @@ class Sidebar extends Component {
                     </ul>
                 </div>
                 <div className="upload">
-                    <button><p>Upload Files</p></button>
+                    <button onClick={this.toggleForm}><p>{this.props.showForm ? "Close Form" : "Upload Files"}</p></button>
                 </div>
                 <div className="delete-all-files">
                     <button onClick={this.removeAll}><p>Delete Files</p> <TrashCan /></button>

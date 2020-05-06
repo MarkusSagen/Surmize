@@ -186,6 +186,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
         #os.makedirs(csv_folder)
         os.makedirs(upload_folder)
         os.makedirs(summary_folder)
+        os.makedirs(new_tmp_folder)
         
 
     for f in file:
@@ -200,7 +201,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     
     
     if new=="true":
-        os.makedirs(new_tmp_folder)
+        
         for f in file:
             file_object = f.file
             file_name = f.filename
@@ -287,16 +288,31 @@ async def handle_text(request: Request):
     query = await request.json()
     user = query['user']
     text= query["text"]
+    new= query["new"]
     upload_folder   = f'data/uploaded/{user}/text'
     summary_folder  = f'data/uploaded/{user}/summary'
-    if not os.path.exists(upload_folder) and user != 'null':
-        #os.makedirs(csv_folder)
-        os.makedirs(upload_folder)
-        os.makedirs(summary_folder)
+    new_tmp_folder= f'data/uploaded/{user}/tmp'
+    if not(new):
+        if not os.path.exists(upload_folder) and user != 'null':
+            #os.makedirs(csv_folder)
+            os.makedirs(upload_folder)
+            os.makedirs(summary_folder)
+            
     r=str(uuid4()).split("-")
     f= open(f"{upload_folder}/text_{r[0]}.txt", "w+")
     f.write(text)
-    f.close
+    f.close()
+    if new:
+        os.makedirs(new_tmp_folder)
+        fi=open(f'data/uploaded/{user}/tmp/text_{r[0]}.txt', "w+")
+        fi.write(text)
+        fi.close()
+        thread = threading.Thread(name="Summarizer Model", \
+                    target=summarize, \
+                    args=(new_tmp_folder, summary_folder, user, "ext",True))
+        thread.start()
+        return {"file":f"text_{r[0]}.txt"}
+
     return{"msg": "UPLOADED"}
 
 

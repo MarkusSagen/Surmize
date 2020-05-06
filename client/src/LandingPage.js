@@ -11,7 +11,7 @@ class LandingPage extends Component {
     }
     handleTextUpload = (text, mode) => {
         this.changeState()
-        const body = { text: text, user: this.props.user }
+        const body = { text: text, user: this.props.user, new: false }
         if (this.props.isAuthed) {
             fetch(`/textUpload`, {
                 method: 'post',
