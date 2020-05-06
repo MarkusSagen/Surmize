@@ -40,16 +40,16 @@ class QuestionForm extends Component {
     certainty = (score) => {
         let reply = ""
         if (score < 2) {
-            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" /> </span></p>
+            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" /> </span></div>
         }
         else if (score < 5) {
-            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></p>
+            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></div>
         }
         else if (score < 15) {
-            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></p>
+            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img src={star} alt="star" /> <img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></div>
         }
         else {
-            reply = <p style={{ paddingTop: "5px" }}>Confidence Score: <span><img src={star} alt="star" /> <img src={star} alt="star" /> <img src={star} alt="star" /> </span></p>
+            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img src={star} alt="star" /> <img src={star} alt="star" /> <img src={star} alt="star" /> </span></div>
         }
         return reply
     }
@@ -129,7 +129,7 @@ class QuestionForm extends Component {
                 </div>
                 <div className="content-detail">
                     <form onSubmit={this.sendQuestion} >
-                        <div className="form-group">
+                        <div className="form-group question-area">
                             <textarea onChange={this.handleChange} placeholder="Write Question Here..." name="question-text" value={this.state.text} id="question-text"></textarea>
                         </div>
                         <button>Ask</button>
