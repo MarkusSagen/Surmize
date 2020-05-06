@@ -142,7 +142,7 @@ class FileForm extends Component {
             <div className="container text-center">
                 {this.props.minimal ? "" : <h1>Upload Files Here</h1>}
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group text-center">
+                    <div className="form-group first-page-upload text-center">
                         <input onChange={this.fileChange} type="file" multiple className="form-control-file inputFile" id="fileInput" aria-describedby="fileHelp" />
                         <label htmlFor="fileInput"><span>Choose File</span></label>
                         <ul className="list-group">

@@ -11,8 +11,6 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import networkx as nx
-from tqdm.auto import tqdm
-import timeit
 #nltk.download('punkt') # one time execution
 #nltk.download('stopwords') Comment out after first time!
 
@@ -25,12 +23,10 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
     >>> text_rank_summarize(upload_folder, summary_folder, 0.2)
     >>> Returns top 10 sentances of each file in "upload_folder"
     """
-    start = timeit.default_timer()
     files = os.listdir(upload_path)
     stop_words = stopwords.words('english')
 
-
-    for file in tqdm(files):
+    for file in files:
         with open(f'{upload_path}/{file}') as f:
             text = f.read()
 
@@ -73,9 +69,6 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
         filename, _ = os.path.splitext(str(file))
         with open(f'{summary_path}/{filename}_summary.txt', "w") as f:
             f.write(summary)
-
-    end = timeit.default_timer()
-    print("Extractive summarization Took: {} seconds".format(end-start))
 
 
 def word_embeddings(embedding_path='summarization/textrank/glove.6B.100d.txt'):
