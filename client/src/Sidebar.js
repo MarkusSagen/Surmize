@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { ReactComponent as RemoveFile } from "./crossred.svg";
+import { ReactComponent as TrashCan } from "./trashcan.svg";
 
 class Sidebar extends Component {
 
@@ -20,11 +22,11 @@ class Sidebar extends Component {
 
         const files = filesArr.map(f => {
             if (f === this.props.file) {
-                return (<li key={f} className="selected-file"><span onClick={() => { this.readFile(f) }}>{f}</span>  <span><i
-                    onClick={() => this.deleteFile(f)} className="fas remove-file fa-trash-alt"></i></span></li>)
+                return (<li key={f} className="selected-file"><span onClick={() => { this.readFile(f) }}>{f}</span>  
+                <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
             }
-            return (<li key={f}><span onClick={() => { this.readFile(f) }}>{f}</span>  <span><i
-                onClick={() => this.deleteFile(f)} className="fas remove-file fa-trash-alt"></i></span></li>)
+            return (<li key={f}><span onClick={() => { this.readFile(f) }}>{f}</span>  
+                                <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
         })
         return (
             <div className="sidebar">
@@ -38,11 +40,12 @@ class Sidebar extends Component {
                     </ul>
                 </div>
                 <div className="upload">
-                    <button>Upload</button>
+                    <p>Upload Files and/or Text</p>
+                    <button>File</button>
                     <button>Text</button>
                 </div>
                 <div className="delete-all-files">
-                    <button onClick={this.removeAll}>Delete All Files</button>
+                    <button onClick={this.removeAll}><p>Delete All Files</p> <TrashCan /></button>
                 </div>
             </div>
         )

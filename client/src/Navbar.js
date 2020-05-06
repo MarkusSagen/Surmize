@@ -21,7 +21,7 @@ class Navbar extends Component {
                         <div className="nav-links">
                             <ul>
                                 <li><a href="#">Home</a></li>
-                                <li><a href="#">How To Use It</a></li>
+                                <li><a href="#">How To Use</a></li>
                                 <li><a href="#">About Us</a></li>
                             </ul>
                         </div>
