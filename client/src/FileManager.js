@@ -5,6 +5,7 @@ import Sidebar from './Sidebar'
 import Summary from './Summary'
 //import './FileManager.css'
 import FileForm from './FileForm'
+import Navbar from './Navbar'
 
 class FileManager extends Component {
 
@@ -256,11 +257,15 @@ class FileManager extends Component {
             </div>
 
         );
-        const page = (<div className="main-content">
-            <Sidebar files={this.state.files} removeAll={this.removeAll} showFile={this.showFile} deleteFile={this.deleteFile} file={this.state.file} />
-            <Summary summary={this.state.summary} />
-            <QuestionForm sendQuestion={this.handleQuestion} isFetching={this.state.handlingQuestion} file={this.state.file} />
-        </div>);
+        const page = (
+            <header>
+                <Navbar minimal />
+                <div className="main-content">
+                    <Sidebar files={this.state.files} removeAll={this.removeAll} showFile={this.showFile} deleteFile={this.deleteFile} file={this.state.file} />
+                    <Summary summary={this.state.summary} />
+                    <QuestionForm sendQuestion={this.handleQuestion} isFetching={this.state.handlingQuestion} file={this.state.file} />
+                </div>
+            </header>);
         const comps = (!fetching ? page : spinner)
         return (
             comps

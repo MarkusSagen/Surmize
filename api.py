@@ -282,6 +282,23 @@ async def show_file(request:Request):
 
     return { "sum": content, "status_code": status_code }
 
+@app.post("/textUpload")
+async def handle_text(request: Request):
+    query = await request.json()
+    user = query['user']
+    text= query["text"]
+    upload_folder   = f'data/uploaded/{user}/text'
+    summary_folder  = f'data/uploaded/{user}/summary'
+    if not os.path.exists(upload_folder) and user != 'null':
+        #os.makedirs(csv_folder)
+        os.makedirs(upload_folder)
+        os.makedirs(summary_folder)
+    r=str(uuid4()).split("-")
+    f= open(f"{upload_folder}/text_{r[0]}.txt", "w+")
+    f.write(text)
+    f.close
+    return{"msg": "UPLOADED"}
+
 
 @app.delete("/files")
 async def remove_file(request:Request):

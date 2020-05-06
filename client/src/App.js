@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 //import './App.css';
-import Navbar from './Navbar'
 //import Form from './Form'
 //import FileForm from './FileForm'
-import FormHandler from './FormHandler'
+/* import FormHandler from './FormHandler' */
+import LandingPage from "./LandingPage"
 import FileManager from './FileManager';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
@@ -63,17 +63,16 @@ class App extends Component {
 
   render() {
     return (
-      <header>
-        <Navbar />
+      <div>
         <Switch>
           <Route exact path={`/files/:id`} render={(rp) =>
             <FileManager client={this.state.client} {...rp} isAuthed={this.state.isAuthed}
               user={this.state.user} />} />
           <Route exact path="/" render={(rp) =>
-            <FormHandler  {...rp} isAuthed={this.state.isAuthed}
-              user={this.state.user} />} />
+            <LandingPage client={this.state.client} {...rp} isAuthed={this.state.isAuthed}
+              user={this.state.user} {...rp} />} />
         </Switch>
-      </header>
+      </div>
     );
   }
 }

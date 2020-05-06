@@ -18,13 +18,14 @@ class Navbar extends Component {
                                 <Squid />
                             </div>
                         </div>
-                        <div className="nav-links">
+                        {!this.props.minimal && <div className="nav-links">
                             <ul>
                                 <li><a href="#">Home</a></li>
                                 <li><a href="#">How To Use It</a></li>
                                 <li><a href="#">About Us</a></li>
                             </ul>
-                        </div>
+                        </div>}
+
                     </div>
                 </div>
             </nav>

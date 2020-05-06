@@ -62,7 +62,7 @@ code {
 
 body {
   background-color: var(--background-color);
-  overflow: hidden;
+ /*  overflow: hidden; */
 }
 
 header {
@@ -354,4 +354,211 @@ header {
 }
 .inactive-score {
   opacity: 0.5;
+}
+.landing-main-content {
+  background: url("maze-light-purple.png") center center/cover no-repeat;
+  height: 90%;
+  width: 100%;
+}
+.main-container {
+  max-width: 1000px;
+  height: 100%;
+  margin: 0 auto;
+}
+.jumbotron {
+  background-color: white;
+  width: 100%;
+  height: 80%;
+  text-align: center;
+  box-shadow: 0px 11px 6px 7px rgba(232,223,232,1);
+}
+.jumbotron .title {
+  padding-top: 40px;
+}
+.jumbotron .title h1 {
+  color: var(--dark-purple);
+}
+.jumbotron .title p{
+  color: var(--dark-light-grey);
+}
+.upload-section {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 60%;
+}
+
+.upload-section .file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 40%;
+}
+.upload-section .file-upload form,.upload-section .text-upload form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.upload-section .file-upload form input[type="file"] {
+  display: none;
+}
+.upload-section .file-upload form label, .upload-section .text-upload form label {
+  border:5px dashed var(--dark-grey);
+  background-color: var(--light-purple);
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: flex-end;
+  height:100%;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+  color: var(--dark-grey);
+}
+.upload-section .file-upload form button, .upload-section .text-upload form button{
+  margin-top: 30px;
+  padding: 5px 15px;
+  text-align: center;
+  border: 1px solid var(--dark-purple);
+  border-radius: 30px;
+  background-color: var(--light-purple);
+  color: white;
+  font-weight: 900;
+  width: 30%;
+  font-size: 16px;
+}
+.upload-section i {
+  margin-bottom: 10px;
+}
+
+.upload-section .file-upload h2, .upload-section .text-upload h2{ 
+  color: var(--dark-purple);
+  margin-bottom: 10px;
+}
+.upload-section .text-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 40%;
+}
+.upload-section .text-upload form textarea {
+  border:5px dashed var(--dark-grey);
+  background-color: var(--light-purple);
+  height:65%;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+  color: var(--dark-grey);
+  font-size: 16px;
+  resize: none;
+} 
+.upload-section .text-upload form button{
+  background-color: var(--light-grey);
+  color: var(--medium-purple);
+}
+
+.how-section {
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--light-grey);
+  
+}
+.how-section h1{
+  color: var(--dark-purple);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.how-section .card-container {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 10px;
+  height: 70%;
+  margin-top: 30px;
+}
+
+.how-section .card-container .card{
+  background: white;
+  height: 100%;
+}
+
+.card {
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 20px;
+  border: 1px solid black;
+}
+
+.card h2 {
+  color: var(--dark-purple);
+  font-weight: 900;
+  font-size: 2rem;
+}
+
+.card ol li {
+  margin-bottom: 10px;
+  color: var(--dark-purple);
+}
+.about {
+  height:100vh;
+  width: 100vw;
+}
+.about .about-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:var(--dark-grey);
+  height: 20%;
+  background: white;
+  width: 100%;
+}
+.about-title h1 {
+  font-size: 3rem;
+}
+.about-main {
+  background: url("maze-light-purple.png") center center/cover no-repeat #8E7DDA;
+  height: 60%;
+  width: 100%;
+}
+.about-main .about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #8E7DDA;
+  box-shadow: 0px 11px 10px 5px rgba(46,74,117,1);
+  height: 100%;
+}
+
+.about-main .about-content p {
+  color: var(--lightest-grey);
+  text-align: center;
+}
+.about-pics {
+  display:flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.about-pics .member {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 10%;
+}
+
+.footer {
+  background-color: #440e6b;
+  height: 20%;
 }
