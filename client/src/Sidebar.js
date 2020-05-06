@@ -40,12 +40,10 @@ class Sidebar extends Component {
                     </ul>
                 </div>
                 <div className="upload">
-                    <p>Upload Files and/or Text</p>
-                    <button>File</button>
-                    <button>Text</button>
+                    <button><p>Upload Files</p></button>
                 </div>
                 <div className="delete-all-files">
-                    <button onClick={this.removeAll}><p>Delete All Files</p> <TrashCan /></button>
+                    <button onClick={this.removeAll}><p>Delete Files</p> <TrashCan /></button>
                 </div>
             </div>
         )

@@ -202,7 +202,7 @@ button {
 
 .sidebar .files {
   overflow: scroll;
-  height: calc(93% + -146px);
+  height: calc(93% - 120px);
   border-bottom: 1px solid var(--light-grey);
   padding: 0 20px;
 }
@@ -213,6 +213,7 @@ button {
 
 .sidebar .files ul li {
   position: relative;
+  cursor: pointer;
   padding-left: 15px;
   margin-top: 10px;
   font-size: var(--files-font-size);
@@ -256,19 +257,10 @@ button {
 .upload {
   position: relative;
   background-color: var(--lightest-grey);
-  height: 85px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 0px 20px;
-}
-
-.upload p {
-  position: absolute;
-  top: 10px;
-  font-size: 0.9rem;
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--light-grey);
 }
 
 .upload button {
@@ -279,13 +271,19 @@ button {
   text-align: center;
   font-size: 0.9em;
   margin-top: 25px;
-  padding: 5px;
-  border-radius: var(--small-round-radius);
-  width: 80px;
+  padding: 10px 5px;
+  border-radius: 30px;
+  width: 145px;
   display: inline-block;
   text-decoration: none;
   top: 5px;
   border: 1px solid #505050;
+  margin: 5px 0px;
+  margin-bottom: 12px;
+}
+
+.upload button p {
+  width: 110px;
 }
 
 .delete-all-files {
@@ -309,20 +307,20 @@ button {
   border-bottom: 4px solid #b91d1d;
   z-index: 5;
   margin-bottom: 10px;
-  width: 180px;
+  width: 150px;
   border: 1px solid #b91d1d;
   opacity: 0.9;
   font-size: 0.9em;
 }
 
 .delete-all-files button p {
-  width: 140px;
+  width: 110px;
 }
 
 .delete-all-files button svg {
   position: absolute;
   top: 10px;
-  right: 30px;
+  right: 20px;
 }
 
 
