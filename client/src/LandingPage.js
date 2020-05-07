@@ -23,12 +23,13 @@ const SiteIcon = require("./img/stock/Site-Running.svg");
 class LandingPage extends Component {
     state = {
         isFetching: false,
-        files: []
+        files: [],
+        err: "",
     }
 
     handleTextUpload = (text, mode) => {
         this.changeState()
-        const body = { text: text, user: this.props.user }
+        const body = { text: text, user: this.props.user, new: false }
         if (this.props.isAuthed) {
             fetch(`/textUpload`, {
                 method: 'post',
@@ -75,7 +76,7 @@ class LandingPage extends Component {
     changeState = () => {
         this.setState({ isFetching: !this.state.isFetching })
     }
-    
+
     putFile = (f) => {
         const arr = [];
         for (let i = 0; i < f.length; i++) {
@@ -83,7 +84,12 @@ class LandingPage extends Component {
         }
         this.setState({ files: arr });
     }
-
+    setError = (text) => {
+        this.setState({ err: text })
+        setTimeout(() => {
+            this.setState({ err: "" })
+        }, 2000)
+    }
     render() {
         return (
             <header>
@@ -96,7 +102,7 @@ class LandingPage extends Component {
                                 <p>Upload your Documents or Text and gain quick insight</p>
                             </div>
                             <div className="upload-section">
-                                <FileUpload putFile={this.putFile} sendFile={this.handleFileUpload} />
+                                <FileUpload setError={this.setError} err={this.state.err} putFile={this.putFile} sendFile={this.handleFileUpload} />
                                 <TextUpload uploadText={this.handleTextUpload} />
                             </div>
                         </div>
@@ -106,17 +112,17 @@ class LandingPage extends Component {
                     <div className="main-container">
                         <h1>How To Use</h1>
                         <div className="card-container">
-                            <Card 
-                                title="Upload Files" 
+                            <Card
+                                title="Upload Files"
                                 imgSrc={QAIcon}
                             />
-                            <Card 
+                            <Card
                                 title="Ask Questions"
-                                imgSrc={FAQIcon} 
+                                imgSrc={FAQIcon}
                             />
-                            <Card 
+                            <Card
                                 title="Save Results"
-                                imgSrc={doneIcon} 
+                                imgSrc={doneIcon}
                             />
                         </div>
                     </div>
@@ -131,12 +137,12 @@ class LandingPage extends Component {
                                 <div>
                                     <h6>Lorem Ipsum Parabellum</h6>
                                     <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque repellat magnam facilis doloribus. Esse quasi accusamus eveniet rem adipisci dolore, porro quia reprehenderit temporibus, perferendis tempora repellendus, obcaecati libero hic similique. Aliquam
-                                     praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
+                                    praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
                                     </p>
                                 </div>
                                 <div className="about-pics">
                                     <ProjectMember
-                                        src={markusProfile} 
+                                        src={markusProfile}
                                         firstName="Markus"
                                         lastName="Sagen"
                                         imgWidth="50px"
@@ -144,8 +150,8 @@ class LandingPage extends Component {
                                         linkedInLink="https://linkedin.com/MarkusSagen"
                                         githubLink="https://github.com/MarkusSagen"
                                     />
-                                    <ProjectMember 
-                                        src={sebbeProfile} 
+                                    <ProjectMember
+                                        src={sebbeProfile}
                                         firstName="Sebastian"
                                         lastName="Rollino"
                                         imgWidth="50px"
@@ -153,8 +159,8 @@ class LandingPage extends Component {
                                         linkedInLink="https://www.linkedin.com/in/sebastian-rollino-4019b8183/"
                                         githubLink="https://github.com/sebbersk"
                                     />
-                                    <ProjectMember                                         
-                                        src={nilsProfile} 
+                                    <ProjectMember
+                                        src={nilsProfile}
                                         firstName="Nils"
                                         lastName="Hedberg"
                                         imgWidth="50px"
@@ -162,8 +168,8 @@ class LandingPage extends Component {
                                         linkedInLink="https://www.linkedin.com/in/nils-hedberg-2784a8152/"
                                         githubLink="https://github.com/nilshugo"
                                     />
-                                    <ProjectMember 
-                                        src={alexProfile} 
+                                    <ProjectMember
+                                        src={alexProfile}
                                         firstName="Alexander"
                                         lastName="Bergkvist"
                                         imgWidth="50px"

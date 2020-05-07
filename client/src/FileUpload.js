@@ -30,7 +30,7 @@ class FileUpload extends Component {
             }
             // TODO: Make better more like react
             if (err !== '') {
-                console.error(err)
+                this.props.setError(err)
             }
             return hasPassed
         }
@@ -59,7 +59,7 @@ class FileUpload extends Component {
     truncate = (input) => {
         if (input.length > 25) {
             input = input.substring(0, 25) + '...';
-        } 
+        }
         return input;
     }
 
@@ -81,7 +81,7 @@ class FileUpload extends Component {
         }
     }
 
-    
+
     fileChange = (e) => {
         console.log("CHANGE")
         const file = e.target.files;
@@ -148,12 +148,12 @@ class FileUpload extends Component {
     render() {
         const files = this.state.files.map(f => {
             return (
-            <li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
-                <span className="upload-file-name">{this.truncate(f)}</span> 
-                <span className="upload-file-remove" onClick={() => this.removeFile(f)}><i className="fas fa-times"></i></span>
-            </li>)
+                <li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
+                    <span className="upload-file-name">{this.truncate(f)}</span>
+                    <span className="upload-file-remove" onClick={() => this.removeFile(f)}><i className="fas fa-times"></i></span>
+                </li>)
         });
-        const filesMsg =  this.state.files.length > 0 ? <span></span> : <span>Upload Files Here</span> 
+        const filesMsg = this.state.files.length > 0 ? <span></span> : <span>Upload Files Here</span>
         return (
             <div className="file-upload">
                 <h2>Upload File</h2>
@@ -163,7 +163,7 @@ class FileUpload extends Component {
                             <span className="upload-icon">
                                 <FilesIcon />
                             </span>
-                           {filesMsg}
+                            {filesMsg}
                         </label>
                         {this.state.files.length > 0 && <ul>
                             {files}
@@ -171,7 +171,7 @@ class FileUpload extends Component {
 
                         <input onChange={this.fileChange} type="file" name="" multiple id="file-upload" />
                     </div>
-                    <button type="submit">Upload</button>
+                    {this.props.err === "" ? <button type="submit">Upload</button> : <div>{this.props.err}</div>}
                 </form>
             </div>
         )

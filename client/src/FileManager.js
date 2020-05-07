@@ -6,11 +6,13 @@ import Summary from './Summary'
 //import './FileManager.css'
 import FileForm from './FileForm'
 import Navbar from './Navbar'
+import FileUpload from "./FileUpload"
+import TextUpload from './TextUpload'
 
 class FileManager extends Component {
 
     state = {
-        isFetching: true,
+        isFetching: false,
         files: new Set(),
         summary: [],
         handlingQuestion: false,
@@ -24,6 +26,7 @@ class FileManager extends Component {
     componentDidMount() {
         const user = { user: this.props.user, mode: this.props.location.state.mode };
         const { client } = this.props;
+        this.setState({ isFetching: true })
         fetch("/getfiles", {
             method: "post",
             headers: {
@@ -212,6 +215,39 @@ class FileManager extends Component {
     moreFiles = () => {
         this.setState({ uploadMore: !this.state.uploadMore })
     }
+    handleTextUpload = (text, mode) => {
+        this.setState({ isFetching: true, uploadMore: false })
+        const body = { text: text, user: this.props.user, new: true, mode: mode }
+        if (this.props.isAuthed) {
+            fetch(`/textUpload`, {
+                method: 'post',
+                headers: {
+                    "Authorization": this.props.user,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }).then(resp => resp.json()).then(data => {
+                setTimeout(() => {
+                    const set = this.state.files;
+                    const wasEmpty = (set.size === 0);
+
+                    set.add(data.file)
+
+                    this.setState({ files: set, isFetching: false });
+                    if (wasEmpty) {
+                        console.log("in empty", [...set][0])
+                        this.showFile([...set][0]);
+                    } else {
+                        console.log("NOT EMPTY SHOW SAME FILE", this.state.file);
+                        this.showFile(this.state.file)
+                    }
+
+                }, 1000)
+            });
+        }
+
+    }
+
 
     handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true, uploadMore: false })
@@ -261,9 +297,11 @@ class FileManager extends Component {
             <header>
                 <Navbar minimal />
                 <div className="main-content">
-                    <Sidebar files={this.state.files} removeAll={this.removeAll} showFile={this.showFile} deleteFile={this.deleteFile} file={this.state.file} />
-                    <Summary summary={this.state.summary} />
-                    <QuestionForm sendQuestion={this.handleQuestion} isFetching={this.state.handlingQuestion} file={this.state.file} />
+                    <Sidebar showForm={this.state.uploadMore} files={this.state.files} removeAll={this.removeAll} showFile={this.showFile} deleteFile={this.deleteFile} file={this.state.file} moreFiles={this.moreFiles} />
+                    {this.state.uploadMore ? <div className="more-jumbotron"><div className="upload-section"><FileUpload exFiles={this.state.files} sendFile={this.handleFileUpload} />
+                        <TextUpload uploadText={this.handleTextUpload} /></div> </div> : <><Summary summary={this.state.summary} />
+                            <QuestionForm sendQuestion={this.handleQuestion} isFetching={this.state.handlingQuestion} file={this.state.file} /></>}
+
                 </div>
             </header>);
         const comps = (!fetching ? page : spinner)
