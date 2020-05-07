@@ -6,13 +6,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+*/
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
- */
- @import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Open+Sans&family=Roboto&family=Source+Sans+Pro&display=swap');
+
+/*
+font-family: 'Noto Serif', serif;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Rubik', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Source Sans Pro', sans-serif;
+*/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&family=Rubik:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&family=Roboto:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&family=Source+Sans+Pro:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
 :root {
   /* colors */
   --white: #fff;
@@ -59,6 +63,7 @@ code {
 
   /* Font-Size */
   --files-font-size: 1.1em;
+  --h1-font-size: 2.5em;
 
 }
 
@@ -77,6 +82,9 @@ body {
 header {
   height: 100vh;
   width: 100vw;
+}
+ul {
+  list-style: none;
 }
 
 .own-container {
@@ -169,18 +177,6 @@ button {
   top: -40px;
 }
 
-/*
-.sidebar::before {
-  display: block;
-  position: absolute;
-  content: '';
-  background: var(--middle-grey);
-  height: calc(72% + 141px );
-  width: 1px;
-  margin-top: 25px;
-  margin-left: 100.2%;
-}
-*/
 
 
 
@@ -202,7 +198,7 @@ button {
 
 .sidebar .files {
   overflow: scroll;
-  height: calc(93% - 120px);
+  height: calc(93% - 114px);
   border-bottom: 1px solid var(--light-grey);
   padding: 0 20px;
 }
@@ -585,8 +581,9 @@ button {
 
 
 .landing-main-content {
+  /* url("maze-light-purple.png") */
   background: url("maze-light-purple.png") center center/cover no-repeat;
-  height: 90%;
+  height: 92%;
   width: 100%;
 }
 .main-container {
@@ -599,17 +596,22 @@ button {
   width: 100%;
   height: 80%;
   text-align: center;
-  box-shadow: 0px 11px 6px 7px rgba(232,223,232,1);
+  box-shadow: -1px 6px 16px 6px rgba(181, 181, 181, 0.57);
 }
+
 .jumbotron .title {
   padding-top: 40px;
 }
+
 .jumbotron .title h1 {
+  font-size: var(--h1-font-size);
   color: var(--dark-purple);
 }
+
 .jumbotron .title p{
   color: var(--dark-light-grey);
 }
+
 .upload-section {
   margin-top: 30px;
   display: flex;
@@ -627,6 +629,41 @@ button {
   height: 100%;
   width: 40%;
 }
+
+.file-upload ul {
+  position: absolute;
+  bottom: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 85%;
+  width: 80%;
+}
+
+.file-upload ul li {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.file-upload-container label span:last-child {
+  position: absolute;
+  top: 65%;
+}
+
+.upload-file-name {
+  position: absolute;
+  left: 5%;
+}
+
+.upload-file-remove {
+  position: relative;
+  right: -40%;
+}
+
+
+
+
+
 .upload-section .file-upload form,.upload-section .text-upload form {
   height: 100%;
   display: flex;
@@ -635,42 +672,71 @@ button {
   justify-content: center;
   width: 100%;
 }
+
 .upload-section .file-upload form input[type="file"] {
   display: none;
 }
-.upload-section .file-upload form label, .upload-section .text-upload form label {
-  border:5px dashed var(--dark-grey);
+
+.file-upload-container {
+  position: relative;
+  border: 5px dashed var(--dark-grey);
   background-color: var(--light-purple);
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
   justify-content: flex-end;
-  height:100%;
+  height: 100%;
+  border-radius: 20px;
+  width: 100%;
+  color: var(--dark-grey);
+}
+
+
+.upload-section .file-upload form label, .upload-section .text-upload form label  {
+  background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   padding: 20px;
   border-radius: 20px;
   width: 100%;
   color: var(--dark-grey);
 }
-.upload-section .file-upload form button, .upload-section .text-upload form button{
+
+
+
+.upload-section .file-upload form button, .upload-section .text-upload form button {
   margin-top: 30px;
   padding: 5px 15px;
   text-align: center;
-  border: 1px solid var(--dark-purple);
+  border: 2px solid var(--dark-purple);
   border-radius: 30px;
-  background-color: var(--light-purple);
-  color: white;
+  background-color: var(--white);
+  color: #8e7dda;
   font-weight: 900;
   width: 30%;
   font-size: 16px;
 }
+
+.upload-section .file-upload form button:hover, .upload-section .text-upload form button:hover {
+  border: 2px solid var(--dark-purple);
+  background-color: var(--dark-purple);
+  color: var(--white);
+}
+
+
+
 .upload-section i {
   margin-bottom: 10px;
 }
 
-.upload-section .file-upload h2, .upload-section .text-upload h2{ 
+.upload-section .file-upload h2, .upload-section .text-upload h2 { 
   color: var(--dark-purple);
   margin-bottom: 10px;
 }
+
 .upload-section .text-upload {
   display: flex;
   flex-direction: column;
@@ -679,29 +745,52 @@ button {
   height: 100%;
   width: 40%;
 }
+
 .upload-section .text-upload form textarea {
-  border:5px dashed var(--dark-grey);
   background-color: var(--light-purple);
-  height:65%;
   padding: 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   width: 100%;
   color: var(--dark-grey);
   font-size: 16px;
   resize: none;
-} 
-.upload-section .text-upload form button{
-  background-color: var(--light-grey);
-  color: var(--medium-purple);
+  height: 100%;
 }
+
+.upload-section .text-upload form button {}
+
+.upload-icon {
+  position: absolute;
+  top: 39%;
+  left: calc(50% - 56px);
+}
+
+.upload-icon svg g {
+  fill: #cecece;
+}
+
+.text-icon-before {
+  position: absolute;
+  top: 38%;
+  font-family: times;
+  font-size: 72px;
+  color: #cecece;
+}
+  
+  
+
+
+
 
 .how-section {
   height: 100vh;
   width: 100vw;
-  background-color: var(--light-grey);
-  
+  background-color: var(--white);
+  border: 1px solid #ccc;
 }
-.how-section h1{
+
+.how-section h1 {
+  font-size: var(--h1-font-size);
   color: var(--dark-purple);
   padding: 20px 0;
   text-align: center;
@@ -726,40 +815,53 @@ button {
   align-items: center;
   justify-content: space-around;
   border-radius: 20px;
-  border: 1px solid black;
+  border: 1px solid var(--light-grey);
+  box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
 }
 
 .card h2 {
-  color: var(--dark-purple);
+  color: var(--dark-grey);
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
-.card ol li {
+.card ul li {
   margin-bottom: 10px;
   color: var(--dark-purple);
 }
+
+.card .card-image-bottom {
+
+}
+
 .about {
   height:100vh;
   width: 100vw;
 }
+
 .about .about-title {
   display: flex;
   align-items: center;
   justify-content: center;
   color:var(--dark-grey);
   height: 20%;
-  background: white;
+  background: #b4b5f9;
   width: 100%;
+  border-top: 1px solid #440e6b;
+  border-bottom: 1px solid #440e6b;
 }
+
 .about-title h1 {
-  font-size: 3rem;
+  font-size: var(--h1-font-size);
+  color: #440f6b;
 }
+
 .about-main {
   background: url("maze-light-purple.png") center center/cover no-repeat #8E7DDA;
   height: 60%;
   width: 100%;
 }
+
 .about-main .about-content {
   display: flex;
   flex-direction: column;
@@ -770,24 +872,71 @@ button {
   height: 100%;
 }
 
-.about-main .about-content p {
+.about-main .about-content div h6 {
+  text-align: center;
+  font-size: 1.25em;
+  margin-top: -5%;
+  margin-bottom: 15px;
+}
+
+.about-main .about-content div p {
   color: var(--lightest-grey);
   text-align: center;
+  padding: 0px 65px;
 }
+
 .about-pics {
   display:flex;
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
 }
+
 .about-pics .member {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 10%;
 }
 
+.member img {
+  /* position: absolute; */
+}
+
+.member-info {
+  position: absolute;
+  left: 60px;
+}
+
+.member-info h5 {
+  font-size: 0.9em;
+  font-weight: 600;
+  margin: -3px 0px;
+}
+
+.member-links {
+  position: relative;
+  left: 2px;
+  top: 3px;
+  width: 36px;
+  display: flex;
+  font-size: 16px;
+  margin: 4px 0px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.fa-linkedin        { color: var(--light-grey); }
+.fa-github          { color: var(--light-grey); }
+.fa-linkedin:hover  { color: var(--white); }
+.fa-github:hover    { color: var(--white); }
+
 .footer {
   background-color: #440e6b;
   height: 20%;
+  border-top: 2px solid #36005f;
 }
+
+
