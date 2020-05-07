@@ -154,7 +154,7 @@ class LandingPage extends Component {
                                         lastName="Sagen"
                                         imgWidth="50px"
                                         imgHeight="50px"
-                                        linkedInLink="https://linkedin.com/MarkusSagen"
+                                        linkedInLink="https://www.linkedin.com/in/markussagen/"
                                         githubLink="https://github.com/MarkusSagen"
                                     />
                                     <ProjectMember
