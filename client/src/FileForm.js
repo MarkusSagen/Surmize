@@ -134,9 +134,10 @@ class FileForm extends Component {
 
     render() {
         const files = this.state.files.map(f => {
-            return (<li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
-                {f} <span onClick={() => this.removeFile(f)}><i className="fas fa-times"></i></span>
-            </li>)
+            return (
+                <li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
+                    <span>{f}</span> <span onClick={() => this.removeFile(f)}><i className="fas fa-times"></i></span>
+                </li>)
         });
         return (
             <div className="container text-center">

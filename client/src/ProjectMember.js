@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
 
 class ProjectMember extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div className="member">
-                <h4>IMG</h4>
+                <img src={this.props.src} alt={this.props.src} style={{borderRadius: "90px"}} width={this.props.imgWidth} height={this.props.imgHeight} />
                 <div className="member-info">
-                    <h5>Name</h5>
-                    <h5>Alias</h5>
+                    <h5>{this.props.firstName}</h5>
+                    <h5>{this.props.lastName}</h5>
                     <div className="member-links">
-                        <i className="fab fa-linkedin"></i>
-                        <i className="fab fa-github"></i>
+                        <a href={ this.props.linkedInLink }><i className="fab fa-linkedin"></i></a>
+                        <a href={ this.props.githubLink }><i className="fab fa-github"></i></a>
                     </div>
                 </div>
             </div>
