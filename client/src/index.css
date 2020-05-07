@@ -198,7 +198,7 @@ button {
 
 .sidebar .files {
   overflow: scroll;
-  height: calc(93% - 120px);
+  height: calc(93% - 114px);
   border-bottom: 1px solid var(--light-grey);
   padding: 0 20px;
 }
@@ -831,7 +831,7 @@ button {
 }
 
 .card .card-image-bottom {
-  
+
 }
 
 .about {
