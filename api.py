@@ -375,4 +375,4 @@ async def websocket_endpoint(websocket: WebSocket):
 
             await websocket.send_text(json.dumps(data))
     finally:
-        await websocket.close()    
+        await websocket.close()

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { ReactComponent as FilesIcon } from './download-icon.svg';
 
 class FileUpload extends Component {
     state = {
@@ -29,7 +30,7 @@ class FileUpload extends Component {
             }
             // TODO: Make better more like react
             if (err !== '') {
-                console.error(err)
+                this.props.setError(err)
             }
             return hasPassed
         }
@@ -40,8 +41,6 @@ class FileUpload extends Component {
         var sum = 0;
         var hasPassed = true;
         var err = '';
-
-
         for (let i = 0; i < files.length; i++) {
             sum += files[i].size
         }
@@ -56,6 +55,18 @@ class FileUpload extends Component {
 
 
 
+
+    truncate = (input) => {
+        if (input.length > 25) {
+            input = input.substring(0, 25) + '...';
+        }
+        return input;
+    }
+
+
+
+
+
     handleSubmit = (e) => {
         e.preventDefault();
         let files = this.state.fileToBeSent;
@@ -66,11 +77,11 @@ class FileUpload extends Component {
             for (let i = 0; i < files.length; i++) {
                 formData.append("file", files[i]);
             }
-
             this.props.sendFile('files', formData, this.state.isExperimental)
-
         }
     }
+
+
     fileChange = (e) => {
         console.log("CHANGE")
         const file = e.target.files;
@@ -107,10 +118,12 @@ class FileUpload extends Component {
         }
         e.target.value = null;
     }
+
     handleCheck = (e) => {
         this.setState({ isExperimental: !this.state.isExperimental }
         )
     }
+
     removeFile = (f) => {
         const files = this.state.files;
         const filesToSend = this.state.fileToBeSent;
@@ -134,25 +147,31 @@ class FileUpload extends Component {
 
     render() {
         const files = this.state.files.map(f => {
-            return (<li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
-                {f} <span onClick={() => this.removeFile(f)}><i className="fas fa-times"></i></span>
-            </li>)
+            return (
+                <li key={f} className="list-group-item d-flex justify-content-between align-items-center list-files">
+                    <span className="upload-file-name">{this.truncate(f)}</span>
+                    <span className="upload-file-remove" onClick={() => this.removeFile(f)}><i className="fas fa-times"></i></span>
+                </li>)
         });
+        const filesMsg = this.state.files.length > 0 ? <span></span> : <span>Upload Files Here</span>
         return (
             <div className="file-upload">
                 <h2>Upload File</h2>
                 <form onSubmit={this.handleSubmit}>
-                    <label htmlFor="file-upload"><span className="upload-icon"><i
-                        className="fas fa-upload fa-5x"></i></span>
-                        <span>Drag To Upload
-                        Files or Click
-                Here</span></label>
-                    {this.state.files.length > 0 && <ul style={{ marginTop: "10px" }}>
-                        {files}
-                    </ul>}
+                    <div className="file-upload-container">
+                        <label htmlFor="file-upload">
+                            <span className="upload-icon">
+                                <FilesIcon />
+                            </span>
+                            {filesMsg}
+                        </label>
+                        {this.state.files.length > 0 && <ul>
+                            {files}
+                        </ul>}
 
-                    <input onChange={this.fileChange} type="file" name="" multiple id="file-upload" />
-                    <button type="submit">Upload</button>
+                        <input onChange={this.fileChange} type="file" name="" multiple id="file-upload" />
+                    </div>
+                    {this.props.err === "" ? <button type="submit">Upload</button> : <div>{this.props.err}</div>}
                 </form>
             </div>
         )
