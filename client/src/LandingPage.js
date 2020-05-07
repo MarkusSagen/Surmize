@@ -5,26 +5,28 @@ import TextUpload from './TextUpload'
 import Card from "./Card"
 import ProjectMember from "./ProjectMember"
 
-const defaultProfile = require("./img/default.jpg");
 const markusProfile = require("./img/Markus_profile.jpeg");
 const sebbeProfile = require("./img/Sebastian_profile.jpg");
 const nilsProfile = require("./img/Nils_profile.jpg");
 const alexProfile = require("./img/Alexander_profile.jpg");
 
-const askQuestionIcon = require("./img/stock/Ask-Question.svg");
-const contactIcon = require("./img/stock/Contact.svg");
 const doneIcon = require("./img/stock/Done.svg");
 const FAQIcon = require("./img/stock/FAQ.svg");
 const QAIcon = require("./img/stock/QA.svg");
+
+/*
+const defaultProfile = require("./img/default.jpg");
+const askQuestionIcon = require("./img/stock/Ask-Question.svg");
+const contactIcon = require("./img/stock/Contact.svg");
 const QuestionsIcon = require("./img/stock/Questions.svg");
 const SiteIcon = require("./img/stock/Site-Running.svg");
-
+*/
 
 class LandingPage extends Component {
     state = {
         isFetching: false,
         files: [],
-        err: "",
+        err: [],
     }
 
     handleTextUpload = (text, mode) => {
@@ -53,7 +55,6 @@ class LandingPage extends Component {
     handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true })
         file.append("new", false)
-        console.log("WHAY?")
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -84,12 +85,18 @@ class LandingPage extends Component {
         }
         this.setState({ files: arr });
     }
+
     setError = (text) => {
-        this.setState({ err: text })
+        const state = this.state.err;
+        console.log("setError: " + text);
+        this.setState( state => ({ 
+            err: [...state.err, text] 
+        }));
         setTimeout(() => {
-            this.setState({ err: "" })
-        }, 2000)
+            this.setState({ err: [] });
+        }, 5000)
     }
+
     render() {
         return (
             <header>
@@ -180,7 +187,6 @@ class LandingPage extends Component {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div className="footer"></div>
                 </div>

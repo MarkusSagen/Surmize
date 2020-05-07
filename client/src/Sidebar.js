@@ -8,15 +8,16 @@ class Sidebar extends Component {
         this.props.moreFiles();
     }
 
-    removeAll = () => {
-        this.props.removeAll()
+    truncate = (input) => {
+        if (input.length > 18) {
+            input = input.substring(0, 18) + '...';
+        }
+        return input;
     }
-    readFile = (f) => {
-        this.props.showFile(f)
-    }
-    deleteFile = (f) => {
-        this.props.deleteFile(f);
-    }
+
+    removeAll   = ( ) => { this.props.removeAll() }
+    readFile    = (f) => { this.props.showFile(f) }
+    deleteFile  = (f) => { this.props.deleteFile(f); }
     render() {
         const itr = this.props.files.entries();
         let filesArr = [];
@@ -26,10 +27,12 @@ class Sidebar extends Component {
 
         const files = filesArr.map(f => {
             if (f === this.props.file) {
-                return (<li key={f} className="selected-file"><span onClick={() => { this.readFile(f) }}>{f}</span>
+                return (<li key={f} className="selected-file">
+                    <span onClick={() => { this.readFile(f) }}> { this.truncate(f) } </span>
                     <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
             }
-            return (<li key={f}><span onClick={() => { this.readFile(f) }}>{f}</span>
+            return (<li key={f}>
+                <span onClick={() => { this.readFile(f) }}> { this.truncate(f) } </span>
                 <span onClick={() => { this.deleteFile(f) }}><RemoveFile /></span></li>)
         })
         return (
@@ -37,17 +40,18 @@ class Sidebar extends Component {
                 <div className="file-title">
                     <h2>Files</h2>
                 </div>
-
                 <div className="files">
-                    <ul>
-                        {files}
-                    </ul>
+                    <ul> { files } </ul>
                 </div>
                 <div className="upload">
-                    <button onClick={this.toggleForm}><p>{this.props.showForm ? "Close Form" : "Upload Files"}</p></button>
+                    <button onClick={this.toggleForm}>
+                        <p>{this.props.showForm ? "Close Form" : "Upload Files"}</p>
+                    </button>
                 </div>
                 <div className="delete-all-files">
-                    <button onClick={this.removeAll}><p>Delete Files</p> <TrashCan /></button>
+                    <button onClick={this.removeAll}>
+                        <p>Delete Files</p> <TrashCan />
+                    </button>
                 </div>
             </div>
         )

@@ -34,5 +34,3 @@ class Navbar extends Component {
 }
 
 export default Navbar;
-
-/* <span class="sr-only">(current)</span> */
