@@ -89,8 +89,8 @@ class LandingPage extends Component {
     setError = (text) => {
         const state = this.state.err;
         console.log("setError: " + text);
-        this.setState( state => ({ 
-            err: [...state.err, text] 
+        this.setState(state => ({
+            err: [...state.err, text]
         }));
         setTimeout(() => {
             this.setState({ err: [] });
@@ -98,119 +98,123 @@ class LandingPage extends Component {
     }
 
     render() {
+        const spinner = (
+            <div className="colSpinner">
+                <div className="sp sp-wave">
+                </div>
+            </div>
+        );
+        const page = <header>
+            <Navbar />
+            <div className="landing-main-content">
+                <div className="main-container">
+                    <div className="jumbotron">
+                        <div className="title">
+                            <h1>Surmize</h1>
+                            <p>Upload your Documents or Text and gain quick insight</p>
+                        </div>
+                        <div className="upload-section">
+                            <FileUpload setError={this.setError} err={this.state.err} putFile={this.putFile} sendFile={this.handleFileUpload} />
+                            <TextUpload uploadText={this.handleTextUpload} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="how-section" id="how">
+                <div className="main-container">
+                    <h1>How To Use</h1>
+                    <div className="card-container">
+                        <Card
+                            title="Upload Files"
+                            imgSrc={QAIcon}
+                            listItems={[
+                                "Upload local files",
+                                "Or paste in text",
+                                "Analyse multiple files",
+                            ]}
+                        />
+                        <Card
+                            title="Ask Questions"
+                            imgSrc={FAQIcon}
+                            listItems={[
+                                "Select a uploaded file",
+                                "Use the summary to gain insight",
+                                "Ask specific questions",
+                                "Get back answer to your question",
+                            ]}
+                        />
+                        <Card
+                            title="Save Results"
+                            imgSrc={doneIcon}
+                            listItems={[
+                                "Ask more questions",
+                                "select other file or upload new",
+                                "Save the result, if needed"
+                            ]}
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className="about" id="about">
+                <div className="about-title">
+                    <h1>About Us</h1>
+                </div>
+                <div className="about-main">
+                    <div className="main-container">
+                        <div className="about-content">
+                            <div>
+                                <h6>A New Way to Search Information</h6>
+                                <p> We believe your time is valuable and that
+                                praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
+                            </p>
+                            </div>
+                            <div className="about-pics">
+                                <ProjectMember
+                                    src={markusProfile}
+                                    firstName="Markus"
+                                    lastName="Sagen"
+                                    imgWidth="50px"
+                                    imgHeight="50px"
+                                    linkedInLink="https://www.linkedin.com/in/markussagen/"
+                                    githubLink="https://github.com/MarkusSagen"
+                                />
+                                <ProjectMember
+                                    src={sebbeProfile}
+                                    firstName="Sebastian"
+                                    lastName="Rollino"
+                                    imgWidth="50px"
+                                    imgHeight="50px"
+                                    linkedInLink="https://www.linkedin.com/in/sebastian-rollino-4019b8183/"
+                                    githubLink="https://github.com/sebbersk"
+                                />
+                                <ProjectMember
+                                    src={nilsProfile}
+                                    firstName="Nils"
+                                    lastName="Hedberg"
+                                    imgWidth="50px"
+                                    imgHeight="50px"
+                                    linkedInLink="https://www.linkedin.com/in/nils-hedberg-2784a8152/"
+                                    githubLink="https://github.com/nilshugo"
+                                />
+                                <ProjectMember
+                                    src={alexProfile}
+                                    firstName="Alexander"
+                                    lastName="Bergkvist"
+                                    imgWidth="50px"
+                                    imgHeight="50px"
+                                    linkedInLink="https://www.linkedin.com/in/alexander-bergkvist-b79325181/"
+                                    githubLink="https://github.com/AlexanderBergkvist"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="footer"></div>
+            </div>
+        </header>
         return (
-            <header>
-                <Navbar />
-                <div className="landing-main-content">
-                    <div className="main-container">
-                        <div className="jumbotron">
-                            <div className="title">
-                                <h1>Surmize</h1>
-                                <p>Upload your Documents or Text and gain quick insight</p>
-                            </div>
-                            <div className="upload-section">
-                                <FileUpload setError={this.setError} err={this.state.err} putFile={this.putFile} sendFile={this.handleFileUpload} />
-                                <TextUpload uploadText={this.handleTextUpload} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="how-section" id="how">
-                    <div className="main-container">
-                        <h1>How To Use</h1>
-                        <div className="card-container">
-                            <Card
-                                title="Upload Files"
-                                imgSrc={QAIcon}
-                                listItems={[
-                                    "Upload local files", 
-                                    "Or paste in text", 
-                                    "Analyse multiple files",
-                                ]}
-                            />
-                            <Card
-                                title="Ask Questions"
-                                imgSrc={FAQIcon}
-                                listItems={[
-                                    "Select a uploaded file",
-                                    "Use the summary to gain insight",
-                                    "Ask specific questions",
-                                    "Get back answer to your question",
-                                ]}
-                            />
-                            <Card
-                                title="Save Results"
-                                imgSrc={doneIcon}
-                                listItems={[
-                                    "Ask more questions",
-                                    "select other file or upload new",
-                                    "Save the result, if needed"
-                                ]}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="about" id="about">
-                    <div className="about-title">
-                        <h1>About Us</h1>
-                    </div>
-                    <div className="about-main">
-                        <div className="main-container">
-                            <div className="about-content">
-                                <div>
-                                    <h6>A New Way to Search Information</h6>
-                                    <p> We believe your time is valuable and that 
-                                    praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
-                                    </p>
-                                </div>
-                                <div className="about-pics">
-                                    <ProjectMember
-                                        src={markusProfile}
-                                        firstName="Markus"
-                                        lastName="Sagen"
-                                        imgWidth="50px"
-                                        imgHeight="50px"
-                                        linkedInLink="https://www.linkedin.com/in/markussagen/"
-                                        githubLink="https://github.com/MarkusSagen"
-                                    />
-                                    <ProjectMember
-                                        src={sebbeProfile}
-                                        firstName="Sebastian"
-                                        lastName="Rollino"
-                                        imgWidth="50px"
-                                        imgHeight="50px"
-                                        linkedInLink="https://www.linkedin.com/in/sebastian-rollino-4019b8183/"
-                                        githubLink="https://github.com/sebbersk"
-                                    />
-                                    <ProjectMember
-                                        src={nilsProfile}
-                                        firstName="Nils"
-                                        lastName="Hedberg"
-                                        imgWidth="50px"
-                                        imgHeight="50px"
-                                        linkedInLink="https://www.linkedin.com/in/nils-hedberg-2784a8152/"
-                                        githubLink="https://github.com/nilshugo"
-                                    />
-                                    <ProjectMember
-                                        src={alexProfile}
-                                        firstName="Alexander"
-                                        lastName="Bergkvist"
-                                        imgWidth="50px"
-                                        imgHeight="50px"
-                                        linkedInLink="https://www.linkedin.com/in/alexander-bergkvist-b79325181/"
-                                        githubLink="https://github.com/AlexanderBergkvist"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="footer"></div>
-                </div>
 
-
-
-            </header>
-
+            (this.state.isFetching ? spinner : page)
 
         )
     }
