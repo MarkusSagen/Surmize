@@ -5,7 +5,7 @@ class Navbar extends Component {
 
     render() {
         return (
-            <nav className="own-navbar">
+            <nav className="own-navbar" id="home">
                 <div className="own-container">
                     <div className="own-nav-content">
                         <div className="own-logo">
@@ -20,9 +20,9 @@ class Navbar extends Component {
                         </div>
                         {!this.props.minimal && <div className="nav-links">
                             <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">How To Use</a></li>
-                                <li><a href="#">About Us</a></li>
+                                <li><a href="#home">Home</a></li>
+                                <li><a href="#how">How To Use</a></li>
+                                <li><a href="#about">About Us</a></li>
                             </ul>
                         </div>}
 

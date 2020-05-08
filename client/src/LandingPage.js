@@ -115,7 +115,7 @@ class LandingPage extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="how-section">
+                <div className="how-section" id="how">
                     <div className="main-container">
                         <h1>How To Use</h1>
                         <div className="card-container">
@@ -150,7 +150,7 @@ class LandingPage extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="about">
+                <div className="about" id="about">
                     <div className="about-title">
                         <h1>About Us</h1>
                     </div>
@@ -158,8 +158,8 @@ class LandingPage extends Component {
                         <div className="main-container">
                             <div className="about-content">
                                 <div>
-                                    <h6>Lorem ipsum</h6>
-                                    <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque repellat magnam facilis doloribus. Esse quasi accusamus eveniet rem adipisci dolore, porro quia reprehenderit temporibus, perferendis tempora repellendus, obcaecati libero hic similique. Aliquam
+                                    <h6>A New Way to Search Information</h6>
+                                    <p> We believe your time is valuable and that 
                                     praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
                                     </p>
                                 </div>

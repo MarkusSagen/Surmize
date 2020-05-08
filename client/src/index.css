@@ -80,9 +80,13 @@ font-family: 'Source Sans Pro', sans-serif;
   font-family: 'Open Sans', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background-color);
- /*  overflow: hidden; */
+  /*  overflow: hidden; */
 }
 
 header {
@@ -209,7 +213,7 @@ button {
 
 .sidebar .files {
   overflow: scroll;
-  height: calc(93% - 114px);
+  height: calc(93% - 120px);
   border-bottom: 1px solid var(--light-grey);
   padding: 0 20px;
 }
@@ -297,7 +301,6 @@ button {
 }
 
 .delete-all-files {
-  /* height: 18%; */
   background-color: var(--lightest-grey);
   display: flex;
   align-items: center;
@@ -418,20 +421,13 @@ button {
 }
 
 .summary .content-detail ul li{ 
-  /*
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--dark-grey);
-  margin: 5px;
-  */
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: calc(-1*calc(var(--margin-smallest)) + 4px);
   font-size: 14px;
   margin-left: 10px;
+  visibility: hidden; /* TODO: Add info later */
 }
 
 .summary .content-detail ul li span:last-child {

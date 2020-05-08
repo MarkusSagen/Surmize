@@ -10,6 +10,7 @@ import TextUpload from './TextUpload'
 class FileManager extends Component {
 
     state = {
+        err: [],
         isFetching: false,
         files: new Set(),
         summary: [],
@@ -60,6 +61,17 @@ class FileManager extends Component {
                 this.setState({ summary: [this.state.file, sum] });
             }
         })
+    }
+
+    setError = (text) => {
+        const state = this.state.err;
+        console.log("setError: " + text);
+        this.setState( state => ({ 
+            err: [...state.err, text] 
+        }));
+        setTimeout(() => {
+            this.setState({ err: [] });
+        }, 5000)
     }
 
     handleQuestion = (text, fn) => {
@@ -275,7 +287,9 @@ class FileManager extends Component {
                 <Navbar minimal />
                 <div className="main-content">
                     <Sidebar showForm={ this.state.uploadMore } files={ this.state.files } removeAll={this.removeAll} showFile={ this.showFile } deleteFile={ this.deleteFile} file={ this.state.file } moreFiles={ this.moreFiles } />
-                    { this.state.uploadMore ? <div className="more-jumbotron"><div className="upload-section"><FileUpload exFiles={ this.state.files } sendFile={this.handleFileUpload} />
+                    { this.state.uploadMore ? <div className="more-jumbotron">
+                        <div className="upload-section">
+                            <FileUpload exFiles={ this.state.files } sendFile={this.handleFileUpload} err={this.state.err} setError={this.setError} />
                         <TextUpload uploadText={ this.handleTextUpload } /></div> </div> : <><Summary summary={ this.state.summary } />
                         <QuestionForm sendQuestion={this.handleQuestion} isFetching={this.state.handlingQuestion} file={ this.state.file } /></>}
                 </div>

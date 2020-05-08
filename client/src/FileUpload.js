@@ -72,6 +72,8 @@ class FileUpload extends Component {
                 formData.append("file", files[i]);
             }
             this.props.sendFile('files', formData, this.state.isExperimental)
+        } else {
+            this.setState({ files: [], fileToBeSent: [] });
         }
     }
 
@@ -158,7 +160,7 @@ class FileUpload extends Component {
                     </div>
                     <button type="submit">Upload</button>
                 </form>
-                { this.props.err.length === 0 
+                { this.props.err && this.props.err.length === 0 
                     ? <span></span> 
                     : <div className="file-upload-error">
                         <p>Error Message:</p>
