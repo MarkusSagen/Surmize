@@ -8,48 +8,74 @@ class QuestionForm extends Component {
         dialogue: [],
         text: ""
     }
+
     componentDidUpdate() {
         this.scrollDown();
     }
+
     handleChange = (e) => {
         this.setState({ text: e.target.value })
     }
+
     sendQuestion = (e) => {
         e.preventDefault();
         const text = this.state.text;
         this.setState({ text: "" })
         this.props.sendQuestion(text, this.newAnswer);
     }
+
     newAnswer = (question, answer) => {
         var newArray = this.state.dialogue
-        newArray.push(
-            {
+        newArray.push({
                 "question": question,
                 "answer": answer.answer,
                 "context": answer.context,
                 "score": answer.score
-            })
+        })
         this.setState({
             dialogue: newArray
         })
     }
+
     scrollDown = () => {
         const chat = document.getElementById("qa-main");
         chat.scrollTop = chat.scrollHeight;
     }
+
     certainty = (score) => {
         let reply = ""
         if (score < 2) {
-            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" />  <img className="inactive-score" src={star} alt="star" /> </span></div>
+            reply = <div className="qa-score">
+                <span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating">
+                <img className="inactive-score" src={star} alt="star" />  
+                <img className="inactive-score" src={star} alt="star" />  
+                <img className="inactive-score" src={star} alt="star" /> </span>
+            </div>
         }
         else if (score < 5) {
-            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></div>
+            reply = <div className="qa-score">
+                <span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating">
+                    <img src={star} alt="star" /> 
+                    <img className="inactive-score" src={star} alt="star" /> 
+                    <img className="inactive-score" src={star} alt="star" /> </span>
+                </div>
         }
         else if (score < 15) {
-            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img src={star} alt="star" /> <img src={star} alt="star" /> <img className="inactive-score" src={star} alt="star" /> </span></div>
+            reply = <div className="qa-score">
+                <span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating">
+                    <img src={star} alt="star" /> 
+                    <img src={star} alt="star" /> 
+                    <img className="inactive-score" src={star} alt="star" /> </span>
+                </div>
         }
         else {
-            reply = <div className="qa-score"><span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating"><img src={star} alt="star" /> <img src={star} alt="star" /> <img src={star} alt="star" /> </span></div>
+            reply = <div className="qa-score">
+                <span className="qa-score-title">Confidence Score: </span>
+                <span className="qa-score-rating">
+                    <img src={star} alt="star" /> 
+                    <img src={star} alt="star" /> 
+                    <img src={star} alt="star" /> </span>
+                </div>
         }
         return reply
     }
@@ -61,12 +87,12 @@ class QuestionForm extends Component {
                 <div key={uuid()} className="qa-content">
                     <div className="question">
                         <p>Question</p>
-                        <p>{dialogue[i].question}</p>
+                        <p>{ dialogue[i].question }</p>
                     </div>
                     <div className="answer">
                         <p>Answer</p>
                         <p>{dialogue[i].answer}</p>
-                        {this.certainty(dialogue[i].score)}
+                        { this.certainty(dialogue[i].score) }
 
                     </div>
                 </div>
@@ -125,7 +151,7 @@ class QuestionForm extends Component {
                 </div>
                 <div className="content-subtitle">{this.props.file}</div>
                 <div id="qa-main" className="content-main">
-                    {chat}
+                    { chat }
                 </div>
                 <div className="content-detail">
                     <form onSubmit={this.sendQuestion} >
@@ -134,7 +160,6 @@ class QuestionForm extends Component {
                         </div>
                         <button>Ask</button>
                     </form>
-
                     <div className="content-save">
                         <Save />
                     </div>

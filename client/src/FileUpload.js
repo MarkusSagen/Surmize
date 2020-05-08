@@ -2,60 +2,60 @@ import React, { Component } from 'react';
 import { ReactComponent as FilesIcon } from './download-icon.svg';
 
 class FileUpload extends Component {
+
     state = {
+        err: [],
         files: [],
         fileToBeSent: [],
         isExperimental: false
     }
 
-    getFileExtention = (file) => {
+    isNotAllowedExtentions = (file) => {
         let s = String(file.name).split(".")
-        let fileExtention = s[s.length - 1]
-        return fileExtention
+        let e = s[s.length - 1]
+        return !(e === "txt" || e === "pdf" || e === "story" );
     }
+
+    MBToBits = (data) => { return data * (1000 * 1024); }
+
     checkAllowedFiles = (files) => {
-        let allowedTypes = ["txt", "csv", "pdf", "story"];
+        let MAX_SIZE_MB = 10; // Can be change to another value
+        let MAX_NR_FILES = 8;
+        let sum = 0;
         let hasPassed = true;
         let err = '';
+
         if (files[0] === "") {
             hasPassed = false;
             err = "Please select a valid file to upload\n";
-        }
-        else {
-            for (let i = 0; i < files.length; i++) {
-                if (allowedTypes.every(type => this.getFileExtention(files[i]) !== type)) {
-                    hasPassed = false;
-                    err = 'Only the fileformats .txt, .csv and .pdf are allowed\n';
-                }
-            }
-            // TODO: Make better more like react
-            if (err !== '') {
-                this.props.setError(err)
-            }
-            return hasPassed
-        }
-    }
-    MBToBits = (data) => { return data * (1000 * 1024); }
-    checkAllowedSize = (files) => {
-        let MAX_SIZE_MB = 10; // Can be change to another value
-        var sum = 0;
-        var hasPassed = true;
-        var err = '';
-        for (let i = 0; i < files.length; i++) {
-            sum += files[i].size
-        }
-        if (sum > this.MBToBits(MAX_SIZE_MB)) {
+            this.props.setError(err);
+        } else if (files.length > (MAX_NR_FILES)) {
             hasPassed = false;
-            err = 'Files are exeding combined limit of ' + MAX_SIZE_MB + 'MB \n';
-            // TODO: Give better alert messages - More in React way
-            console.error(err);
+            err = "Only allows " + MAX_NR_FILES + " uploads at a time\n";
+            this.props.setError(err);
+        } else {
+            // Check allowed files
+            if (files.every(this.isNotAllowedExtentions)) {
+                hasPassed = false;
+                err = 'Only .txt, .story or .pdf files allowed\n';
+                this.props.setError(err);
+            }
+
+            // Check max size
+            for (let i = 0; i < files.length; i++) {
+                sum += files[i].size;
+            }
+            if (sum > this.MBToBits(MAX_SIZE_MB)) {
+                hasPassed = false;
+                err = 'Files are exeding combined size of ' + MAX_SIZE_MB + 'MB\n'
+                this.props.setError(err);
+            }
+    
+            return hasPassed;
         }
-        return hasPassed
     }
 
-
-
-
+    // Truncate file name
     truncate = (input) => {
         if (input.length > 25) {
             input = input.substring(0, 25) + '...';
@@ -63,27 +63,22 @@ class FileUpload extends Component {
         return input;
     }
 
-
-
-
-
     handleSubmit = (e) => {
         e.preventDefault();
         let files = this.state.fileToBeSent;
         const formData = new FormData();
-        console.log("IN HERE")
-
-        if (this.checkAllowedFiles(files) && this.checkAllowedSize(files)) {
+        if (this.checkAllowedFiles(files)) {
             for (let i = 0; i < files.length; i++) {
                 formData.append("file", files[i]);
             }
             this.props.sendFile('files', formData, this.state.isExperimental)
+        } else {
+            this.setState({ files: [], fileToBeSent: [] });
         }
     }
 
 
     fileChange = (e) => {
-        console.log("CHANGE")
         const file = e.target.files;
         if (this.props.putFile) {
             let filesArr = this.state.fileToBeSent;
@@ -94,12 +89,10 @@ class FileUpload extends Component {
             filesArr = Array.from(new Set(filesArr.map(f => f.name))).map(name => {
                 return filesArr.find(f => f.name === name)
             });
-            console.log(filesArr)
             for (let i = 0; i < filesArr.length; i++) {
                 arr.push(filesArr[i].name)
             }
             this.setState({ files: arr, fileToBeSent: filesArr });
-
             this.props.putFile(arr);
         } else {
             const set = this.props.exFiles;
@@ -108,7 +101,6 @@ class FileUpload extends Component {
             for (let i = 0; i < file.length; i++) {
                 if (!set.has(file[i].name)) {
                     filesArr.push(file[i]);
-
                 }
             }
             for (let i = 0; i < filesArr.length; i++) {
@@ -132,15 +124,11 @@ class FileUpload extends Component {
         set.delete(f);
         for (let i = 0; i < filesToSend.length; i++) {
             if (f === filesToSend[i].name) {
-
-                console.log("YAY")
                 sendSet.delete(filesToSend[i])
             }
         }
         const newFilesArr = [...set];
         const newFilesToSendArr = [...sendSet];
-        console.log(newFilesArr.length, "NFA", newFilesToSendArr, "NFTSA");
-
         this.setState({ files: newFilesArr, fileToBeSent: newFilesToSendArr })
     }
 
@@ -165,14 +153,23 @@ class FileUpload extends Component {
                             </span>
                             {filesMsg}
                         </label>
-                        {this.state.files.length > 0 && <ul>
-                            {files}
-                        </ul>}
+                        { this.state.files.length > 0 && 
+                        <ul> {files} </ul> }
 
                         <input onChange={this.fileChange} type="file" name="" multiple id="file-upload" />
                     </div>
-                    {this.props.err === "" ? <button type="submit">Upload</button> : <div>{this.props.err}</div>}
+                    <button type="submit">Upload</button>
                 </form>
+                { this.props.err && this.props.err.length === 0 
+                    ? <span></span> 
+                    : <div className="file-upload-error">
+                        <p>Error Message:</p>
+                        { 
+                            this.props.err.map((err, index) =>
+                                <li key={index}> { err } </li> )
+                        }
+                    </div>
+                }
             </div>
         )
     }

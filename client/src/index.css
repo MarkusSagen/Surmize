@@ -16,7 +16,13 @@ font-family: 'Rubik', sans-serif;
 font-family: 'Roboto', sans-serif;
 font-family: 'Source Sans Pro', sans-serif;
 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Open+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&family=Rubik:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&family=Roboto:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&family=Source+Sans+Pro:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+
 :root {
   /* colors */
   --white: #fff;
@@ -74,16 +80,25 @@ font-family: 'Source Sans Pro', sans-serif;
   font-family: 'Open Sans', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background-color);
- /*  overflow: hidden; */
+  /*  overflow: hidden; */
 }
 
 header {
   height: 100vh;
   width: 100vw;
 }
+
 ul {
+  list-style: none;
+}
+
+li {
   list-style: none;
 }
 
@@ -198,7 +213,7 @@ button {
 
 .sidebar .files {
   overflow: scroll;
-  height: calc(93% - 114px);
+  height: calc(93% - 120px);
   border-bottom: 1px solid var(--light-grey);
   padding: 0 20px;
 }
@@ -229,6 +244,9 @@ button {
   right: 10px;
   top: 2px;
 }
+
+
+
 
 .selected-file {
   /* background-color: var(--light-purple); */
@@ -283,7 +301,6 @@ button {
 }
 
 .delete-all-files {
-  /* height: 18%; */
   background-color: var(--lightest-grey);
   display: flex;
   align-items: center;
@@ -404,20 +421,13 @@ button {
 }
 
 .summary .content-detail ul li{ 
-  /*
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--dark-grey);
-  margin: 5px;
-  */
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: calc(-1*calc(var(--margin-smallest)) + 4px);
   font-size: 14px;
   margin-left: 10px;
+  visibility: hidden; /* TODO: Add info later */
 }
 
 .summary .content-detail ul li span:last-child {
@@ -631,6 +641,7 @@ button {
 }
 
 .upload-section .file-upload {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -649,26 +660,97 @@ button {
 }
 
 .file-upload ul li {
+  position: relative;
   white-space: nowrap;
   text-overflow: ellipsis;
-  position: relative;
+  margin: 5px;
+  border-radius: 15px;
+  background-color: #91e8b7;
+  color: rgb(26, 68, 151);
+  /*
+  background-color: #e1e1e1;
+  color: #3c3c3c;
+  */
+  border: 1px solid #00b05e;
 }
 
 .file-upload-container label span:last-child {
   position: absolute;
-  top: 65%;
+  bottom: 15%;
+  width: 100%;
 }
+
+.upload-icon-text {
+  bottom: calc(15% - 15px);
+}
+
+.upload-icon-text::after {
+  content: "Supports: .txt, .story, .pdf files";
+  display: block;
+  color: #b5b5b5;
+  font-size: 0.85em;
+}
+
+.file-upload .file-upload-container label span:first-child {
+  bottom: calc(15% - 10px);
+}
+
+.file-upload .file-upload-container label span:last-child::after {
+  content: "Supports .txt, .story and .pdf";
+  position: relative;
+  display: block;
+  font-size: 0.8em;
+  line-height: 0.8em;
+  color: #969696;
+}
+
+
 
 .upload-file-name {
   position: absolute;
   left: 5%;
+  margin-top: 3px;
 }
 
 .upload-file-remove {
   position: relative;
-  right: -40%;
+  right: calc(-44% + -1px);
+  top: 3px;
 }
 
+.file-upload-error {
+  position: absolute;
+  top: 100%;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.file-upload-error p {
+  margin-top: -10px;
+  font-size: 0.85em;
+  color: var(--darker-grey);
+  font-weight: 500;
+  font-family: "rubik";
+}
+
+.file-upload-error p::after {
+  display: block;
+  width: 50px;
+  height: 1px;
+}
+
+.file-upload-error li {
+  background-color: #ff4b4b;
+  border-radius: 15px;
+  border: 1px solid #970000;
+  margin: 3px 0px;  
+  padding: 2px 20px;
+  width: 100%;
+  font-size: 0.95em;
+  color: #fff;
+  font-family: "roboto";
+  font-weight: 300;
+}
 
 
 
@@ -724,7 +806,7 @@ button {
   border-radius: 30px;
   background-color: var(--white);
   color: #8e7dda;
-  font-weight: 900;
+  font-weight: 600;
   width: 30%;
   font-size: 16px;
 }
@@ -830,17 +912,15 @@ button {
 
 .card h2 {
   color: var(--dark-grey);
-  font-weight: 900;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
   font-size: 1.6rem;
 }
 
 .card ul li {
+  list-style: inside;
   margin-bottom: 10px;
   color: var(--dark-purple);
-}
-
-.card .card-image-bottom {
-
 }
 
 .about {

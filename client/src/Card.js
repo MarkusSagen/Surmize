@@ -1,19 +1,15 @@
 import React, { Component } from 'react'
 
 class Card extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="card">
-                <h2>{this.props.title}</h2>
+                <h2> {this.props.title} </h2>
                 <ul>
-                    <li>1. Lorem ipsum</li>
-                    <li>2. Lorem ipsum</li>
-                    <li>3. Lorem ipsum</li>
-                    <li>4. Lorem ipsum</li>
+                    {
+                    this.props.listItems.map((content, index) =>
+                        <li key={index}> { content } </li> )
+                    }
                 </ul>
                 <img className="card-image-bottom" src={this.props.imgSrc} width="200px" height="155px"/>
             </div>
@@ -22,5 +18,13 @@ class Card extends Component {
         )
     }
 }
+/*
+                   <li>1. Lorem ipsum</li>
+                    <li>2. Lorem ipsum</li>
+                    <li>3. Lorem ipsum</li>
+                    <li>4. Lorem ipsum</li>
+ 
+
+*/
 
 export default Card;

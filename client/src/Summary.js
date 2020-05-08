@@ -27,7 +27,6 @@ class Summary extends Component {
                     </div>
                 </div>
             </div>
-
         )
     }
 }

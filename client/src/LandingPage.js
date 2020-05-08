@@ -5,26 +5,28 @@ import TextUpload from './TextUpload'
 import Card from "./Card"
 import ProjectMember from "./ProjectMember"
 
-const defaultProfile = require("./img/default.jpg");
 const markusProfile = require("./img/Markus_profile.jpeg");
 const sebbeProfile = require("./img/Sebastian_profile.jpg");
 const nilsProfile = require("./img/Nils_profile.jpg");
 const alexProfile = require("./img/Alexander_profile.jpg");
 
-const askQuestionIcon = require("./img/stock/Ask-Question.svg");
-const contactIcon = require("./img/stock/Contact.svg");
 const doneIcon = require("./img/stock/Done.svg");
 const FAQIcon = require("./img/stock/FAQ.svg");
 const QAIcon = require("./img/stock/QA.svg");
+
+/*
+const defaultProfile = require("./img/default.jpg");
+const askQuestionIcon = require("./img/stock/Ask-Question.svg");
+const contactIcon = require("./img/stock/Contact.svg");
 const QuestionsIcon = require("./img/stock/Questions.svg");
 const SiteIcon = require("./img/stock/Site-Running.svg");
-
+*/
 
 class LandingPage extends Component {
     state = {
         isFetching: false,
         files: [],
-        err: "",
+        err: [],
     }
 
     handleTextUpload = (text, mode) => {
@@ -53,7 +55,6 @@ class LandingPage extends Component {
     handleFileUpload = (url, file, mode) => {
         this.setState({ isFetching: true })
         file.append("new", false)
-        console.log("WHAY?")
         if (this.props.isAuthed) {
             fetch(`/${url}`, {
                 method: 'post',
@@ -84,12 +85,18 @@ class LandingPage extends Component {
         }
         this.setState({ files: arr });
     }
+
     setError = (text) => {
-        this.setState({ err: text })
+        const state = this.state.err;
+        console.log("setError: " + text);
+        this.setState( state => ({ 
+            err: [...state.err, text] 
+        }));
         setTimeout(() => {
-            this.setState({ err: "" })
-        }, 2000)
+            this.setState({ err: [] });
+        }, 5000)
     }
+
     render() {
         return (
             <header>
@@ -108,26 +115,42 @@ class LandingPage extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="how-section">
+                <div className="how-section" id="how">
                     <div className="main-container">
                         <h1>How To Use</h1>
                         <div className="card-container">
                             <Card
                                 title="Upload Files"
                                 imgSrc={QAIcon}
+                                listItems={[
+                                    "Upload local files", 
+                                    "Or paste in text", 
+                                    "Analyse multiple files",
+                                ]}
                             />
                             <Card
                                 title="Ask Questions"
                                 imgSrc={FAQIcon}
+                                listItems={[
+                                    "Select a uploaded file",
+                                    "Use the summary to gain insight",
+                                    "Ask specific questions",
+                                    "Get back answer to your question",
+                                ]}
                             />
                             <Card
                                 title="Save Results"
                                 imgSrc={doneIcon}
+                                listItems={[
+                                    "Ask more questions",
+                                    "select other file or upload new",
+                                    "Save the result, if needed"
+                                ]}
                             />
                         </div>
                     </div>
                 </div>
-                <div className="about">
+                <div className="about" id="about">
                     <div className="about-title">
                         <h1>About Us</h1>
                     </div>
@@ -135,8 +158,8 @@ class LandingPage extends Component {
                         <div className="main-container">
                             <div className="about-content">
                                 <div>
-                                    <h6>Lorem Ipsum Parabellum</h6>
-                                    <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque repellat magnam facilis doloribus. Esse quasi accusamus eveniet rem adipisci dolore, porro quia reprehenderit temporibus, perferendis tempora repellendus, obcaecati libero hic similique. Aliquam
+                                    <h6>A New Way to Search Information</h6>
+                                    <p> We believe your time is valuable and that 
                                     praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
                                     </p>
                                 </div>
@@ -147,7 +170,7 @@ class LandingPage extends Component {
                                         lastName="Sagen"
                                         imgWidth="50px"
                                         imgHeight="50px"
-                                        linkedInLink="https://linkedin.com/MarkusSagen"
+                                        linkedInLink="https://www.linkedin.com/in/markussagen/"
                                         githubLink="https://github.com/MarkusSagen"
                                     />
                                     <ProjectMember
@@ -180,7 +203,6 @@ class LandingPage extends Component {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div className="footer"></div>
                 </div>
