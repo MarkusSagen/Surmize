@@ -241,6 +241,9 @@ button {
   top: 2px;
 }
 
+
+
+
 .selected-file {
   /* background-color: var(--light-purple); */
   color: #7483ea !important;
@@ -692,6 +695,19 @@ button {
   font-size: 0.85em;
 }
 
+.file-upload .file-upload-container label span:first-child {
+  bottom: calc(15% - 10px);
+}
+
+.file-upload .file-upload-container label span:last-child::after {
+  content: "Supports .txt, .story and .pdf";
+  position: relative;
+  display: block;
+  font-size: 0.8em;
+  line-height: 0.8em;
+  color: #969696;
+}
+
 
 
 .upload-file-name {
@@ -900,17 +916,15 @@ button {
 
 .card h2 {
   color: var(--dark-grey);
-  font-weight: 900;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
   font-size: 1.6rem;
 }
 
 .card ul li {
+  list-style: inside;
   margin-bottom: 10px;
   color: var(--dark-purple);
-}
-
-.card .card-image-bottom {
-
 }
 
 .about {

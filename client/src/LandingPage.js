@@ -122,14 +122,30 @@ class LandingPage extends Component {
                             <Card
                                 title="Upload Files"
                                 imgSrc={QAIcon}
+                                listItems={[
+                                    "Upload local files", 
+                                    "Or paste in text", 
+                                    "Analyse multiple files",
+                                ]}
                             />
                             <Card
                                 title="Ask Questions"
                                 imgSrc={FAQIcon}
+                                listItems={[
+                                    "Select a uploaded file",
+                                    "Use the summary to gain insight",
+                                    "Ask specific questions",
+                                    "Get back answer to your question",
+                                ]}
                             />
                             <Card
                                 title="Save Results"
                                 imgSrc={doneIcon}
+                                listItems={[
+                                    "Ask more questions",
+                                    "select other file or upload new",
+                                    "Save the result, if needed"
+                                ]}
                             />
                         </div>
                     </div>
@@ -142,7 +158,7 @@ class LandingPage extends Component {
                         <div className="main-container">
                             <div className="about-content">
                                 <div>
-                                    <h6>Lorem Ipsum Parabellum</h6>
+                                    <h6>Lorem ipsum</h6>
                                     <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque repellat magnam facilis doloribus. Esse quasi accusamus eveniet rem adipisci dolore, porro quia reprehenderit temporibus, perferendis tempora repellendus, obcaecati libero hic similique. Aliquam
                                     praesentium modi possimus, at omnis obcaecati, totam sunt soluta id iure molestiae excepturi consequatur quia? Excepturi, at voluptas.
                                     </p>
