@@ -47,6 +47,7 @@ class QA:
         filepath_txt = f"{root}/text/{name}.txt"
         filepath_csv = f"{root}/csv/{name}.csv"
 
+
         if extension == ".csv":
             # csv needs to have "title" and "paragraphs" features
             df = pd.read_csv(filepath, converters={"paragraphs": literal_eval})
@@ -55,12 +56,18 @@ class QA:
 
 
         elif extension == ".txt" or extension == ".story":
-            with open(filepath) as f:
-                paragraphs = [f.read()] # Needs to be in array for how cdqa reads csv
+            lines = []
+            # Read file and remove non UTF-8 chars
+            with open(filepath, encoding="utf8", errors='ignore') as f:
+                for line in f:
+                    lines.append(bytes(line, "utf-8").decode("utf-8", "ignore"))
+                paragraphs = lines
+
+            # Make df to use in QA 
             df = pd.DataFrame({"title": filename, "paragraphs": [paragraphs]})
-            if extension != ".txt":
-                shutil.copyfile(filepath, filepath_txt)
-                os.remove(filepath)
+            with open(filepath_txt, "w+") as f:
+                for line in lines:
+                    f.write(line)
 
 
         elif extension == ".pdf":
@@ -79,6 +86,7 @@ class QA:
                 for line in df.loc[0]["paragraphs"]:
                     file.write("\n" + line)
 
+
         #df.to_csv(f"{filepath_csv}", index=False)
         self.cdqa_pipeline.fit_retriever(df=df)
         
@@ -90,13 +98,11 @@ class QA:
         #self.load_data(filepath)
 
 
-    # TODO: Read more files
     def load_data(self, filepath=None):
         """
         Read in date file/path and determines the tile type 
         If no file type, then assumes folder contatins pdfs 
-        """ 
-        
+        """         
         df = pd.read_csv(filepath, converters={"paragraphs": literal_eval})
         df = filter_paragraphs(df)
         self.cdqa_pipeline.fit_retriever(df=df)
