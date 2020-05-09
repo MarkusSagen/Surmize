@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { ReactComponent as FilesIcon } from './download-icon.svg';
+import InfoIcon from './InfoIcon';
+
 
 class FileUpload extends Component {
-
     state = {
         err: [],
         files: [],
         fileToBeSent: [],
-        isExperimental: false
     }
 
     isNotAllowedExtentions = (file) => {
@@ -71,7 +71,7 @@ class FileUpload extends Component {
             for (let i = 0; i < files.length; i++) {
                 formData.append("file", files[i]);
             }
-            this.props.sendFile('files', formData, this.state.isExperimental)
+            this.props.sendFile('files', formData, this.props.isExperimental)
         } else {
             this.setState({ files: [], fileToBeSent: [] });
         }
@@ -111,11 +111,6 @@ class FileUpload extends Component {
         e.target.value = null;
     }
 
-    handleCheck = (e) => {
-        this.setState({ isExperimental: !this.state.isExperimental }
-        )
-    }
-
     removeFile = (f) => {
         const files = this.state.files;
         const filesToSend = this.state.fileToBeSent;
@@ -130,6 +125,11 @@ class FileUpload extends Component {
         const newFilesArr = [...set];
         const newFilesToSendArr = [...sendSet];
         this.setState({ files: newFilesArr, fileToBeSent: newFilesToSendArr })
+    }
+
+    checkEmptyFiles = () => {
+        console.log(this.state.files.length === 0);
+        return ( this.state.files.length === 0);
     }
 
 
@@ -155,23 +155,47 @@ class FileUpload extends Component {
                         </label>
                         { this.state.files.length > 0 && 
                         <ul> {files} </ul> }
-
                         <input onChange={this.fileChange} type="file" name="" multiple id="file-upload" />
                     </div>
-                    <button type="submit">Upload</button>
+                    <div className="form-check-summary">
+                        <span className="text">
+                            <span className="bold">(Optional) </span>Use Experimental Summary         
+                        </span>
+                        <span className="icons">
+                            <InfoIcon positionTop={true} marginTop={0} text={[
+                                "Click button to the right to use experimental summary", 
+                                "Using it will potentially yield more insightful summaries",
+                                "But summaries will take longer, (min) instead of (sec)"
+                            ]}/>
+                            <div className="cbx">
+                                <input id="cbx" type="checkbox" onChange={this.props.handleCheck} checked={this.props.isExperimental} />
+                                <label for="cbx"></label>
+                                <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                    <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                </svg>
+                            </div>
+                        </span>
+                    </div>
+                    <div> { this.checkEmptyFiles() } </div>
+                    { this.state.files.length > 0 
+                        ?  <button type="submit">Upload</button> 
+                        : <div className="fakeButton">Upload</div> }
+                    
                 </form>
+
+                
+
                 { this.props.err && this.props.err.length === 0 
                     ? <span></span> 
                     : <div className="file-upload-error">
                         <p>Error Message:</p>
-                        { 
-                            this.props.err.map((err, index) =>
-                                <li key={index}> { err } </li> )
-                        }
-                    </div>
-                }
+                        { this.props.err.map((err, index) =>
+                                <li key={index}> { err } </li> )}
+                        </div> }
             </div>
         )
     }
 }
+// <input className="form-check-input" type="checkbox" value="" onChange={this.props.handleCheck} checked={this.props.isExperimental} />                        
+                            
 export default FileUpload;

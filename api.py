@@ -109,15 +109,15 @@ async def empty_exception_handler(request: Request, e: EmptyException):
     )
 
 
-@Timer(name="QA", text="QA. took: {:0.2f} seconds")
 async def QA_predict_to_json(question: str) -> json:
     """
     Returns the prediction and context to a question as json
     """
     if question == "":
         raise EmptyException(question)
-
-    answer, context, score = qa.predict(question)
+    
+    with Timer(name="QA", text="QA took: {:0.2f} seconds"):
+        answer, context, score = qa.predict(question)
     return { "answer": answer, "context": context, "score": score}
 
 

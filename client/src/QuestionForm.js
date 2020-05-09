@@ -18,7 +18,7 @@ class QuestionForm extends Component {
     }
 
     sendQuestion = (e) => {
-        e.preventDefault();
+        //e.preventDefault();
         const text = this.state.text;
         this.setState({ text: "" })
         this.props.sendQuestion(text, this.newAnswer);
@@ -79,6 +79,14 @@ class QuestionForm extends Component {
         }
         return reply
     }
+
+    handleKeyDown = (e, sendFunc) => {
+        if (e.key === "Enter" && e.shiftKey === false) {
+            e.preventDefault();
+            sendFunc()
+        }
+    }
+    
     render() {
         const chat = [];
         const { dialogue } = this.state
@@ -156,9 +164,16 @@ class QuestionForm extends Component {
                 <div className="content-detail">
                     <form onSubmit={this.sendQuestion} >
                         <div className="form-group question-area">
-                            <textarea onChange={this.handleChange} placeholder="Write Question Here..." name="question-text" value={this.state.text} id="question-text"></textarea>
+                            <textarea 
+                                onChange={this.handleChange} 
+                                onKeyDown={(e) => { this.handleKeyDown(e, this.sendQuestion); }}
+                                placeholder="Write Question Here..." 
+                                name="question-text" 
+                                value={this.state.text} 
+                                id="question-text"
+                            ></textarea>
                         </div>
-                        <button>Ask</button>
+                        <button type="submit">Ask</button>
                     </form>
                     <div className="content-save">
                         <Save />

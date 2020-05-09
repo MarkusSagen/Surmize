@@ -6,14 +6,16 @@ class Form extends Component {
     state = {
         text: ""
     }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.sendQuestion(this.state);
-
     }
+    
     handleChange = (e) => {
         this.setState({ text: e.target.value })
     }
+
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
