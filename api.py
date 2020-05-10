@@ -122,12 +122,17 @@ async def QA_predict_to_json(question: str) -> json:
 
 
 @app.get("/")
-async def lol():
+async def home():
     return {"msg": "Hello World!"}
 
 
 @app.get("/token")
 def get_token(request: Request):
+    """
+    Get temporary Session ID token to use the application
+
+    >>> curl -X GET "http://localhost:5000/token" -H  "accept: application/json"
+    """
     token = str(uuid4())
     # URL and Filename Safe Base64 Encoding
     urlSafeEncodedBytes = base64.urlsafe_b64encode(token.encode("utf-8"))
