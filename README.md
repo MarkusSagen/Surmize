@@ -3,24 +3,20 @@ Summarization and NLP application
   
   
 ### Links:
-
-- [Introduction Slides](https://www.notion.so/PowerPoint-f21825f57a6446c28963273e816bd053)  
-- [Diagram from Slides](https://drive.google.com/file/d/1g5H9L4zniVGwwVitnv7yTpbNLiyudYaF/view?usp=sharing)  
+- [Slide Presentation]
+- [Introduction Slides: Before the Project Started](https://www.notion.so/PowerPoint-f21825f57a6446c28963273e816bd053)  
 - [Project Information Folder](https://www.notion.so/Summarize-App-c834b35bb7d748c4a57662652b9ce326)
-- [Report](https://www.overleaf.com/8461541271rbqgrmytchtk)
-- [A previous Rapport](https://www.overleaf.com/project/5e6525aeff03ca00018f9903)  
-    
-## Table of Content
-  
-
+- [Report](#TODO)
+- [Datasets](#TODO)
+- [Future Improvments](#TODO)
   
   
 ### Usage 
-These instructions are related to how to get the server up an runnning and the NLP model configured  
+These instructions are related to how to get the server up an runnning, the UI and NLP models for summarization and Close-Domain QA.    
+   
+Some have experienced problems when using Python3 directly, we therefore recommend users to install and use Python3 via Anaconda
 
-Some have experienced problems when using python3 directly, we therefore recommend users to install and use python3 via Anaconda
-
-1. clone this repo:
+1. Clone this repo:
 ```bash
 git clone https://github.com/MarkusSagen/Surmize.git
 ```
@@ -29,15 +25,16 @@ git clone https://github.com/MarkusSagen/Surmize.git
 ```bash
 source start.sh
 ```
-4. Start up the FastAPI APP by running in a terminal
+4. Start up the server in development mode by running:
 ```bash
 uvicorn api:app --reload --port 5000
 ```
-5. Open another terminal and navigate to the folder Surmize/client/ and run:
+5. Open another terminal and navigate to the folder **Surmize/client/** and run:
 ```bash
 npm install && npm start
 ```
 6. Go to the address [http://localhost:3000](http://localhost:3000) in a browser
+7. Upload files or texts you want to ask questions about
 
 
 
