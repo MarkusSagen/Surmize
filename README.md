@@ -3,7 +3,7 @@ Summarization and NLP application
   
   
 ### Links:
-- [Slide Presentation]
+- [Slide Presentation](#TODO)
 - [Introduction Slides: Before the Project Started](https://www.notion.so/PowerPoint-f21825f57a6446c28963273e816bd053)  
 - [Project Information Folder](https://www.notion.so/Summarize-App-c834b35bb7d748c4a57662652b9ce326)
 - [Report](#TODO)
