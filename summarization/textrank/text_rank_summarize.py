@@ -66,6 +66,8 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
         top_x_sentences = int(len_sentence * fraction_of_words)
         if top_x_sentences > 15:
             top_x_sentences = 15
+        if top_x_sentences < 1:
+            top_x_sentences = len_sentence
 
         summary = " ".join([ranked_sentences[i][1] for i in range(top_x_sentences)])
 
