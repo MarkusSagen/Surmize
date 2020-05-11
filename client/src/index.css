@@ -267,9 +267,8 @@ button {
 
 .upload button {
 	position: relative;
-	background-color: var(--dark-grey);
-	opacity: 0.8;
-	color: var(--text-white);
+	background-color: #ffffff;
+	color: var(--dark-purple);
 	text-align: center;
 	font-size: 0.9em;
 	margin-top: 25px;
@@ -279,10 +278,17 @@ button {
 	display: inline-block;
 	text-decoration: none;
 	top: 5px;
-	border: 1px solid #505050;
+	border: 2px solid var(--dark-purple);
 	margin: 5px 0px;
 	margin-bottom: 12px;
+	font-weight: 600;
 }
+
+.upload button:hover {
+	background-color: var(--dark-purple);
+	color: var(--white);
+}
+
 
 .upload button p {
 	width: 110px;
@@ -302,16 +308,19 @@ button {
 	background-color: var(--delete-button-red);
 	color: white;
 	padding: 10px 5px;
-	border: 1px solid var(--delete-button-red);
 	border-radius: calc(var(--small-round-radius) + 15px);
 	text-decoration: none;
-	border-bottom: 4px solid #b91d1d;
 	z-index: 5;
 	margin-bottom: 10px;
 	width: 150px;
-	border: 1px solid #b91d1d;
+	border: 2px solid #b91d1d;
 	opacity: 0.9;
 	font-size: 0.9em;
+	font-weight: 600;
+}
+
+.delete-all-files button:hover {
+	background-color: #b91d1d;
 }
 
 .delete-all-files button p {
@@ -504,17 +513,23 @@ button {
 }
 
 .chat .content-detail form button {
-	background-color: var(--primary-blue);
-	padding: 4px;
-	color: white;
-	border: none;
-	border-radius: var(--small-round-radius);
-	font-size: 1em;
-	width: 70px;
-	position: absolute;
-	right: 75px;
-	top: 32%;
+    background-color: var(--primary-blue);
+    padding: 4px;
+    color: white;
+    border: none;
+    border-radius: var(--small-round-radius);
+    font-size: 1em;
+    width: 70px;
+    position: absolute;
+    right: 75px;
+    top: 32%;
+	font-weight: 600;
 }
+
+.chat .content-detail form button:hover {
+	background-color: var(--dark-blue);
+}
+
 
 .qa-score {
 	margin-top: 5px;
@@ -710,10 +725,10 @@ button {
 }
 
 .fa-question-circle {
-	position: absolute;
-	font-size: 22px;
-	color: var(--dark-blue);
-	right: 22px;
+    position: absolute;
+    font-size: 22px;
+    color: var(--primary-blue);
+    right: 22px;
 }
 
 .cbx input[type='checkbox'] {
@@ -1031,17 +1046,17 @@ button {
 }
 
 .tooltip .tooltiptext {
-	visibility: hidden;
-	width: 375px;
-	background-color: var(--primary-blue);
-	color: #fff;
-	text-align: left;
-	border-radius: 6px;
-	padding: 5px 15px;
-	position: absolute;
-	z-index: 1;
-	bottom: 150%;
-	right: -30px;
+    visibility: hidden;
+    width: 375px;
+    background-color: var(--primary-blue);
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 1;
+    bottom: 156%;
+    right: -30px;
 }
 
 .tooltip .tooltiptext-bottom {
@@ -1069,14 +1084,14 @@ button {
 }
 
 .tooltip .tooltiptext::after {
-	content: '';
-	position: absolute;
-	top: 100%;
-	left: 89%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: var(--text-info-bg-black) transparent transparent transparent;
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 89%;
+    margin-left: -5px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--primary-blue) transparent transparent transparent;
 }
 
 .tooltip .tooltiptext-bottom::after {
