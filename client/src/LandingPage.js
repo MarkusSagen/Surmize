@@ -23,10 +23,17 @@ const SiteIcon = require("./img/stock/Site-Running.svg");
 */
 
 class LandingPage extends Component {
-    state = {
-        isFetching: false,
-        files: [],
-        err: [],
+    constructor(props) {
+        super(props);
+
+        this.handleCheck = this.handleCheck.bind(this)
+
+        this.state = {
+            files: [],
+            err: [],
+            isExperimental: false,
+            isFetching: false,
+        }
     }
 
     handleTextUpload = (text, mode) => {
@@ -41,7 +48,6 @@ class LandingPage extends Component {
                 },
                 body: JSON.stringify(body)
             }).then(resp => resp.json()).then(data => {
-
                 console.log(data);
                 this.changeState();
                 this.props.history.push({
@@ -63,7 +69,6 @@ class LandingPage extends Component {
                 },
                 body: file
             }).then(resp => resp.json()).then(data => {
-
                 console.log(data);
                 this.changeState();
                 this.props.history.push({
@@ -97,6 +102,12 @@ class LandingPage extends Component {
         }, 5000)
     }
 
+    handleCheck = (e) => {
+        console.log(e.target.checked);
+        this.setState({ isExperimental: e.target.checked });
+        console.log(this.state.isExperimental);
+    }
+
     render() {
         const spinner = (
             <div className="colSpinner">
@@ -114,8 +125,8 @@ class LandingPage extends Component {
                             <p>Upload your Documents or Text and gain quick insight</p>
                         </div>
                         <div className="upload-section">
-                            <FileUpload setError={this.setError} err={this.state.err} putFile={this.putFile} sendFile={this.handleFileUpload} />
-                            <TextUpload uploadText={this.handleTextUpload} />
+                            <FileUpload setError={this.setError} err={this.state.err} putFile={this.putFile} handleCheck={this.handleCheck} isExperimental={this.state.isExperimental} sendFile={this.handleFileUpload} />
+                            <TextUpload uploadText={this.handleTextUpload} checkSummary={this.handleCheck} handleCheck={this.handleCheck} isExperimental={this.state.isExperimental} />
                         </div>
                     </div>
                 </div>
@@ -213,9 +224,7 @@ class LandingPage extends Component {
             </div>
         </header>
         return (
-
             (this.state.isFetching ? spinner : page)
-
         )
     }
 }

@@ -27,8 +27,11 @@ def text_rank_summarize(upload_path, summary_path, word_embeddings, fraction_of_
     stop_words = stopwords.words('english')
 
     for file in files:
-        with open(f'{upload_path}/{file}') as f:
-            text = f.read()
+        lines = []
+        with open(f'{upload_path}/{file}', encoding="utf8", errors="ignore") as f:
+            for line in f:
+                lines.append(bytes(line, "utf-8").decode("utf-8", "ignore"))
+            text = "".join(lines)
 
         sentences = sent_tokenize(text)
         len_sentence = len(sentences)

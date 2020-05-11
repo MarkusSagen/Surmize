@@ -10,8 +10,11 @@ def insert_newlines(upload_path, user):
     os.makedirs(newline_upload_path)
 
     for file in os.listdir(upload_path):
+        lines = []
         with open(f"{upload_path}/{file}", "r") as f:
-            sentences = f.read()
+            for line in f:
+                lines.append(bytes(line, "utf-8").decode("utf-8", "ignore"))            
+            sentences = "".join(lines)
         sentences = sent_tokenize(sentences)
         text = "\n\n".join(sentences)
 
@@ -19,3 +22,4 @@ def insert_newlines(upload_path, user):
             f.write(text)
 
     return newline_upload_path
+
