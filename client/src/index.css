@@ -44,6 +44,7 @@ font-family: 'Source Sans Pro', sans-serif;
 	--dark-blue: #3253cb;
 	--red: #dc3c4b;
 	--delete-button-red: #ff2b2b;
+	--clickable-filed-btn-color-grey: #e6e6e6;
 
 	/* Text Colors */
 	--text-white: #fff;
@@ -425,7 +426,7 @@ button {
 	margin: calc(-1 * calc(var(--margin-smallest)) + 4px);
 	font-size: 14px;
 	margin-left: 10px;
-	visibility: hidden; /* TODO: Add info later */
+	visibility: hidden; 
 }
 
 .summary .content-detail ul li span:last-child {
@@ -571,6 +572,10 @@ button {
 
 .save-icon > g {
 	fill: var(--medium-purple);
+	-webkit-transition: fill 100ms ease-in-out;
+    -moz-transition: fill 100ms ease-in-out;
+	-ms-transition: fill 100ms ease-in-out;
+	-o-transition: fill 100ms ease-in-out;
 	transition: fill 100ms ease-in-out;
 }
 
@@ -758,8 +763,9 @@ button {
 	left: 0;
 	width: 20px;
 	height: 20px;
-	border: 2px solid #bfbfc0;
+	border: 2px solid var(--dark-purple);
 	border-radius: 50%;
+	background-color: var(--clickable-filed-btn-color-grey);
 }
 
 .cbx label {
@@ -771,11 +777,14 @@ button {
 	top: 0;
 	left: 0;
 	filter: url(#goo);
-	transform: translate3d(0, 0, 0);
+	-webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 	pointer-events: none;
 	padding: 5px !important;
 	border: 2px solid var(--dark-purple);
-	background-color: var(--white) !important;
 }
 
 .cbx svg {
@@ -793,14 +802,40 @@ button {
 	stroke-linejoin: round;
 	stroke-dasharray: 19;
 	stroke-dashoffset: 19;
+	-webkit-transition: stroke-dashoffset 0.3s ease;
+    -moz-transition: stroke-dashoffset 0.3s ease;
+	-ms-transition: stroke-dashoffset 0.3s ease;
+	-o-transition: stroke-dashoffset 0.3s ease;; 
 	transition: stroke-dashoffset 0.3s ease;
+	-webkit-transition-delay: 0.2s;
+    -moz-transition-delay: 0.2s;
+	-ms-transition-delay: 0.2s;
+	-o-transition-delay: 0.2s;
 	transition-delay: 0.2s;
 }
 
-.cbx input:checked + label {
+/* THIS SOLUTION ONLY TO INCLUDE FIREFOX */
+.cbx input:checked {
+	-webkit-animation: splash 0.6s ease forwards;
+    -moz-animation: splash 0.6s ease forwards;
+	-ms-animation: splash 0.6s ease forwards;
+	-o-animation: splash 0.6s ease forwards;
 	animation: splash 0.6s ease forwards;
 	border: 1px solid #7154ff;
+	background-color: var(--dark-purple);
 }
+
+/* THIS SOLUTION FOR ALL OTHER BROWSERS for some reason */
+.cbx input:checked + label {
+	-webkit-animation: splash 0.6s ease forwards;
+    -moz-animation: splash 0.6s ease forwards;
+	-ms-animation: splash 0.6s ease forwards;
+	-o-animation: splash 0.6s ease forwards;
+	animation: splash 0.6s ease forwards;
+	border: 1px solid #7154ff;
+	background-color: var(--dark-purple);
+}
+
 
 .cbx input:checked + label + svg path {
 	stroke-dashoffset: 0;
@@ -935,7 +970,7 @@ button {
 
 .upload-section .file-upload form label,
 .upload-section .text-upload form label {
-	background-color: #e6e6e6;
+	background-color: var(--clickable-filed-btn-color-grey);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1103,7 +1138,12 @@ button {
 	border-width: 5px;
 	border-style: solid;
 	border-color: var(--text-info-bg-black) transparent transparent transparent;
-	transform: rotateZ(180deg);
+	-webkit-transform: rotateZ(180deg);
+    -moz-transform: rotateZ(180deg);
+	-ms-transform: rotateZ(180deg); 
+	-o-transform: rotateZ(180deg); 
+    transform: rotateZ(180deg);
+	
 }
 
 .tooltip:hover .tooltiptext {
