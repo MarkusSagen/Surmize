@@ -46,7 +46,8 @@ class TextUpload extends Component {
 					</div>
 					<div className='form-check-summary'>
 						<span className='text'>
-							<span className='bold'>(Optional) </span>Use Experimental Summary
+							<span className='bold rm-small-devices'>(Optional) </span>
+							Exp<span className="rm-small-devices">erimental</span>  Sum<span className='rm-smallest-devices'>mary</span>
 						</span>
 						<span className='icons'>
 							<InfoIcon

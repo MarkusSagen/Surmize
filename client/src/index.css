@@ -80,6 +80,14 @@ font-family: 'Source Sans Pro', sans-serif;
 	font-family: 'Open Sans', sans-serif;
 }
 
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
 html {
 	scroll-behavior: smooth;
 }
@@ -102,6 +110,10 @@ li {
 	list-style: none;
 }
 
+hr {
+	visibility: hidden;
+}
+
 .own-container {
 	max-width: 1200px;
 }
@@ -115,6 +127,7 @@ li {
 	justify-content: space-between;
 	overflow: hidden;
 	width: 100%;
+	min-height: 55px;
 }
 
 .own-nav-content {
@@ -180,6 +193,7 @@ button {
 	align-items: center;
 	justify-content: space-between;
 }
+
 .sidebar {
 	position: relative;
 	width: 17.5%;
@@ -187,12 +201,12 @@ button {
 	border-right: 1px solid var(--dark-light-grey);
 	height: 90%;
 	top: -40px;
+	min-width: 225px;
 }
 
 .sidebar .file-title {
 	height: 7%;
 	padding: 20px;
-	/* border-bottom: 1px solid #ddd; */
 	margin-bottom: 10px;
 }
 
@@ -263,7 +277,6 @@ button {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	padding: 0px 20px;
 }
 
 .upload button {
@@ -709,9 +722,10 @@ button {
 
 .form-check-summary .text {
 	position: absolute;
-	left: 0px;
+	left: -20px;
 	color: #bfbfbf;
 	font-size: 0.95em;
+	width: 100%;
 }
 
 .form-check-summary .bold {
@@ -723,11 +737,6 @@ button {
 	right: 0px;
 }
 
-.info-container {
-	position: absolute;
-	top: 1px;
-	width: 90%;
-}
 
 .fa-question-circle {
     position: absolute;
@@ -957,7 +966,7 @@ button {
 .file-upload-container {
 	position: relative;
 	border: 5px dashed var(--dark-grey);
-	background-color: var(--light-purple);
+	/* background-color: var(--light-purple); */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1015,6 +1024,7 @@ button {
 	color: #8e7dda;
 	font-weight: 600;
 	width: 30%;
+	min-width: 100px;
 	font-size: 16px;
 }
 
@@ -1049,7 +1059,7 @@ button {
 }
 
 .upload-section .text-upload form textarea {
-	background-color: var(--light-purple);
+	background-color: var(--clickable-filed-btn-color-grey);
 	padding: 20px;
 	border-radius: 10px;
 	width: 100%;
@@ -1184,18 +1194,27 @@ button {
 .card {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
+	align-items: baseline;
+	justify-content: flex-start;
 	border-radius: 20px;
 	border: 1px solid var(--light-grey);
 	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
+	padding-left: 25px;
+	position: relative;
+	padding-top: 33%;
+	width: 100%;
 }
 
 .card h2 {
+	position: absolute;
+	top: 23px;
+	left: 0;
+	width: 100%;
 	color: var(--dark-grey);
 	font-family: 'Rubik', sans-serif;
 	font-weight: 600;
 	font-size: 1.6rem;
+	text-align: center;
 }
 
 .card ul li {
@@ -1204,6 +1223,18 @@ button {
 	color: var(--dark-purple);
 }
 
+.card img {
+	margin-top: 6%;
+}
+
+.slideshow-how-to-use-container { display: none;}
+
+
+
+/* About Section */
+/* 
+/*
+*/
 .about {
 	height: 100vh;
 	width: 100vw;
@@ -1214,7 +1245,7 @@ button {
 	align-items: center;
 	justify-content: center;
 	color: var(--dark-grey);
-	height: 20%;
+	height: 15%;
 	background: #b4b5f9;
 	width: 100%;
 	border-top: 1px solid #440e6b;
@@ -1228,7 +1259,7 @@ button {
 
 .about-main {
 	background: url('maze-light-purple.png') center center/cover no-repeat #8e7dda;
-	height: 60%;
+	height: 70%;
 	width: 100%;
 }
 
@@ -1250,39 +1281,27 @@ button {
 }
 
 .about-main .about-content div p {
-	color: var(--lightest-grey);
-	text-align: center;
-	padding: 0px 65px;
+    color: var(--lightest-grey);
+    text-align: center;
+    padding: 0px 5%;
 }
 
 .about-pics {
-	display: flex;
-	align-items: center;
-	justify-content: space-evenly;
-	width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
-.about-pics .member {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 10%;
-}
-
-.member img {
-	/* position: absolute; */
-}
-
-.member-info {
-	position: absolute;
-	left: 60px;
+.member {
+	margin: 0px 25px;
 }
 
 .member-info h5 {
 	font-size: 0.9em;
 	font-weight: 600;
 	margin: -3px 0px;
+	margin-bottom: -8px;
 }
 
 .member-links {
@@ -1312,6 +1331,174 @@ button {
 
 .footer {
 	background-color: #440e6b;
-	height: 20%;
+	height: 15%;
 	border-top: 2px solid #36005f;
 }
+
+
+
+
+
+.text {
+	text-align: center;
+	width: 80%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/****************************/
+/*	Media Query Section		*/
+/****************************/
+
+/* Workspace: "Ask button fails to work" */
+@media (max-width: 1395px) {
+	
+}
+
+@media (max-width: 1000px) {
+	.nav-links { left: 0px; }
+}
+
+/* Experimental Summary breaks */
+/* Info button text is outside of box */
+@media (max-width: 945px) {
+	
+
+}
+
+
+@media (max-width: 850px) {
+	.rm-small-devices { display: none; }
+	.text { left: 0px !important; }
+
+	/* Change "How to us It" section */
+	.card-container { display: none !important; }
+	.slideshow-how-to-use-container { display: flex; }
+
+}
+
+
+/* .card class overflows */
+@media (max-width: 696px) {
+	.own-logo-subtitle { display: none; }
+	.logo-container { display: none; }
+	.nav-links { left: -5%; }
+	.carousel__item .card {
+		padding: 30% 17%;	
+	}
+} 
+
+@media (max-width: 525px) {
+	p, span { font-size: 0.825em; }
+	h1 { font-size: 2.1em; }
+	.jumbotron .title h1 { font-size: 2.1em; }
+	.jumbotron .title p { padding: 0 20px; }
+	.how-section h1 { font-size: 2.1em; }
+	.about-title h1 { font-size: 2.1em }
+	.own-nav-content ul li a { padding: 10px; }
+
+	.upload-section .file-upload h2, .upload-section .text-upload h2 { font-size: 1.3em; }
+	h2 { font-size: 1.45rem; }
+	.card h2 { font-size: 1.45rem; }
+	.about-main .about-content div h6 { font-size: 1.025em; margin-top: -10%; }
+	ul li { font-size: 0.9em; }
+	.card { padding-left: 0px; }
+	.card ul li { font-size: 0.9em; margin-bottom: 6px; }
+	.carousel__item .card {	padding: 30% 15%; }
+
+	.rm-smallest-devices { display: none; }
+}
+
+@media (max-width: 440px) {
+	.member { margin: 0px 2%; }
+	.member-info h5 {font-size: 0.8em; font-weight: 600; }
+}
+
+.slide-container {
+	width: 80%;
+	margin: auto; }
+  
+  h3 {
+	text-align: center; }
+  
+  .each-slide > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-size: cover;
+	height: 300px;
+  }
+  
+  .each-slide span {
+	padding: 20px;
+	font-size: 20px;
+	background: #efefef;
+	text-align: center;
+  }
+  
+  .each-fade {
+	display: flex;
+  }
+  
+  .each-fade .image-container {
+	width: 75%;
+	overflow: hidden;
+  }
+  
+  .each-fade .image-container img {
+	width: 100%;
+  }
+  
+  .each-fade h2 {
+	width: 25%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	background: #adceed;
+  }
+  
+  .react-slideshow-wrapper.slide {
+    width: 100%;
+    overflow: hidden;
+	min-width: 269px;
+	/* height: 70vh; */
+  }
+
+  .each-slide > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+	height: 65vh;
+	border: none;
+	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
+	position: relative;
+	padding-top: 18%;
+	width: 100%;
+  }
