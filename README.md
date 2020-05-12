@@ -35,8 +35,7 @@ uvicorn api:app --reload --port 5000
 npm install && npm start
 ```
 6. Go to the address [http://localhost:3000](http://localhost:3000) in a browser
-7. Upload files or texts you want to ask questions about
-
+7. Upload files or texts you want to ask questions about, example texts can be found [here](https://drive.google.com/open?id=1CF-4AzG5CPdos4coXfRRx7iz-GR-duoK)
 
 
 #### Contributers  
