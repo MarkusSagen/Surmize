@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import Navbar from "./Navbar"
-import FileUpload from "./FileUpload"
+import { Slide } from 'react-slideshow-image';
+
+import Navbar from './Navbar'
+import FileUpload from './FileUpload'
 import TextUpload from './TextUpload'
-import Card from "./Card"
-import ProjectMember from "./ProjectMember"
+import Card from './Card'
+import ProjectMember from './ProjectMember'
 
 const markusProfile = require("./img/Markus_profile.jpeg");
 const sebbeProfile = require("./img/Sebastian_profile.jpg");
@@ -115,6 +117,47 @@ class LandingPage extends Component {
                 </div>
             </div>
         );
+
+        const properties = {
+            duration: 10000,
+            transitionDuration: 500,
+            infinite: true,
+            indicators: true,
+            arrows: true,
+            pauseOnHover: true,
+            onChange: (oldIndex, newIndex) => {
+              console.log(`slide transition from ${oldIndex} to ${newIndex}`);
+            }
+          }
+
+        const Slideshow = () => {
+            return (
+              <div className="slide-container">
+                <Slide {...properties}>
+                  <div className="each-slide">
+                    <Card title="Upload Files" height={400} imgSrc={QAIcon} listItems={[
+                        "Upload local files",
+                        "Or paste in text",
+                        "Analyse multiple files", ]} />
+                  </div>
+                  <div className="each-slide">
+                    <Card title="Ask Questions" height={400} imgSrc={FAQIcon}  listItems={[
+                        "Select a uploaded file",
+                        "Use summary to gain insight",
+                        "Ask specific questions",
+                        "Get back answer",]} />
+                  </div>
+                  <div className="each-slide">
+                    <Card title="Save Results" height={400} imgSrc={doneIcon} listItems={[
+                        "Ask more questions",
+                        "select other file or upload new",
+                        "Save the result, if needed", ]} />
+                  </div>
+                </Slide>
+              </div>
+            )
+        }
+
         const page = <header>
             <Navbar />
             <div className="landing-main-content">
@@ -135,34 +178,22 @@ class LandingPage extends Component {
                 <div className="main-container">
                     <h1>How To Use</h1>
                     <div className="card-container">
-                        <Card
-                            title="Upload Files"
-                            imgSrc={QAIcon}
-                            listItems={[
+                        <Card title="Upload Files" imgSrc={QAIcon} listItems={[
                                 "Upload local files",
                                 "Or paste in text",
-                                "Analyse multiple files",
-                            ]}
-                        />
-                        <Card
-                            title="Ask Questions"
-                            imgSrc={FAQIcon}
-                            listItems={[
+                                "Analyse multiple files", ]} />
+                        <Card title="Ask Questions" imgSrc={FAQIcon}  listItems={[
                                 "Select a uploaded file",
-                                "Use the summary to gain insight",
+                                "Use summary to gain insight",
                                 "Ask specific questions",
-                                "Get back answer to your question",
-                            ]}
-                        />
-                        <Card
-                            title="Save Results"
-                            imgSrc={doneIcon}
-                            listItems={[
+                                "Get back answer",]} />
+                        <Card title="Save Results" imgSrc={doneIcon} listItems={[
                                 "Ask more questions",
                                 "select other file or upload new",
-                                "Save the result, if needed"
-                            ]}
-                        />
+                                "Save the result, if needed", ]} />
+                    </div>
+                    <div className="slideshow-how-to-use-container">
+                        <Slideshow />
                     </div>
                 </div>
             </div>
