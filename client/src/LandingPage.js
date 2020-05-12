@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Slide } from 'react-slideshow-image';
+
 import Navbar from './Navbar';
 import FileUpload from './FileUpload';
 import TextUpload from './TextUpload';
@@ -118,6 +120,65 @@ class LandingPage extends Component {
 				<div className='sp sp-wave'></div>
 			</div>
 		);
+
+		const properties = {
+			duration: 10000,
+			transitionDuration: 500,
+			infinite: true,
+			indicators: true,
+			arrows: true,
+			pauseOnHover: true,
+			onChange: (oldIndex, newIndex) => {
+				console.log(`slide transition from ${oldIndex} to ${newIndex}`);
+			},
+		};
+
+		const Slideshow = () => {
+			return (
+				<div className='slide-container'>
+					<Slide {...properties}>
+						<div className='each-slide'>
+							<Card
+								title='Upload Files'
+								height={400}
+								imgSrc={QAIcon}
+								listItems={[
+									'Upload local files',
+									'Or paste in text',
+									'Analyse multiple files',
+								]}
+							/>
+						</div>
+						<div className='each-slide'>
+							<Card
+								title='Ask Questions'
+								height={400}
+								imgSrc={FAQIcon}
+								listItems={[
+									'Select a uploaded file',
+									'Use summary to gain insight',
+									'Ask specific questions',
+									'Get back answer',
+								]}
+							/>
+						</div>
+						<div className='each-slide'>
+							<Card
+								title='Save Results'
+								height={400}
+								imgSrc={doneIcon}
+								listItems={[
+									'Ask more questions',
+									'select other file or upload new',
+									'Save the result, if needed',
+								]}
+							/>
+						</div>
+					</Slide>
+				</div>
+			);
+		};
+
 		const page = (
 			<header>
 				<Navbar />
@@ -165,9 +226,9 @@ class LandingPage extends Component {
 								imgSrc={FAQIcon}
 								listItems={[
 									'Select a uploaded file',
-									'Use the summary to gain insight',
+									'Use summary to gain insight',
 									'Ask specific questions',
-									'Get back answer to your question',
+									'Get back answer',
 								]}
 							/>
 							<Card
@@ -179,6 +240,9 @@ class LandingPage extends Component {
 									'Save the result, if needed',
 								]}
 							/>
+						</div>
+						<div className='slideshow-how-to-use-container'>
+							<Slideshow />
 						</div>
 					</div>
 				</div>

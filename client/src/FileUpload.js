@@ -153,11 +153,16 @@ class FileUpload extends Component {
 				<form onSubmit={this.handleSubmit}>
 					<div className='file-upload-container'>
 						<label htmlFor='file-upload'>
-							<span className='upload-icon'>
-								<FilesIcon />
-							</span>
-							{filesMsg}
+							{this.state.files.length === 0 && (
+								<>
+									<span className='upload-icon'>
+										<FilesIcon />
+									</span>
+									{filesMsg}
+								</>
+							)}
 						</label>
+
 						{this.state.files.length > 0 && <ul> {files} </ul>}
 						<input
 							onChange={this.fileChange}
@@ -169,7 +174,9 @@ class FileUpload extends Component {
 					</div>
 					<div className='form-check-summary'>
 						<span className='text'>
-							<span className='bold'>(Optional) </span>Use Experimental Summary
+							<span className='bold rm-small-devices'>(Optional) </span>
+							Exp<span className='rm-small-devices'>erimental</span> Sum
+							<span className='rm-smallest-devices'>mary</span>
 						</span>
 						<span className='icons'>
 							<InfoIcon

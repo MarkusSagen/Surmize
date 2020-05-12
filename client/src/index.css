@@ -44,6 +44,7 @@ font-family: 'Source Sans Pro', sans-serif;
 	--dark-blue: #3253cb;
 	--red: #dc3c4b;
 	--delete-button-red: #ff2b2b;
+	--clickable-filed-btn-color-grey: #e6e6e6;
 
 	/* Text Colors */
 	--text-white: #fff;
@@ -79,6 +80,14 @@ font-family: 'Source Sans Pro', sans-serif;
 	font-family: 'Open Sans', sans-serif;
 }
 
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
 html {
 	scroll-behavior: smooth;
 }
@@ -101,6 +110,10 @@ li {
 	list-style: none;
 }
 
+hr {
+	visibility: hidden;
+}
+
 .own-container {
 	max-width: 1200px;
 }
@@ -114,6 +127,7 @@ li {
 	justify-content: space-between;
 	overflow: hidden;
 	width: 100%;
+	min-height: 55px;
 }
 
 .own-nav-content {
@@ -179,6 +193,7 @@ button {
 	align-items: center;
 	justify-content: space-between;
 }
+
 .sidebar {
 	position: relative;
 	width: 17.5%;
@@ -186,12 +201,12 @@ button {
 	border-right: 1px solid var(--dark-light-grey);
 	height: 90%;
 	top: -40px;
+	min-width: 225px;
 }
 
 .sidebar .file-title {
 	height: 7%;
 	padding: 20px;
-	/* border-bottom: 1px solid #ddd; */
 	margin-bottom: 10px;
 }
 
@@ -262,14 +277,12 @@ button {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	padding: 0px 20px;
 }
 
 .upload button {
 	position: relative;
-	background-color: var(--dark-grey);
-	opacity: 0.8;
-	color: var(--text-white);
+	background-color: #ffffff;
+	color: var(--dark-purple);
 	text-align: center;
 	font-size: 0.9em;
 	margin-top: 25px;
@@ -279,9 +292,15 @@ button {
 	display: inline-block;
 	text-decoration: none;
 	top: 5px;
-	border: 1px solid #505050;
+	border: 2px solid var(--dark-purple);
 	margin: 5px 0px;
 	margin-bottom: 12px;
+	font-weight: 600;
+}
+
+.upload button:hover {
+	background-color: var(--dark-purple);
+	color: var(--white);
 }
 
 .upload button p {
@@ -302,16 +321,19 @@ button {
 	background-color: var(--delete-button-red);
 	color: white;
 	padding: 10px 5px;
-	border: 1px solid var(--delete-button-red);
 	border-radius: calc(var(--small-round-radius) + 15px);
 	text-decoration: none;
-	border-bottom: 4px solid #b91d1d;
 	z-index: 5;
 	margin-bottom: 10px;
 	width: 150px;
-	border: 1px solid #b91d1d;
+	border: 2px solid #b91d1d;
 	opacity: 0.9;
 	font-size: 0.9em;
+	font-weight: 600;
+}
+
+.delete-all-files button:hover {
+	background-color: #b91d1d;
 }
 
 .delete-all-files button p {
@@ -416,7 +438,7 @@ button {
 	margin: calc(-1 * calc(var(--margin-smallest)) + 4px);
 	font-size: 14px;
 	margin-left: 10px;
-	visibility: hidden; /* TODO: Add info later */
+	visibility: hidden;
 }
 
 .summary .content-detail ul li span:last-child {
@@ -514,6 +536,11 @@ button {
 	position: absolute;
 	right: 75px;
 	top: 32%;
+	font-weight: 600;
+}
+
+.chat .content-detail form button:hover {
+	background-color: var(--dark-blue);
 }
 
 .qa-score {
@@ -556,6 +583,10 @@ button {
 
 .save-icon > g {
 	fill: var(--medium-purple);
+	-webkit-transition: fill 100ms ease-in-out;
+	-moz-transition: fill 100ms ease-in-out;
+	-ms-transition: fill 100ms ease-in-out;
+	-o-transition: fill 100ms ease-in-out;
 	transition: fill 100ms ease-in-out;
 }
 
@@ -689,9 +720,10 @@ button {
 
 .form-check-summary .text {
 	position: absolute;
-	left: 0px;
+	left: -20px;
 	color: #bfbfbf;
 	font-size: 0.95em;
+	width: 100%;
 }
 
 .form-check-summary .bold {
@@ -703,16 +735,10 @@ button {
 	right: 0px;
 }
 
-.info-container {
-	position: absolute;
-	top: 1px;
-	width: 90%;
-}
-
 .fa-question-circle {
 	position: absolute;
 	font-size: 22px;
-	color: var(--dark-blue);
+	color: var(--primary-blue);
 	right: 22px;
 }
 
@@ -743,8 +769,9 @@ button {
 	left: 0;
 	width: 20px;
 	height: 20px;
-	border: 2px solid #bfbfc0;
+	border: 2px solid var(--dark-purple);
 	border-radius: 50%;
+	background-color: var(--clickable-filed-btn-color-grey);
 }
 
 .cbx label {
@@ -756,11 +783,14 @@ button {
 	top: 0;
 	left: 0;
 	filter: url(#goo);
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
 	pointer-events: none;
 	padding: 5px !important;
 	border: 2px solid var(--dark-purple);
-	background-color: var(--white) !important;
 }
 
 .cbx svg {
@@ -778,13 +808,38 @@ button {
 	stroke-linejoin: round;
 	stroke-dasharray: 19;
 	stroke-dashoffset: 19;
+	-webkit-transition: stroke-dashoffset 0.3s ease;
+	-moz-transition: stroke-dashoffset 0.3s ease;
+	-ms-transition: stroke-dashoffset 0.3s ease;
+	-o-transition: stroke-dashoffset 0.3s ease;
 	transition: stroke-dashoffset 0.3s ease;
+	-webkit-transition-delay: 0.2s;
+	-moz-transition-delay: 0.2s;
+	-ms-transition-delay: 0.2s;
+	-o-transition-delay: 0.2s;
 	transition-delay: 0.2s;
 }
 
-.cbx input:checked + label {
+/* THIS SOLUTION ONLY TO INCLUDE FIREFOX */
+.cbx input:checked {
+	-webkit-animation: splash 0.6s ease forwards;
+	-moz-animation: splash 0.6s ease forwards;
+	-ms-animation: splash 0.6s ease forwards;
+	-o-animation: splash 0.6s ease forwards;
 	animation: splash 0.6s ease forwards;
 	border: 1px solid #7154ff;
+	background-color: var(--dark-purple);
+}
+
+/* THIS SOLUTION FOR ALL OTHER BROWSERS for some reason */
+.cbx input:checked + label {
+	-webkit-animation: splash 0.6s ease forwards;
+	-moz-animation: splash 0.6s ease forwards;
+	-ms-animation: splash 0.6s ease forwards;
+	-o-animation: splash 0.6s ease forwards;
+	animation: splash 0.6s ease forwards;
+	border: 1px solid #7154ff;
+	background-color: var(--dark-purple);
 }
 
 .cbx input:checked + label + svg path {
@@ -907,7 +962,7 @@ button {
 .file-upload-container {
 	position: relative;
 	border: 5px dashed var(--dark-grey);
-	background-color: var(--light-purple);
+	/* background-color: var(--light-purple); */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -920,7 +975,7 @@ button {
 
 .upload-section .file-upload form label,
 .upload-section .text-upload form label {
-	background-color: #e6e6e6;
+	background-color: var(--clickable-filed-btn-color-grey);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -944,6 +999,7 @@ button {
 	font-weight: 600;
 	width: 30%;
 	font-size: 16px;
+	min-width: 100px;
 }
 
 .upload-section .file-upload form Button:hover,
@@ -965,6 +1021,7 @@ button {
 	color: #8e7dda;
 	font-weight: 600;
 	width: 30%;
+	min-width: 100px;
 	font-size: 16px;
 }
 
@@ -999,7 +1056,7 @@ button {
 }
 
 .upload-section .text-upload form textarea {
-	background-color: var(--light-purple);
+	background-color: var(--clickable-filed-btn-color-grey);
 	padding: 20px;
 	border-radius: 10px;
 	width: 100%;
@@ -1040,7 +1097,7 @@ button {
 	padding: 5px 15px;
 	position: absolute;
 	z-index: 1;
-	bottom: 150%;
+	bottom: 156%;
 	right: -30px;
 }
 
@@ -1074,9 +1131,9 @@ button {
 	top: 100%;
 	left: 89%;
 	margin-left: -5px;
-	border-width: 5px;
+	border-width: 6px;
 	border-style: solid;
-	border-color: var(--text-info-bg-black) transparent transparent transparent;
+	border-color: var(--primary-blue) transparent transparent transparent;
 }
 
 .tooltip .tooltiptext-bottom::after {
@@ -1088,6 +1145,10 @@ button {
 	border-width: 5px;
 	border-style: solid;
 	border-color: var(--text-info-bg-black) transparent transparent transparent;
+	-webkit-transform: rotateZ(180deg);
+	-moz-transform: rotateZ(180deg);
+	-ms-transform: rotateZ(180deg);
+	-o-transform: rotateZ(180deg);
 	transform: rotateZ(180deg);
 }
 
@@ -1129,18 +1190,27 @@ button {
 .card {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
+	align-items: baseline;
+	justify-content: flex-start;
 	border-radius: 20px;
 	border: 1px solid var(--light-grey);
 	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
+	padding-left: 25px;
+	position: relative;
+	padding-top: 33%;
+	width: 100%;
 }
 
 .card h2 {
+	position: absolute;
+	top: 23px;
+	left: 0;
+	width: 100%;
 	color: var(--dark-grey);
 	font-family: 'Rubik', sans-serif;
 	font-weight: 600;
 	font-size: 1.6rem;
+	text-align: center;
 }
 
 .card ul li {
@@ -1149,6 +1219,18 @@ button {
 	color: var(--dark-purple);
 }
 
+.card img {
+	margin-top: 6%;
+}
+
+.slideshow-how-to-use-container {
+	display: none;
+}
+
+/* About Section */
+/* 
+/*
+*/
 .about {
 	height: 100vh;
 	width: 100vw;
@@ -1159,7 +1241,7 @@ button {
 	align-items: center;
 	justify-content: center;
 	color: var(--dark-grey);
-	height: 20%;
+	height: 15%;
 	background: #b4b5f9;
 	width: 100%;
 	border-top: 1px solid #440e6b;
@@ -1173,7 +1255,7 @@ button {
 
 .about-main {
 	background: url('maze-light-purple.png') center center/cover no-repeat #8e7dda;
-	height: 60%;
+	height: 70%;
 	width: 100%;
 }
 
@@ -1197,37 +1279,25 @@ button {
 .about-main .about-content div p {
 	color: var(--lightest-grey);
 	text-align: center;
-	padding: 0px 65px;
+	padding: 0px 5%;
 }
 
 .about-pics {
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
+	justify-content: center;
 	width: 100%;
 }
 
-.about-pics .member {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 10%;
-}
-
-.member img {
-	/* position: absolute; */
-}
-
-.member-info {
-	position: absolute;
-	left: 60px;
+.member {
+	margin: 0px 25px;
 }
 
 .member-info h5 {
 	font-size: 0.9em;
 	font-weight: 600;
 	margin: -3px 0px;
+	margin-bottom: -8px;
 }
 
 .member-links {
@@ -1257,6 +1327,196 @@ button {
 
 .footer {
 	background-color: #440e6b;
-	height: 20%;
+	height: 15%;
 	border-top: 2px solid #36005f;
+}
+
+.text {
+	text-align: center;
+	width: 80%;
+}
+
+/****************************/
+/*	Media Query Section		*/
+/****************************/
+
+/* Workspace: "Ask button fails to work" */
+@media (max-width: 1395px) {
+}
+
+@media (max-width: 1000px) {
+	.nav-links {
+		left: 0px;
+	}
+}
+
+/* Experimental Summary breaks */
+/* Info button text is outside of box */
+@media (max-width: 945px) {
+}
+
+@media (max-width: 850px) {
+	.rm-small-devices {
+		display: none;
+	}
+	.text {
+		left: 0px !important;
+	}
+
+	/* Change "How to us It" section */
+	.card-container {
+		display: none !important;
+	}
+	.slideshow-how-to-use-container {
+		display: flex;
+	}
+}
+
+/* .card class overflows */
+@media (max-width: 696px) {
+	.own-logo-subtitle {
+		display: none;
+	}
+	.logo-container {
+		display: none;
+	}
+	.nav-links {
+		left: -5%;
+	}
+	.carousel__item .card {
+		padding: 30% 17%;
+	}
+}
+
+@media (max-width: 525px) {
+	p,
+	span {
+		font-size: 0.825em;
+	}
+	h1 {
+		font-size: 2.1em;
+	}
+	.jumbotron .title h1 {
+		font-size: 2.1em;
+	}
+	.jumbotron .title p {
+		padding: 0 20px;
+	}
+	.how-section h1 {
+		font-size: 2.1em;
+	}
+	.about-title h1 {
+		font-size: 2.1em;
+	}
+	.own-nav-content ul li a {
+		padding: 10px;
+	}
+
+	.upload-section .file-upload h2,
+	.upload-section .text-upload h2 {
+		font-size: 1.3em;
+	}
+	h2 {
+		font-size: 1.45rem;
+	}
+	.card h2 {
+		font-size: 1.45rem;
+	}
+	.about-main .about-content div h6 {
+		font-size: 1.025em;
+		margin-top: -10%;
+	}
+	ul li {
+		font-size: 0.9em;
+	}
+	.card {
+		padding-left: 0px;
+	}
+	.card ul li {
+		font-size: 0.9em;
+		margin-bottom: 6px;
+	}
+	.carousel__item .card {
+		padding: 30% 15%;
+	}
+
+	.rm-smallest-devices {
+		display: none;
+	}
+}
+
+@media (max-width: 440px) {
+	.member {
+		margin: 0px 2%;
+	}
+	.member-info h5 {
+		font-size: 0.8em;
+		font-weight: 600;
+	}
+}
+
+.slide-container {
+	width: 80%;
+	margin: auto;
+}
+
+h3 {
+	text-align: center;
+}
+
+.each-slide > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-size: cover;
+	height: 300px;
+}
+
+.each-slide span {
+	padding: 20px;
+	font-size: 20px;
+	background: #efefef;
+	text-align: center;
+}
+
+.each-fade {
+	display: flex;
+}
+
+.each-fade .image-container {
+	width: 75%;
+	overflow: hidden;
+}
+
+.each-fade .image-container img {
+	width: 100%;
+}
+
+.each-fade h2 {
+	width: 25%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	background: #adceed;
+}
+
+.react-slideshow-wrapper.slide {
+	width: 100%;
+	overflow: hidden;
+	min-width: 269px;
+	/* height: 70vh; */
+}
+
+.each-slide > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-size: cover;
+	height: 65vh;
+	border: none;
+	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
+	position: relative;
+	padding-top: 18%;
+	width: 100%;
 }

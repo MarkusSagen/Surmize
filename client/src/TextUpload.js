@@ -40,13 +40,13 @@ class TextUpload extends Component {
 							value={this.state.text}
 							style={{ display: `${this.state.showTextArea ? 'block' : 'none'}` }}
 							name=''
-							id='text-file'
-							cols='30'
-							rows='10'></textarea>
+							id='text-file'></textarea>
 					</div>
 					<div className='form-check-summary'>
 						<span className='text'>
-							<span className='bold'>(Optional) </span>Use Experimental Summary
+							<span className='bold rm-small-devices'>(Optional) </span>
+							Exp<span className='rm-small-devices'>erimental</span> Sum
+							<span className='rm-smallest-devices'>mary</span>
 						</span>
 						<span className='icons'>
 							<InfoIcon

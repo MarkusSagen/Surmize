@@ -21,7 +21,7 @@ if [ ! -f "summarization/textrank/glove.6B.100d.txt" ]; then
     wget http://nlp.stanford.edu/data/glove.6B.zip && echo "${green}Downloaded textrank word embeddings${reset}" || echo "${red}Failed to downloaded textrank word embeddings${reset}"
     unzip glove*.zip
     rm glove.6B.zip
-    rm rm glove.6B.200d.txt glove.6B.300d.txt glove.6B.50d.txt
+    rm glove.6B.200d.txt glove.6B.300d.txt glove.6B.50d.txt
     cd ../..
 else
     echo "${green}Found downloaded textrank word embeddings${reset}"
