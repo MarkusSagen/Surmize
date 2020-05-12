@@ -1,113 +1,124 @@
-import React, { Component } from 'react'
-import uuid from 'react-uuid'
-import star from "./star.svg"
-import { ReactComponent as Save } from "./save.svg"
+import React, { Component } from 'react';
+import uuid from 'react-uuid';
+import star from './star.svg';
+import { ReactComponent as Save } from './save.svg';
 
 class QuestionForm extends Component {
-    state = {
-        dialogue: [],
-        text: ""
-    }
+	state = {
+		dialogue: [],
+		text: '',
+	};
 
-    componentDidUpdate() {
-        this.scrollDown();
-    }
+	componentDidUpdate() {
+		this.scrollDown();
+	}
 
-    handleChange = (e) => {
-        this.setState({ text: e.target.value })
-    }
+	handleChange = (e) => {
+		this.setState({ text: e.target.value });
+	};
 
-    sendQuestion = (e) => {
-        //e.preventDefault();
-        const text = this.state.text;
-        this.setState({ text: "" })
-        this.props.sendQuestion(text, this.newAnswer);
-    }
+	sendQuestion = (e) => {
+		e.preventDefault();
+		const text = this.state.text;
+		this.setState({ text: '' });
+		this.props.sendQuestion(text, this.newAnswer);
+	};
 
-    newAnswer = (question, answer) => {
-        var newArray = this.state.dialogue
-        newArray.push({
-                "question": question,
-                "answer": answer.answer,
-                "context": answer.context,
-                "score": answer.score
-        })
-        this.setState({
-            dialogue: newArray
-        })
-    }
+	newAnswer = (question, answer) => {
+		var newArray = this.state.dialogue;
+		newArray.push({
+			question: question,
+			answer: answer.answer,
+			context: answer.context,
+			score: answer.score,
+		});
+		this.setState({
+			dialogue: newArray,
+		});
+	};
 
-    scrollDown = () => {
-        const chat = document.getElementById("qa-main");
-        chat.scrollTop = chat.scrollHeight;
-    }
+	scrollDown = () => {
+		const chat = document.getElementById('qa-main');
+		chat.scrollTop = chat.scrollHeight;
+	};
 
-    certainty = (score) => {
-        let reply = ""
-        if (score < 2) {
-            reply = <div className="qa-score">
-                <span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating">
-                <img className="inactive-score" src={star} alt="star" />  
-                <img className="inactive-score" src={star} alt="star" />  
-                <img className="inactive-score" src={star} alt="star" /> </span>
-            </div>
-        }
-        else if (score < 5) {
-            reply = <div className="qa-score">
-                <span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating">
-                    <img src={star} alt="star" /> 
-                    <img className="inactive-score" src={star} alt="star" /> 
-                    <img className="inactive-score" src={star} alt="star" /> </span>
-                </div>
-        }
-        else if (score < 15) {
-            reply = <div className="qa-score">
-                <span className="qa-score-title">Confidence Score: </span><span className="qa-score-rating">
-                    <img src={star} alt="star" /> 
-                    <img src={star} alt="star" /> 
-                    <img className="inactive-score" src={star} alt="star" /> </span>
-                </div>
-        }
-        else {
-            reply = <div className="qa-score">
-                <span className="qa-score-title">Confidence Score: </span>
-                <span className="qa-score-rating">
-                    <img src={star} alt="star" /> 
-                    <img src={star} alt="star" /> 
-                    <img src={star} alt="star" /> </span>
-                </div>
-        }
-        return reply
-    }
+	certainty = (score) => {
+		let reply = '';
+		if (score < 2) {
+			reply = (
+				<div className='qa-score'>
+					<span className='qa-score-title'>Confidence Score: </span>
+					<span className='qa-score-rating'>
+						<img className='inactive-score' src={star} alt='star' />
+						<img className='inactive-score' src={star} alt='star' />
+						<img className='inactive-score' src={star} alt='star' />{' '}
+					</span>
+				</div>
+			);
+		} else if (score < 5) {
+			reply = (
+				<div className='qa-score'>
+					<span className='qa-score-title'>Confidence Score: </span>
+					<span className='qa-score-rating'>
+						<img src={star} alt='star' />
+						<img className='inactive-score' src={star} alt='star' />
+						<img className='inactive-score' src={star} alt='star' />{' '}
+					</span>
+				</div>
+			);
+		} else if (score < 15) {
+			reply = (
+				<div className='qa-score'>
+					<span className='qa-score-title'>Confidence Score: </span>
+					<span className='qa-score-rating'>
+						<img src={star} alt='star' />
+						<img src={star} alt='star' />
+						<img className='inactive-score' src={star} alt='star' />{' '}
+					</span>
+				</div>
+			);
+		} else {
+			reply = (
+				<div className='qa-score'>
+					<span className='qa-score-title'>Confidence Score: </span>
+					<span className='qa-score-rating'>
+						<img src={star} alt='star' />
+						<img src={star} alt='star' />
+						<img src={star} alt='star' />{' '}
+					</span>
+				</div>
+			);
+		}
+		return reply;
+	};
 
-    handleKeyDown = (e, sendFunc) => {
-        if (e.key === "Enter" && e.shiftKey === false) {
-            e.preventDefault();
-            sendFunc()
-        }
-    }
-    
-    render() {
-        const chat = [];
-        const { dialogue } = this.state
-        for (let i = 0; i < dialogue.length; i++) {
-            chat.push(
-                <div key={uuid()} className="qa-content">
-                    <div className="question">
-                        <p>Question</p>
-                        <p>{ dialogue[i].question }</p>
-                    </div>
-                    <div className="answer">
-                        <p>Answer</p>
-                        <p>{dialogue[i].answer}</p>
-                        { this.certainty(dialogue[i].score) }
+	handleKeyDown = (e, sendFunc) => {
+		if (e.key === 'Enter' && e.shiftKey === false) {
+			e.preventDefault();
+			sendFunc(e);
+		}
+	};
 
-                    </div>
-                </div>
-            )
-        }
+	render() {
+		const chat = [];
+		const { dialogue } = this.state;
+		for (let i = 0; i < dialogue.length; i++) {
+			chat.push(
+				<div key={uuid()} className='qa-content'>
+					<div className='question'>
+						<p>Question</p>
+						<p>{dialogue[i].question}</p>
+					</div>
+					<div className='answer'>
+						<p>Answer</p>
+						<p>{dialogue[i].answer}</p>
+						{this.certainty(dialogue[i].score)}
+					</div>
+				</div>,
+			);
+		}
 
-        /* let questionBox = <h1>Hello</h1>
+		/* let questionBox = <h1>Hello</h1>
         const answers = []
         const dialogue = this.state.dialogue.reverse()
 
@@ -152,36 +163,37 @@ class QuestionForm extends Component {
                 </div>
 
         } */
-        return (
-            <div className="chat">
-                <div className="content-title">
-                    <h3>QA</h3>
-                </div>
-                <div className="content-subtitle">{this.props.file}</div>
-                <div id="qa-main" className="content-main">
-                    { chat }
-                </div>
-                <div className="content-detail">
-                    <form onSubmit={this.sendQuestion} >
-                        <div className="form-group question-area">
-                            <textarea 
-                                onChange={this.handleChange} 
-                                onKeyDown={(e) => { this.handleKeyDown(e, this.sendQuestion); }}
-                                placeholder="Write Question Here..." 
-                                name="question-text" 
-                                value={this.state.text} 
-                                id="question-text"
-                            ></textarea>
-                        </div>
-                        <button type="submit">Ask</button>
-                    </form>
-                    <div className="content-save">
-                        <Save />
-                    </div>
-                </div>
-            </div>
-        )
-    }
+		return (
+			<div className='chat'>
+				<div className='content-title'>
+					<h3>QA</h3>
+				</div>
+				<div className='content-subtitle'>{this.props.file}</div>
+				<div id='qa-main' className='content-main'>
+					{chat}
+				</div>
+				<div className='content-detail'>
+					<form onSubmit={this.sendQuestion}>
+						<div className='form-group question-area'>
+							<textarea
+								onChange={this.handleChange}
+								onKeyDown={(e) => {
+									this.handleKeyDown(e, this.sendQuestion);
+								}}
+								placeholder='Write Question Here...'
+								name='question-text'
+								value={this.state.text}
+								id='question-text'></textarea>
+						</div>
+						<button type='submit'>Ask</button>
+					</form>
+					<div className='content-save'>
+						<Save />
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 export default QuestionForm;

@@ -85,7 +85,7 @@ def summarize(upload_folder, summary_path, user, sus_method,isnew):
         with Timer(name="Abs. SUS", text="Abs Sus. took: {:0.2f} seconds"):
             temp_new_line_folder = insert_newlines(upload_folder, user)
             summarizer.main(rDir=temp_new_line_folder, sDir=summary_path, \
-                        beam=8, alpha=0.75, minl=50, maxl=200)
+                        beam=8, alpha=0.75, minl=150, maxl=200)
             shutil.rmtree(f"data/pending/{user}") 
     elif sus_method == "ext":
         with Timer(name="Abs. SUS", text="Ext Sus. took: {:0.2f} seconds"):
@@ -121,12 +121,12 @@ async def QA_predict_to_json(question: str) -> json:
     return { "answer": answer, "context": context, "score": score}
 
 
-@app.get("/")
+@app.get("/api/api/")
 async def home():
     return {"msg": "Hello World!"}
 
 
-@app.get("/token")
+@app.get("/api/token")
 def get_token(request: Request):
     """
     Get temporary Session ID token to use the application
@@ -141,7 +141,7 @@ def get_token(request: Request):
     return {"token": safeToken}
 
 
-@app.post("/remove")
+@app.post("/api/remove")
 async def remove_dir(request:Request):
     query = await request.json()
     user = query["user"]
@@ -154,7 +154,7 @@ async def remove_dir(request:Request):
     return{"msg": "removed"}
 
 
-@app.post("/question")
+@app.post("/api/question")
 async def ask_question(request: Request):
     """
     Example:
@@ -173,7 +173,7 @@ async def ask_question(request: Request):
 
 # TODO: Allow saving multiple files on storage, works sometimes, so probably wrong way right now
 # TODO: Add examples of how to use this function
-@app.post("/files")
+@app.post("/api/files")
 async def upload_file(request: Request, file: List[UploadFile] = File(...)):
     """
     Uploads temporary file which is loadied in to the cdQA model as the data
@@ -231,7 +231,7 @@ async def upload_file(request: Request, file: List[UploadFile] = File(...)):
             "files": [f.filename for f in file]}
 
 
-@app.post("/getfiles")
+@app.post("/api/getfiles")
 async def send_files(request:Request):
     query = await request.json()
     user = query['user']
@@ -259,7 +259,7 @@ async def send_files(request:Request):
     return
 
 
-@app.post("/showfile")
+@app.post("/api/showfile")
 async def show_file(request:Request):
     query = await request.json()
     user = query['user']
@@ -288,7 +288,7 @@ async def show_file(request:Request):
 
     return { "sum": content, "status_code": status_code }
 
-@app.post("/textUpload")
+@app.post("/api/textUpload")
 async def handle_text(request: Request):
     query = await request.json()
     user = query['user']
@@ -321,7 +321,7 @@ async def handle_text(request: Request):
     return{"msg": "UPLOADED"}
 
 
-@app.delete("/files")
+@app.delete("/api/files")
 async def remove_file(request:Request):
     query = await request.json()
     user = query['user']
@@ -348,7 +348,7 @@ async def remove_file(request:Request):
 
     return {"msg": f"DELETED {file_to_delete}"}
 
-@app.websocket("/ws")
+@app.websocket("/api/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
