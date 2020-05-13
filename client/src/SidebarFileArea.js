@@ -9,7 +9,6 @@ import { ReactComponent as TrashCan } from "./trashcan.svg";
 
 // for Sidebar
 const mql = window.matchMedia(`(min-width: 1269px)`);
-const maxWidth = 1269;
 
 class SidebarFileArea extends Component {
 	constructor(props) {
@@ -22,7 +21,6 @@ class SidebarFileArea extends Component {
 			width: 0, 
             height: 0,
             sidebarDocked: mql.matches,   // Check view space for sidebar
-            sidebarOpen: false,
         };
         
 
@@ -31,7 +29,7 @@ class SidebarFileArea extends Component {
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
 	}	
 
-    componentWillMount() {
+    componentDidMount() {
         this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
         mql.addListener(this.mediaQueryChanged);
@@ -52,12 +50,14 @@ class SidebarFileArea extends Component {
         /* var sidebarOpen = this.state.sidebarOpen;
         var nav = document.querySelector(".nav");
         (sidebarOpen === false) ? nav.style.visibility = "hidden" : nav.style.visibility = "visible"; */
-        this.setState({ sidebarOpen: open });
+        //this.setState({ sidebarOpen: open });
+        this.props.toggleSidebar(open);
     }
 
     // Close sidebar on too small margin
     mediaQueryChanged() {
-        this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+        this.setState({ sidebarDocked: mql.matches });
+        this.props.toggleSidebar(false);
     }
 
     // Toggle Form Upload Area
@@ -65,11 +65,16 @@ class SidebarFileArea extends Component {
         this.props.moreFiles();
     }
 
+
     truncate = (input) => {
-        const iPadWidthStanding = 768;
-        var width = this.state.width;
-        return ((width >= iPadWidthStanding) ? input.substring(0, 18) + '...' : input.substring(0, 14) + '...');
-    }
+        if (input.length > 18) {
+            return input.substring(0, 18) + '...';
+        }
+        else {
+            return input;
+        }
+    };
+
 
     removeAll   = ( ) => { this.props.removeAll() }
     readFile    = (f) => { this.props.showFile(f) }
@@ -111,17 +116,17 @@ class SidebarFileArea extends Component {
                         </div>
                     </div>
                 }
-                open={this.state.sidebarOpen}
+                open={this.props.sidebarOpen}
                 docked={this.state.sidebarDocked}
                 onSetOpen={this.onSetSidebarOpen} 
                 styles={{ 
                     root: { top: "calc(0px - 8%)", },
-                      sidebar: { background: "#fff", top: "calc(15% - 1px);", height: "92vh", minWidth: "225px", },
+                      sidebar: { background: "#fff", top: "calc(15% - 1px)", height: "92vh", minWidth: "225px", },
                       overlay: { top: "8%",},
                       content: { top: "7%", background: "#ffffff00", },
                 }}>
                 <button className="btn-sidebar btn-navbar"
-                    onClick={() => this.onSetSidebarOpen(!this.state.sidebarOpen)} >
+                    onClick={() => this.onSetSidebarOpen(!this.props.sidebarOpen)} >
                     <NavIcon />
                 </button>
             </Sidebar>

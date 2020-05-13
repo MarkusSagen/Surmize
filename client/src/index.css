@@ -698,6 +698,10 @@ button {
 	border: 1px solid #00b05e;
 }
 
+.file-upload-container label {
+	cursor: pointer
+}
+
 .file-upload-container label span:last-child {
 	position: absolute;
 	bottom: 15%;
@@ -988,6 +992,7 @@ button {
 	border-radius: 20px;
 	width: 100%;
 	color: var(--dark-grey);
+	cursor: pointer;
 }
 
 .upload-section .file-upload form label,
@@ -1481,6 +1486,17 @@ div .each-slide > div {
 }
 
 
+.block-on-sidebar-active {
+	position: relative;
+	width: 10%;
+	height: 80%;
+	border: 1px solid var(--light-grey);
+	border-radius: var(--small-round-radius);
+	overflow: hidden;
+	margin-right: 5%;
+	margin-top: -5px;
+	box-shadow: 
+}
 
 
 
