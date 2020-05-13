@@ -27,16 +27,16 @@ const SiteIcon = require("./img/stock/Site-Running.svg");
 class LandingPage extends Component {
 	constructor(props) {
 		super(props);
-
-		this.handleCheck = this.handleCheck.bind(this);
-
+		
 		this.state = {
 			files: [],
 			err: [],
 			isExperimental: false,
 			isFetching: false,
 		};
-	}
+
+        this.handleCheck = this.handleCheck.bind(this);
+    }
 
 	handleTextUpload = (text, mode) => {
 		this.changeState();
@@ -122,15 +122,13 @@ class LandingPage extends Component {
 		);
 
 		const properties = {
-			duration: 10000,
-			transitionDuration: 500,
+			duration: 5000,
+            transitionDuration: 500,
 			infinite: true,
 			indicators: true,
 			arrows: true,
 			pauseOnHover: true,
-			onChange: (oldIndex, newIndex) => {
-				console.log(`slide transition from ${oldIndex} to ${newIndex}`);
-			},
+			onChange: (oldIndex, newIndex) => {},
 		};
 
 		const Slideshow = () => {

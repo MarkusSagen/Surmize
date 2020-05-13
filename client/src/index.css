@@ -94,7 +94,7 @@ html {
 
 body {
 	background-color: var(--background-color);
-	/*  overflow: hidden; */
+	/* overflow: hidden;  */
 }
 
 header {
@@ -116,6 +116,7 @@ hr {
 
 .own-container {
 	max-width: 1200px;
+	margin-left: 105px;
 }
 
 .own-navbar {
@@ -127,7 +128,7 @@ hr {
 	justify-content: space-between;
 	overflow: hidden;
 	width: 100%;
-	min-height: 55px;
+	min-height: 38px;
 }
 
 .own-nav-content {
@@ -187,28 +188,41 @@ button {
 }
 
 .main-content {
-	height: 90%;
+    height: 92%;
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	overflow: hidden;
 }
 
 .sidebar {
 	position: relative;
+	top: 0px;
 	width: 17.5%;
 	height: 100%;
 	border-right: 1px solid var(--dark-light-grey);
-	height: 90%;
-	top: -40px;
-	min-width: 225px;
+	min-width: 250px;
 }
 
 .sidebar .file-title {
-	height: 7%;
-	padding: 20px;
-	margin-bottom: 10px;
+    height: 7%;
+    padding: 15px;
+    margin-bottom: 10px;
 }
+
+.file-title button {
+	width: 40px;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    height: 40px;
+    border: 1px solid var(--white);
+    border-radius: 5px;
+}
+
+
+
 
 .sidebar .file-title::after {
 	display: block;
@@ -221,9 +235,9 @@ button {
 
 .sidebar .files {
 	overflow: scroll;
-	height: calc(93% - 120px);
+	height: calc(93% - 118px);
 	border-bottom: 1px solid var(--light-grey);
-	padding: 0 20px;
+	padding: 0 2px;
 }
 
 .sidebar .files ul {
@@ -242,15 +256,16 @@ button {
 .sidebar .files ul li:hover {
 	opacity: 0.9;
 	border-left: var(--dark-purple) 8px solid;
-	margin-left: 0px;
-	padding-left: 7px; /*9px;*/ /* Make to 10px to make small indent on files */
+	margin-left: 5px;
+	padding-left: 2px; /* Margin-left + padding-left = 7px */
 	color: #464646;
 }
 
 .files ul li span:last-child {
 	position: absolute;
-	right: 10px;
-	top: 2px;
+	right: 15px;
+    top: 0px;
+    margin: 0 auto;
 }
 
 .selected-file {
@@ -488,13 +503,12 @@ button {
 
 .chat .content-main .qa-content .answer p:first-child {
 	color: var(--dark-purple);
+	font-weight: 600;
 }
 
 .question p:first-child {
 	color: var(--darker-grey);
-}
-
-.first-page-upload {
+	font-weight: 600;
 }
 
 .chat .content-detail form .form-group textarea {
@@ -514,10 +528,11 @@ button {
 }
 
 .question-area {
-	width: 65%;
-	position: absolute;
-	left: 32px;
-	height: 65%;
+	width: calc(100% - 30px - 15px - 65px - 15px);
+	min-width: 150px;
+    position: absolute;
+    left: 30px;
+    height: 70%;
 }
 
 .content-info {
@@ -532,11 +547,11 @@ button {
 	border: none;
 	border-radius: var(--small-round-radius);
 	font-size: 1em;
-	width: 70px;
+	width: 65px;
 	position: absolute;
-	right: 75px;
-	top: 32%;
-	font-weight: 600;
+	right: 15px;
+    font-weight: 600;
+    bottom: 14px;
 }
 
 .chat .content-detail form button:hover {
@@ -571,7 +586,9 @@ button {
 	filter: grayscale(100);
 }
 
+/* TODO: Add save button later */
 .content-save {
+	display: none;
 	position: absolute;
 	top: 30%;
 	right: 25px;
@@ -1227,6 +1244,12 @@ button {
 	display: none;
 }
 
+.slideshow-how-to-use-container .slide-container div 
+.react-slideshow-container .react-slideshow-wrapper .images-wrap 
+div .each-slide > div {
+	display: flex;
+}
+
 /* About Section */
 /* 
 /*
@@ -1336,6 +1359,131 @@ button {
 	width: 80%;
 }
 
+
+
+
+/* Navbar toggle */
+
+/*
+.file-title .btn-sidebar {
+	width: 40px;
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	height: 40px;
+	border: 1px solid var(--white);
+	border-radius: 5px;
+	background: var(--white);
+}
+*/
+
+.btn-sidebar {
+	top: calc(7% - 3vh + -20px);
+    left: 13px;
+	width: 40px;
+    position: absolute;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+	background: #ffffff00;
+}
+
+
+.btn-sidebar svg {
+	position: absolute;
+    top: 9px;
+    right: 3px;
+}
+
+.btn-sidebar svg > g {
+	fill: var(--light-purple);
+}
+
+.btn-sidebar:hover svg > g {
+	fill: var(--white);
+}
+
+
+
+
+
+/* Slideshow */
+.slide-container {
+	width: 80%;
+	margin: auto;
+}
+
+
+.each-slide > div {
+	/* 
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-size: cover;
+	height: 65vh;
+	border: none;
+	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
+	position: relative;
+	padding-top: 18%;
+	width: 100%;
+	*/
+	
+
+	display: block;
+	align-items: center;
+	justify-content: center;
+	background-size: cover;
+	height: 75vh;
+	border: none;
+	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
+	position: relative;
+	padding-top: 0%;
+	width: 79%;
+	margin: 0 auto;
+}
+
+
+
+.each-slide span {
+	padding: 0px;
+	font-size: 20px;
+	text-align: center;
+	font-size: 1em;
+}
+
+.each-fade {
+	display: flex;
+}
+
+.each-fade .image-container {
+	width: 75%;
+	overflow: hidden;
+}
+
+.each-fade .image-container img {
+	width: 100%;
+}
+
+.each-fade h2 {
+	width: 25%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	background: #adceed;
+}
+
+.react-slideshow-wrapper.slide {
+	width: 100%;
+	overflow: hidden;
+	min-width: 269px;
+	/* height: 70vh; */
+}
+
+
+
+
+
 /****************************/
 /*	Media Query Section		*/
 /****************************/
@@ -1344,35 +1492,73 @@ button {
 @media (max-width: 1395px) {
 }
 
-@media (max-width: 1000px) {
+/* Before iPAD Pro */
+@media (max-width: 1025px) {
 	.nav-links {
 		left: 0px;
 	}
+
+	.each-slide span {
+		padding: 0px;
+		font-size: 0.95em;
+		margin-top: 1px;
+	}
 }
 
-/* Experimental Summary breaks */
+
 /* Info button text is outside of box */
 @media (max-width: 945px) {
+	.tooltip .tooltiptext {
+		width: 280px;
+	}
+
+	.tooltip .tooltiptext::after {
+		left: 85%;
+	}
+
 }
 
 @media (max-width: 850px) {
 	.rm-small-devices {
 		display: none;
 	}
+
 	.text {
 		left: 0px !important;
 	}
 
-	/* Change "How to us It" section */
 	.card-container {
 		display: none !important;
 	}
+
 	.slideshow-how-to-use-container {
 		display: flex;
 	}
+
+	.each-slide > div {
+		width: 88%;
+	}
 }
 
-/* .card class overflows */
+
+/* Just below iPAD standing size */
+@media (max-width: 767px) {
+	.fa-question-circle {
+		display: none;
+	}
+
+	.file-upload ul {
+		width: 100%;
+	}
+}
+
+/* Iphone 6/7/8 height */
+@media (max-height: 668px) {
+	.each-slide > div {
+		height: 80vh;
+	}
+}
+
 @media (max-width: 696px) {
 	.own-logo-subtitle {
 		display: none;
@@ -1380,12 +1566,32 @@ button {
 	.logo-container {
 		display: none;
 	}
+	
 	.nav-links {
 		left: -5%;
 	}
+
+	.sidebar {
+		top: 0px;
+		height: 100%;
+	}
+	
+	.files ul li span:last-child {
+		top: 25%;
+	}
+
 	.carousel__item .card {
 		padding: 30% 17%;
 	}
+
+	.sidebar {
+		min-width: 225px; 
+	}
+
+	.sidebar .files ul li { 
+		margin-top: 20px;
+	}
+	
 }
 
 @media (max-width: 525px) {
@@ -1443,6 +1649,11 @@ button {
 	.rm-smallest-devices {
 		display: none;
 	}
+
+	.each-slide > div {
+		width: 100%;
+	}
+
 }
 
 @media (max-width: 440px) {
@@ -1455,68 +1666,23 @@ button {
 	}
 }
 
-.slide-container {
-	width: 80%;
-	margin: auto;
+@media (max-width: 350px) {
+	.sidebar .files ul {
+		padding-top: 5px;
+	}
 }
 
-h3 {
-	text-align: center;
+
+
+.main-content > div > div:last-child {
+	left: 0px !important;
 }
 
-.each-slide > div {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-size: cover;
-	height: 300px;
-}
 
-.each-slide span {
-	padding: 20px;
-	font-size: 20px;
-	background: #efefef;
-	text-align: center;
-}
+/* .btn-sidebar .btn-on-sidebar */
 
-.each-fade {
-	display: flex;
-}
 
-.each-fade .image-container {
-	width: 75%;
-	overflow: hidden;
-}
+	
 
-.each-fade .image-container img {
-	width: 100%;
-}
 
-.each-fade h2 {
-	width: 25%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0;
-	background: #adceed;
-}
 
-.react-slideshow-wrapper.slide {
-	width: 100%;
-	overflow: hidden;
-	min-width: 269px;
-	/* height: 70vh; */
-}
-
-.each-slide > div {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-size: cover;
-	height: 65vh;
-	border: none;
-	box-shadow: -2px 4px 20px 6px rgb(222, 222, 222);
-	position: relative;
-	padding-top: 18%;
-	width: 100%;
-}
