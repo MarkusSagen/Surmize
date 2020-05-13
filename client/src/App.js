@@ -11,8 +11,34 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 class App extends Component {
 	constructor() {
 		super();
-		this.state = { isAuthed: false, user: null, client: {} };
+		this.state = { 
+			isAuthed: false, 
+			user: null, 
+			client: {},
+			width: 0, 
+			height: 0, 
+		};
+
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);	
 	}
+	
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener('resize', this.updateWindowDimensions);
+		
+		this.getToken();
+		this.setState({ client: new WebSocket('ws://localhost:5000/api/ws') });
+	}
+	
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+	
+	updateWindowDimensions() {
+		this.setState({ width: window.innerWidth, height: window.innerHeight });
+	}
+
+
 
 	setupOnUnloadListener = (user) => {
 		const usr = { user: user };
@@ -51,11 +77,6 @@ class App extends Component {
 		}
 	};
 
-	componentDidMount() {
-		this.getToken();
-		this.setState({ client: new WebSocket('ws://localhost:5000/api/ws') });
-	}
-
 	render() {
 		return (
 			<div>
@@ -69,6 +90,8 @@ class App extends Component {
 								{...rp}
 								isAuthed={this.state.isAuthed}
 								user={this.state.user}
+								height={this.state.height}
+								width={this.state.width}
 							/>
 						)}
 					/>
@@ -81,6 +104,8 @@ class App extends Component {
 								{...rp}
 								isAuthed={this.state.isAuthed}
 								user={this.state.user}
+								height={this.state.height}
+								width={this.state.width}
 								{...rp}
 							/>
 						)}

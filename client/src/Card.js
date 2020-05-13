@@ -11,7 +11,7 @@ class Card extends Component {
                         <li key={index}> { content } </li> )
                     }
                 </ul>
-                <img className="card-image-bottom" src={this.props.imgSrc} width="200px" height="155px"/>
+                <img className="card-image-bottom" src={this.props.imgSrc} alt="" width="200px" height="155px"/>
             </div>
 
 

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
+import { Slide } from 'react-slideshow-image';
+
 //import Dialogue from './Dialogue'
 import QuestionForm from './QuestionForm';
-import Sidebar from './Sidebar';
+import SidebarFileArea from './SidebarFileArea';
 import Summary from './Summary';
 import Navbar from './Navbar';
 import FileUpload from './FileUpload';
 import TextUpload from './TextUpload';
 import './FileManager.css';
 
+
 class FileManager extends Component {
 	constructor(props) {
 		super(props);
-
-		this.handleCheck = this.handleCheck.bind(this);
 
 		this.state = {
 			dialogue: [],
@@ -26,6 +27,8 @@ class FileManager extends Component {
 			summary: [],
 			uploadMore: false,
 		};
+
+		this.handleCheck = this.handleCheck.bind(this);
 	}
 
 	componentDidMount() {
@@ -325,11 +328,24 @@ class FileManager extends Component {
 				<div className='sp sp-wave'></div>
 			</div>
 		);
+
+		const maxWidth = 1269;
+		// Slides properties
+		const properties = {
+			autoplay: false,
+			duration: 5000000000,
+            transitionDuration: 500,
+			infinite: true,
+			indicators: true,
+			arrows: true,
+			pauseOnHover: true,
+			onChange: (oldIndex, newIndex) => { },
+		};
 		const page = (
 			<header>
 				<Navbar minimal />
 				<div className='main-content'>
-					<Sidebar
+					<SidebarFileArea
 						showForm={this.state.uploadMore}
 						files={this.state.files}
 						removeAll={this.removeAll}
@@ -338,7 +354,8 @@ class FileManager extends Component {
 						file={this.state.file}
 						moreFiles={this.moreFiles}
 					/>
-					{this.state.uploadMore ? (
+					{this.state.uploadMore 
+					? (
 						<div className='more-jumbotron'>
 							<div className='upload-section'>
 								<FileUpload
@@ -357,15 +374,32 @@ class FileManager extends Component {
 								/>
 							</div>{' '}
 						</div>
-					) : (
-						<>
-							<Summary summary={this.state.summary} />
-							<QuestionForm
-								sendQuestion={this.handleQuestion}
-								isFetching={this.state.handlingQuestion}
-								file={this.state.file}
-							/>
-						</>
+					) : ((this.props.width >= maxWidth) 
+						? ( <>
+								<Summary summary={this.state.summary} />
+								<QuestionForm
+									sendQuestion={this.handleQuestion}
+									isFetching={this.state.handlingQuestion}
+									file={this.state.file}
+								/>
+							</>
+						) : ( 
+							<div className='slide-container'>
+								{this.props.width}
+								<Slide {...properties}>
+									<div className='each-slide'>
+										<Summary summary={this.state.summary} />	
+									</div>
+									<div className='each-slide'>
+									<QuestionForm
+										sendQuestion={this.handleQuestion}
+										isFetching={this.state.handlingQuestion}
+										file={this.state.file}
+									/>	
+									</div>
+								</Slide>
+							</div>
+						)
 					)}
 				</div>
 			</header>

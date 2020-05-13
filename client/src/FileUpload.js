@@ -3,11 +3,33 @@ import { ReactComponent as FilesIcon } from './download-icon.svg';
 import InfoIcon from './InfoIcon';
 
 class FileUpload extends Component {
-	state = {
-		err: [],
-		files: [],
-		fileToBeSent: [],
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			err: [],
+			files: [],
+			fileToBeSent: [],
+			width: 0, 
+			height: 0,
+		};
+
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+	}
+	
+
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener('resize', this.updateWindowDimensions);
+	}
+	
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+	
+	updateWindowDimensions() {
+		this.setState({ width: window.innerWidth, height: window.innerHeight });
+	}
 
 	isNotAllowedExtentions = (file) => {
 		let s = String(file.name).split('.');
@@ -58,10 +80,9 @@ class FileUpload extends Component {
 
 	// Truncate file name
 	truncate = (input) => {
-		if (input.length > 25) {
-			input = input.substring(0, 25) + '...';
-		}
-		return input;
+		const iPadWidthStanding = 768;
+		var width = this.state.width;
+		return ((width >= iPadWidthStanding) ? input.substring(0, 18) + '...' : input.substring(0, 10) + '...');
 	};
 
 	handleSubmit = (e) => {
