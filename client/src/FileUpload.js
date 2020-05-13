@@ -80,9 +80,12 @@ class FileUpload extends Component {
 
 	// Truncate file name
 	truncate = (input) => {
-		const iPadWidthStanding = 768;
-		var width = this.state.width;
-		return ((width >= iPadWidthStanding) ? input.substring(0, 18) + '...' : input.substring(0, 10) + '...');
+		if (input.length > 18) {
+			return input.substring(0, 18) + '...';
+		}
+		else {
+			return input;
+		}
 	};
 
 	handleSubmit = (e) => {
@@ -216,14 +219,14 @@ class FileUpload extends Component {
 									onChange={this.props.handleCheck}
 									checked={this.props.isExperimental}
 								/>
-								<label for='cbx'></label>
-								<svg width='15' height='14' viewbox='0 0 15 14' fill='none'>
+								<label htmlFor='cbx'></label>
+								<svg width='15' height='14' viewBox='0 0 15 14' fill='none'>
 									<path d='M2 8.36364L6.23077 12L13 2'></path>
 								</svg>
 							</div>
 						</span>
 					</div>
-					<div> {this.checkEmptyFiles()} </div>
+					
 					{this.state.files.length > 0 ? (
 						<button type='submit'>Upload</button>
 					) : (

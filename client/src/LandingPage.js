@@ -98,8 +98,6 @@ class LandingPage extends Component {
 	};
 
 	setError = (text) => {
-		const state = this.state.err;
-		console.log('setError: ' + text);
 		this.setState((state) => ({
 			err: [...state.err, text],
 		}));
@@ -179,7 +177,7 @@ class LandingPage extends Component {
 
 		const page = (
 			<header>
-				<Navbar />
+				<Navbar marginLeft={0} />
 				<div className='landing-main-content'>
 					<div className='main-container'>
 						<div className='jumbotron'>

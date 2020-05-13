@@ -168,7 +168,9 @@ class QuestionForm extends Component {
 				<div className='content-title'>
 					<h3>QA</h3>
 				</div>
-				<div className='content-subtitle'>{this.props.file}</div>
+				<div className='content-subtitle'>
+					{this.props.truncate(this.props.file)}
+				</div>
 				<div id='qa-main' className='content-main'>
 					{chat}
 				</div>

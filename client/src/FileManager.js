@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Slide } from 'react-slideshow-image';
 
+
 //import Dialogue from './Dialogue'
 import QuestionForm from './QuestionForm';
 import SidebarFileArea from './SidebarFileArea';
@@ -26,6 +27,7 @@ class FileManager extends Component {
 			isFetching: true,
 			summary: [],
 			uploadMore: false,
+			sidebarOpen: false,
 		};
 
 		this.handleCheck = this.handleCheck.bind(this);
@@ -70,10 +72,9 @@ class FileManager extends Component {
 			const file = JSON.parse(data).file;
 			if (
 				this.state.summary[0] !== this.state.file &&
-				sum !== '' &&
-				this.state.file === file
+				sum !== '' && this.state.file === file
 			) {
-				this.setState({ summary: [this.state.file, sum] });
+				this.setState({ summary: [ this.truncate(this.state.file), sum] });
 			}
 		};
 	}
@@ -108,7 +109,7 @@ class FileManager extends Component {
 						if (data.sum) {
 							this.setState({
 								handlingQuestion: false,
-								summary: [this.state.file, data.sum],
+								summary: [ this.truncate(this.state.file), data.sum ],
 							});
 						} else {
 							this.setState({
@@ -137,14 +138,14 @@ class FileManager extends Component {
 					setTimeout(() => {
 						if (data.status_code !== 200) {
 							this.setState({
-								summary: [
-									f,
+								summary: [ 
+									this.truncate(f), 
 									'Your File is being summarized... \n \n Meanwhile you have the opportunity to write questions',
 								],
 								fetchingSameFile: false,
 							});
 						} else {
-							this.setState({ summary: [f, data.sum], fetchingSameFile: false });
+							this.setState({ summary: [ this.truncate(f), data.sum ], fetchingSameFile: false });
 						}
 					}, 1200);
 				});
@@ -178,7 +179,7 @@ class FileManager extends Component {
 								}, 7000);
 							}
 						} else {
-							this.setState({ summary: [f, data.sum], isFetching: false, file: f });
+							this.setState({ summary: [ this.truncate(f), data.sum ], isFetching: false, file: f });
 						}
 					}, 1200);
 				});
@@ -321,6 +322,19 @@ class FileManager extends Component {
 		console.log(this.state.isExperimental);
 	};
 
+	toggleSidebar = (state) => {
+		this.setState({ sidebarOpen: state })
+	}
+
+	truncate = (input) => {
+		if (input.length > 18) {
+			return input.substring(0, 18) + '...';
+		}
+		else {
+			return input;
+		}
+	};
+
 	render() {
 		const fetching = this.state.isFetching;
 		const spinner = (
@@ -337,13 +351,13 @@ class FileManager extends Component {
             transitionDuration: 500,
 			infinite: true,
 			indicators: true,
-			arrows: true,
+			arrows: !this.state.sidebarOpen,
 			pauseOnHover: true,
 			onChange: (oldIndex, newIndex) => { },
 		};
 		const page = (
 			<header>
-				<Navbar minimal />
+				<Navbar minimal marginLeft={105}/>
 				<div className='main-content'>
 					<SidebarFileArea
 						showForm={this.state.uploadMore}
@@ -353,6 +367,8 @@ class FileManager extends Component {
 						deleteFile={this.deleteFile}
 						file={this.state.file}
 						moreFiles={this.moreFiles}
+						sidebarOpen={this.state.sidebarOpen}
+						toggleSidebar={this.toggleSidebar}
 					/>
 					{this.state.uploadMore 
 					? (
@@ -376,25 +392,29 @@ class FileManager extends Component {
 						</div>
 					) : ((this.props.width >= maxWidth) 
 						? ( <>
-								<Summary summary={this.state.summary} />
+								<div className="block-on-sidebar-active">''</div>
+								<Summary summary={this.state.summary} 
+								/>
 								<QuestionForm
 									sendQuestion={this.handleQuestion}
 									isFetching={this.state.handlingQuestion}
 									file={this.state.file}
+									truncate={this.truncate}
 								/>
 							</>
 						) : ( 
 							<div className='slide-container'>
-								{this.props.width}
 								<Slide {...properties}>
 									<div className='each-slide'>
-										<Summary summary={this.state.summary} />	
+										<Summary summary={this.state.summary} 
+										/>	
 									</div>
 									<div className='each-slide'>
 									<QuestionForm
 										sendQuestion={this.handleQuestion}
 										isFetching={this.state.handlingQuestion}
 										file={this.state.file}
+										truncate={this.truncate}
 									/>	
 									</div>
 								</Slide>

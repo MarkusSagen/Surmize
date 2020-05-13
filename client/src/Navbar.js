@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import { ReactComponent as Squid } from "./squid.svg"
 class Navbar extends Component {
 
     render() {
         return (
             <nav className="own-navbar" id="home">
-                <div className="own-container">
+                <div className="own-container" style={{ marginLeft: `${this.props.marginLeft}px`}} >
                     <div className="own-nav-content">
                         <div className="own-logo">
                             <div className="own-text-logo">
