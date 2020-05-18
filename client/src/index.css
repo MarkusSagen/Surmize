@@ -637,7 +637,7 @@ button {
 }
 .more-jumbotron {
 	height: 85%;
-	width: 85%;
+	width: 66%;
 	margin: 0 auto;
 	margin-top: -50px;
 }
@@ -1495,7 +1495,6 @@ div .each-slide > div {
 	overflow: hidden;
 	margin-right: 5%;
 	margin-top: -5px;
-	box-shadow: 
 }
 
 
@@ -1507,6 +1506,14 @@ div .each-slide > div {
 /* Workspace: "Ask button fails to work" */
 @media (max-width: 1395px) {
 }
+
+/* sidebar closes */
+@media (max-width: 1269px) {
+	.more-jumbotron {
+		width: 85%;
+	}
+}
+
 
 /* Before iPAD Pro */
 @media (max-width: 1025px) {
