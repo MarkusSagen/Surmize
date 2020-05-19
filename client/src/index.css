@@ -631,13 +631,13 @@ button {
 .more-jumbotron {
 	background-color: white;
 	width: 100%;
-	height: 80%;
+	height: 90%;
 	text-align: center;
 	box-shadow: -1px 6px 16px 6px rgba(181, 181, 181, 0.57);
 }
 .more-jumbotron {
-	height: 80%;
-	width: 80%;
+	height: 85%;
+	width: 66%;
 	margin: 0 auto;
 	margin-top: -50px;
 }
@@ -1307,7 +1307,7 @@ div .each-slide > div {
 .about-main .about-content div p {
 	color: var(--lightest-grey);
 	text-align: center;
-	padding: 0px 5%;
+	padding: 0px 6%;
 }
 
 .about-pics {
@@ -1495,7 +1495,6 @@ div .each-slide > div {
 	overflow: hidden;
 	margin-right: 5%;
 	margin-top: -5px;
-	box-shadow: 
 }
 
 
@@ -1507,6 +1506,14 @@ div .each-slide > div {
 /* Workspace: "Ask button fails to work" */
 @media (max-width: 1395px) {
 }
+
+/* sidebar closes */
+@media (max-width: 1269px) {
+	.more-jumbotron {
+		width: 85%;
+	}
+}
+
 
 /* Before iPAD Pro */
 @media (max-width: 1025px) {

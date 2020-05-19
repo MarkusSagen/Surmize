@@ -252,11 +252,10 @@ class LandingPage extends Component {
 								<div>
 									<h6>A New Way to Search Information</h6>
 									<p>
-										{' '}
-										We believe your time is valuable and that praesentium modi
-										possimus, at omnis obcaecati, totam sunt soluta id iure
-										molestiae excepturi consequatur quia? Excepturi, at
-										voluptas.
+										We believe your time is valuable and that retreving importaint information from a text of document should be easy and fast. 
+										We therefore present, Surmize: An application which makes searching in a document similar to using a search engine, but for your documents. 
+										The method is free to use and open-source, based on the latest research in text processing, called a BERT transformer model.
+										If you have feedback regarding the application or just want to reach out, don't hesitate to contact us through LinkedIn or Github.
 									</p>
 								</div>
 								<div className='about-pics'>
