@@ -160,9 +160,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
 # Runtime data
 pids
 *.pid
@@ -248,8 +245,6 @@ dist
 # Serverless directories
 .serverless/
 
-# FuseBox cache
-.fusebox/
 
 # DynamoDB Local files
 .dynamodb/
