@@ -1,11 +1,10 @@
 # Surmize
 A full scale client-server model for Summarizing and asking close-domain Questions on documents and or texts directly in your browser. The file extentions **.txt**, **.story** and **.pdf** are currently supported and some **.CSV**-files.    
    
-This project was developed by us for the course Independent Project in Information Engineering at Uppsala University. The applicaiton is built mostly in React, FastAPI and Python modeles. The underlying NLP models are based on the [cdQA repo](https://github.com/cdqa-suite/cdQA) and [Huggingface's Abstractive BERT summarizer repo](https://github.com/huggingface/transformers/tree/master/examples/summarization/bertabs). Both models are state-of-the-art transformer models, which have performed very well on a diverse number of NLP tasks.
+This project was developed by us for the course Independent Project in Information Engineering at Uppsala University. The applicaiton is built mostly in React, FastAPI and Python modeles. The underlying NLP models are based on Huggingface. Both models are state-of-the-art transformer models, which have performed very well on a diverse number of NLP tasks.
 
 ### Links:
-- [Report](https://drive.google.com/file/d/13aw-Da6Vfr2vUaWxOPSP-P_xLHxy5dtF/view?usp=sharing)
-- [Slide Presentation](https://docs.google.com/presentation/d/1ftJGlZ0gL48LeBGkny3NB-wQiYdJrizevqhb1V_vlO0/edit?usp=sharing)  
+- [Report](https://drive.google.com/file/d/13aw-Da6Vfr2vUaWxOPSP-P_xLHxy5dtF/view?usp=sharing) 
 - [Research Folder](https://www.notion.so/Summarize-App-c834b35bb7d748c4a57662652b9ce326)
 
   
