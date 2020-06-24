@@ -12,7 +12,7 @@ This project was developed by us for the course Independent Project in Informati
 ### Usage 
 These instructions are related to how to get the server up an runnning, the UI and NLP models for summarization and Close-Domain QA.    
    
-Some have experienced problems when using Python3 directly, we therefore recommend users to install and use Python3 via Anaconda
+Some have experienced problems when using Python3 directly, we therefore recommend users to install and use Python3 via [Anaconda](https://www.anaconda.com/products/individual)
 
 1. Clone this repo:
 ```bash
