@@ -3,7 +3,11 @@ A full scale client-server model for Summarizing and asking close-domain Questio
    
 This project was developed by us for the course Independent Project in Information Engineering at Uppsala University. The applicaiton is built mostly in React, FastAPI and Python modeles. The underlying NLP models are based on Huggingface. Both models are state-of-the-art transformer models, which have performed very well on a diverse number of NLP tasks.
 
+<br />
+<br />
+#### Landing Page
 <img src="https://github.com/MarkusSagen/img/blob/master/surmize/home.png" width="80%" />
+#### Work Area
 <img src="https://github.com/MarkusSagen/img/blob/master/surmize/workspace.png" width="80%" />
   
 ### Usage 
