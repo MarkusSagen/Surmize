@@ -15,6 +15,6 @@ jinja2>=2.7
 fastapi==0.65.2
 uvicorn==0.11.7
 gunicorn==20.0.4
-nltk==3.4.5
+nltk==3.6.5
 networkx==2.4
 codetiming==1.2.0
